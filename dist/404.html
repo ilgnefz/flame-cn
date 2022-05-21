@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="VuePress 2.0.0-beta.45">
+    <style>
+      :root {
+        --c-bg: #fff;
+      }
+      html.dark {
+        --c-bg: #22272e;
+      }
+      html, body {
+        background-color: var(--c-bg);
+      }
+    </style>
+    <script>
+      const userMode = localStorage.getItem('vuepress-color-scheme');
+			const systemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+			if (userMode === 'dark' || (userMode !== 'light' && systemDarkMode)) {
+				document.documentElement.classList.toggle('dark', true);
+			}
+    </script>
+    <link rel="icon" href="/images/favicon.png"><title>Flame引擎中文文档</title><meta name="description" content="Flame — 基于Flutter的2D游戏引擎">
+    <link rel="modulepreload" href="/flame-cn/assets/app.660b2b85.js"><link rel="modulepreload" href="/flame-cn/assets/404.html.f6a7e424.js"><link rel="modulepreload" href="/flame-cn/assets/404.html.93146c89.js"><link rel="prefetch" href="/flame-cn/assets/index.html.a5c24d3d.js"><link rel="prefetch" href="/flame-cn/assets/started.html.0fe8a16a.js"><link rel="prefetch" href="/flame-cn/assets/file-structure.html.e9fe2d49.js"><link rel="prefetch" href="/flame-cn/assets/game-loop.html.44a8fc94.js"><link rel="prefetch" href="/flame-cn/assets/index.html.3dbfb244.js"><link rel="prefetch" href="/flame-cn/assets/started.html.4aa47a2e.js"><link rel="prefetch" href="/flame-cn/assets/file-structure.html.b0d56947.js"><link rel="prefetch" href="/flame-cn/assets/game-loop.html.64c69e6b.js"><link rel="prefetch" href="/flame-cn/assets/404.1bbc91b3.js"><link rel="prefetch" href="/flame-cn/assets/Layout.e3021ae4.js">
+    <link rel="stylesheet" href="/flame-cn/assets/style.ff22a552.css">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="theme-container"><div class="theme-default-content"><h1>404</h1><blockquote>That&#39;s a Four-Oh-Four.</blockquote><a href="/flame-cn/" class="">Take me home</a></div></div><!----><!--]--></div>
+    <script type="module" src="/flame-cn/assets/app.660b2b85.js" defer></script>
+  </body>
+</html>

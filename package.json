@@ -1,0 +1,22 @@
+{
+  "name": "flame-cn",
+  "version": "1.0.0",
+  "description": "Flame Engine's Chinese documents",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "deploy": "sh deploy.sh"
+  },
+  "keywords": [
+    "Flutter",
+    "Flame Engine",
+    "Game"
+  ],
+  "author": "ilgnefz",
+  "license": "ISC",
+  "devDependencies": {
+    "vuepress": "^2.0.0-beta.45"
+  }
+}
