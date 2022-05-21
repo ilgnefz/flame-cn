@@ -13,6 +13,11 @@ module.exports = {
     logo: '/images/logo.png',
     navbar: navbar,
     sidebar: sidebar,
-    editLink: true,
+    docsRepo: 'https://github.com/ilgnefz/flame-cn',
+    docsBranch: 'master',
+    docsDir: 'docs',
+    editLinkText: '编辑此页',
+    contributorsText: '贡献者',
+    lastUpdatedText: '最后更新',
   })
 }
