@@ -1,1 +1,0 @@
-const e={key:"v-09852f6f",path:"/guide/flame/file-structure.html",title:"\u6587\u4EF6\u7ED3\u6784",lang:"zh-CN",frontmatter:{prev:{text:"\u5F00\u59CB\u4F7F\u7528",link:"/guide/started.md"},next:{text:"\u6E38\u620F\u5FAA\u73AF",link:"/guide/flame/game-loop.md"}},excerpt:"",headers:[],git:{},filePathRelative:"guide/flame/file-structure.md"};export{e as data};

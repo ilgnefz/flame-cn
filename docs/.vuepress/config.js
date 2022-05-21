@@ -5,7 +5,6 @@ const path = require('path')
 
 module.exports = {
   base: '/flame-cn/',
-  dest: 'dist',
   lang: 'zh-CN',
   title: 'Flame引擎中文文档',
   description: 'Flame — 基于Flutter的2D游戏引擎',
