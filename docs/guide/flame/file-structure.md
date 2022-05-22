@@ -24,7 +24,7 @@ void main() {
 
 Flame 期望在其中找到文件的文件结构是：
 
-```
+```text
 .
 └── assets
     ├── audio
