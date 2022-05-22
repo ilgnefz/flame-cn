@@ -1,61 +1,52 @@
-# Components
+---
+prev:
+  text: 游戏循环
+  link: /guide/flame/game-loop.md
+next:
+  text: 平台
+  link: /guide/flame/platforms.md
+---
 
-![Component tree](../images/component_tree.png)
+# 组件
 
-This diagram might look intimidating, but don't worry, it is not as complex as it looks.
+![Component tree](/images/component-tree.png)
+
+这张图可能看起来很吓人，但是不要担心，它并不像它看起来那么复杂。
 
 
-## Component
+## 组件
 
-All components inherit from the abstract class `Component`.
+所有组件都从抽象类`Component`继承。
 
-If you want to skip reading about abstract classes you can jump directly to
-[](#positioncomponent).
+如果您想跳过阅读抽象类有关的内容，可以直击跳转到[PositionComponent](#positioncomponent)。
 
-Every `Component` has a few methods that you can optionally implement, which are used by the
-`FlameGame` class. If you are not using `FlameGame`, you can use these methods on your own game loop
-if you wish.
+在`FlameGame`类中，每个`Component`都有一些您可以选择实现的方法。如果您不使用`FlameGame`，您依然可以在您自己的游戏循环中使用这些方法。
 
-![Component Lifecycle Diagram](../images/component_lifecycle.png)
+![Component Lifecycle Diagram](/images/component-lifecycle.png)
 
-The `onGameResize` method is called whenever the screen is resized, and once in the beginning when
-the component is added to the game via the `add` method.
+只要调整屏幕大小，就会调用`onGameResize`方法，一旦在开始时，通过`add`方法将组件添加到游戏中，也会调用`onGameResize`方法。
 
-The `onRemove` method can be overridden to run code before the component is removed from the game,
-it is only run once even if the component is removed both by using the parents remove method and
-the `Component` remove method.
+在组件从游戏中移除之前，可以重写`onRemove`方法来运行代码，即使组件通过父`remove`方法和`component`移除方法被移除，它也只会运行一次。
 
-The `onLoad` method can be overridden to run asynchronous initialization code for the component,
-like loading an image for example. This method is executed after `onGameResize`, but before
-`onMount`. This method is guaranteed to execute only once during the lifetime of the component, so
-you can think of it as an "asynchronous constructor".
+可以重写`onLoad`方法来运行组件的异步初始化代码，例如加载图像。这个方法会在`onGameResize`之后，`onMount`之前运行。该方法保证在组件的生命周期内只执行一次，因此可以将其视为异步构造函数。
 
-The `onMount` method runs every time when the component is mounted into a game tree. This means that
-you should not initialize `late final` variables here, since this method might run several times
-throughout the component's lifetime. This method will only run if the parent is already mounted.
-If the parent is not mounted yet, then this method will wait in a queue (this will have no effect
-on the rest of the game engine).
+`onMount`方法在每次组件被挂载到游戏树时运行。这意味着您不应该在这里初始化`late final`变量，因为这个方法可能会在组件的生命周期内多次运行。此方法仅在父进程已经挂载的情况下运行。如果父进程还没有挂载，那么这个方法将在一个队列中等待（这对游戏引擎的其他部分没有影响）。
 
-A component lifecycle state can be checked by a series of getters:
- - `isLoaded`: Returns a bool with the current loaded state
- - `loaded`: Returns a future that will complete once the component has finished loading
- - `isMounted`: Returns a bool with the current mounted state
- - `mounted`: Returns a future that will complete once the component has finished mounting
+组件的生命周期状态可以通过一系列getter来检查：
+ - `isLoaded`：返回当前加载状态的bool值
+ - `loaded`：返回一个在组件加载完成后的future值
+ - `isMounted`：返回当前挂载状态的bool值
+ - `mounted`：返回一个在组件一旦完成挂载后的future值
 
-### Priority
+### 优先权
 
-In Flame the order components are rendered (and updated) in is called `priority`, this is sometimes
-referred to as `z-index` in other languages and frameworks. The higher the `priority` is set to, the
-closer the component will appear on the screen, since it will be rendered on top of any components
-with lower priority that were rendered before it.
+在 Flame 中，顺序组件的呈现(和更新)被称为`priority`，这在其他语言和框架中有时也被称为`z-index`。优先级设置得越高，该组件出现在屏幕上的距离就越近，因为它将被渲染在其他优先级较低的组件之上。
 
-If you add two components and set one of them to priority 1 for example, then that component will be
-rendered on top of the other component (if they overlap), because the default priority is 0.
+例如，如果添加两个组件，并将其中一个组件的优先级设置为1，那么该组件将呈现在另一个组件之上(如果它们重叠)，因为默认优先级为0。
 
-All components take in `priority` as a named argument, so if you know the priority that you want
-your component at compile time, then you can pass it in to the constructor.
+所有组件都有一个`priority`的命名参数。所以，如果在编译时知道组件的优先级，就可以将其传递给构造函数。
 
-Example:
+例子：
 
 ```dart
 class MyGame extends FlameGame {
@@ -67,10 +58,9 @@ class MyGame extends FlameGame {
 }
 ```
 
-To update the priority of a component you have to either just set it to a new value, like
-`component.priority = 2`, and it will be updated in the next tick.
+要更新组件的优先级，您必须将其设置为一个新值，如`component.priority = 2`，它将在下一个时刻更新。
 
-Example:
+例子：
 
 ```dart
 class MyComponent extends PositionComponent with Tappable {
@@ -84,20 +74,16 @@ class MyComponent extends PositionComponent with Tappable {
 }
 ```
 
-In the example above we first initialize the component with priority 1, and then when the user taps
-the component we change the priority to 2.
+在上面的例子中，我们首先设置组件的初始化优先级为1，当用户点击组件时，我们将优先级改为2。
 
 
-### Composability of components
+### 可组合性的组件
 
-Sometimes it is useful to wrap other components inside of your component. For example by grouping
-visual components through a hierarchy. You can do this by adding child components to any component,
-for example `PositionComponent`.
+有时，将其他组件封装到组件中是很有用的。例如，通过层次结构对可视化组件进行分组。您可以通过向任何组件添加子组件来实现这一点，例如`PositionComponent`。
 
-When you have child components on a component every time the parent is updated and rendered, all the
-children are rendered and updated with the same conditions.
+当一个组件上有子组件时，每次父组件被更新和呈现，所有的子组件都以相同的条件呈现和更新。
 
-Example of usage, where visibility of two components are handled by a wrapper:
+使用示例，其中两个组件的可见性由包装器处理：
 
 ```dart
 class GameOverPanel extends PositionComponent with HasGameRef<MyGame> {
@@ -108,8 +94,8 @@ class GameOverPanel extends PositionComponent with HasGameRef<MyGame> {
 
   @override
   Future<void> onLoad() async {
-    final gameOverText = GameOverText(spriteImage); // GameOverText is a Component
-    final gameOverButton = GameOverButton(spriteImage); // GameOverRestart is a SpriteComponent
+    final gameOverText = GameOverText(spriteImage); // GameOverText是一个组件
+    final gameOverButton = GameOverButton(spriteImage); // GameOverRestart是一个SpriteComponent
 
     add(gameOverText);
     add(gameOverButton);
@@ -118,19 +104,15 @@ class GameOverPanel extends PositionComponent with HasGameRef<MyGame> {
   @override
   void render(Canvas canvas) {
     if (visible) {
-    } // If not visible none of the children will be rendered
+    } // 如果不可见，则不会显示任何子元素
   }
 }
 ```
 
-There are two methods for adding children components to your component. First,
-you have methods `add()`, `addAll()`, and `addToParent()`, which can be used
-at any time during the game. Traditionally, children will be created and added
-from the component's `onLoad()` method, but it is also common to add new
-children during the course of the game.
+有两种方法可以将子组件添加到组件中。首先，您有`add()`、`addAll()`和`addToParent()`方法，它们可以在游戏期间的任何时候使用。传统上，子元素是通过组件的`onLoad()`方法创建和添加的，但在游戏过程中添加新的子元素也很常见。
 
-The second method is to use the `children:` parameter in the component's
-constructor. This approach more closely resembles the standard Flutter API:
+第二种方法是在组件的构造函数中使用`children:`参数。这种方法更类似于标准的Flutter API：
+
 ```dart
 class MyGame extends FlameGame {
   @override
@@ -149,21 +131,15 @@ class MyGame extends FlameGame {
 }
 ```
 
-The two approaches can be combined freely: the children specified within the
-constructor will be added first, and then any additional child components
-after.
+这两种方法可以自由组合：首先添加构造函数中指定的子组件，然后添加任何其他子组件。
 
-Note that the children added via either methods are only guaranteed to be
-available eventually: after they are loaded and mounted. We can only assure
-that they will appear in the children list in the same order as they were
-scheduled for addition.
+注意，通过这两种方法添加的子对象只保证最终可用：在它们被加载和挂载之后。我们只能保证它们将以与计划添加时相同的顺序出现在子列表中。
 
-### Ensuring a component has a given parent
+### 确保组件有一个给定的父组件
 
-When a component requires to be added to a specific parent type the
-`ParentIsA` mixin can be used to enforce a strongly typed parent.
+当组件需要添加到特定的父类型时`ParentIsA` 'mixin可用于强制强类型父类。
 
-Example:
+示例：
 
 ```dart
 class MyComponent extends Component with ParentIsA<MyParentComponent> {
@@ -175,21 +151,13 @@ class MyComponent extends Component with ParentIsA<MyParentComponent> {
 }
 ```
 
-If you try to add `MyComponent` to a parent that is not `MyParentComponent`,
-an assertion error will be thrown.
+如果你试图将`MyComponent`添加到一个不是`MyParentComponent`的父组件，将抛出断言错误。
 
-### Querying child components
+### 查询子组件
 
-The children that have been added to a component live in a `QueryableOrderedSet` called
-`children`. To query for a specific type of components in the set, the `query<T>()` function can be
-used. By default `strictMode` is `false` in the children set, but if you set it to true, then the
-queries will have to be registered with `children.register` before a query can be used.
+已经添加到组件中的子组件存在于名为`children`的`QueryableOrderedSet`中。要查询集合中特定类型的组件，可以使用`query<T>()`函数。默认情况下，`strictMode`在子节点设置为`false`，但如果你设置为`true`，那么在使用查询之前必须注册到`children.register`。
 
-If you know in compile time that you later will run a query of a specific type it is recommended to
-register the query, no matter if the `strictMode` is set to `true` or `false`, since there are some
-performance benefits to gain from it. The `register` call is usually done in `onLoad`.
-
-Example:
+示例：
 
 ```dart
 @override
@@ -198,8 +166,7 @@ Future<void> onLoad() async {
 }
 ```
 
-In the example above a query is registered for `PositionComponent`s, and an example of how to query
-the registered component type can be seen below.
+在上面的示例中，为`PositionComponents`注册了一个查询，下面是如何查询注册的组件类型的示例：
 
 ```dart
 @override
@@ -208,23 +175,16 @@ void update(double dt) {
 }
 ```
 
+### 在屏幕上的特定点查询组件
 
-### Querying components at a specific point on the screen
+`componentsAtPoint()`方法允许您检查在屏幕上的某个点上呈现了哪些组件。返回值是一个组件的可迭代对象，但您也可以通过提供一个可写的`List<Vector2>`作为第二个参数来获得每个组件的局部坐标空间中初始点的坐标。
 
-The method `componentsAtPoint()` allows you to check which components were rendered at some point
-on the screen. The returned value is an iterable of components, but you can also obtain the
-coordinates of the initial point in each component's local coordinate space by providing a writable
-`List<Vector2>` as a second parameter.
+可迭代对象按照从前到后的顺序检索组件，即首先检索组件前面的组件，然后再是后面的组件。
 
-The iterable retrieves the components in the front-to-back order, i.e. first the components in the
-front, followed by the components in the back.
+这个方法只能返回实现`containsLocalPoint()`方法的组件。`PositionComponent`（这是Flame中许多组件的基类）提供了这样的一个实现。然而，如果你要定义一个派生自`Component`的自定义类，你就必须自己实现`containsLocalPoint()`方法。
 
-This method can only return components that implement the method `containsLocalPoint()`. The
-`PositionComponent` (which is the base class for many components in Flame) provides such an
-implementation. However, if you're defining a custom class that derives from `Component`, you'd have
-to implement the `containsLocalPoint()` method yourself.
+这里有一个怎样使用 `componentsAtPoint()`的例子：
 
-Here is an example of how `componentsAtPoint()` can be used:
 ```dart
 void onDragUpdate(DragUpdateInfo info) {
   game.componentsAtPoint(info.widget).forEach((component) {
@@ -235,80 +195,53 @@ void onDragUpdate(DragUpdateInfo info) {
 }
 ```
 
-
 ### PositionType
-If you want to create a HUD (Head-up display) or another component that isn't positioned in relation
-to the game coordinates, you can change the `PositionType` of the component.
-The default `PositionType` is `positionType = PositionType.game` and that can be changed to
-either `PositionType.viewport` or `PositionType.widget` depending on how you want to position
-the component.
 
- - `PositionType.game` (Default) - Respects camera and viewport.
- - `PositionType.viewport` - Respects viewport only (ignores camera).
- - `PositionType.widget` - Position in relation to the coordinate system of the Flutter game
-   widget (i.e. the raw canvas).
+如果您想创建一个HUD (平视显示器)或其他组件的位置不相关的游戏坐标，您可以更改组件的`PositionType`。默认的`PositionType`是`PositionType = PositionType.game`，可以根据组件的位置更改为`PositionType.viewport`或`PositionType.widget`。
 
-Most of your components will probably be positioned according to `PositionType.game`, since you
-want them to respect the `Camera` and the `Viewport`. But quite often you want for example buttons
-and text to always show on the screen, no matter if you move the camera, then you want to use
-`PositionType.viewport`. In some rare cases you want to use `PositionType.widget` to position
-your widgets, when you don't want the component to respect the camera nor the viewport; this could
-for example be for controls or joysticks that would be unergonomic to use if they had to stay within
-the viewport.
+ - `PositionType.game`：默认值。 遵从摄像机和视口
+ - `PositionType.viewport`：仅遵从视口 (忽略摄像机).
+ - `PositionType.widget`：与Flutter游戏部件（即原始画布）的坐标系统相关的位置
 
-Do note that this setting is only respected if the component is added directly to the root
-`FlameGame` and not as a child component of another component.
+您的大部分组件可能会根据`PositionType.game`来定位，因为您希望它们遵从摄像机和视口。但是通常情况下，你希望按钮和文本总是显示在屏幕上，不管你是否移动相机，然后你就会想使用 `PositionType.viewport`。在一些罕见的情况下，当你不希望组件遵从摄像机或视口时，你想使用`PositionType.widget`来定位你的组件；这可能为了控制器或操纵杆，如果他们必须呆在视口内，将不符合人体工程学的使用。
 
+请注意，只有当组件直接添加到根`FlameGame`而不是作为另一个组件的子组件时，才会考虑这种设置。
 
 ## PositionComponent
 
-This class represent a positioned object on the screen, being a floating rectangle or a rotating
-sprite. It can also represent a group of positioned components if children are added to it.
+这个类代表屏幕上的定位对象，如浮动矩形或旋转精灵。如果向它添加了子组件，它还可以表示一组定位组件。
 
-The base of the `PositionComponent` is that it has a `position`, `size`, `scale`, `angle` and
-`anchor` which transforms how the component is rendered.
-
-
-### Position
-
-The `position` is just a `Vector2` which represents the position of the component's anchor in
-relation to its parent; if the parent is a `FlameGame`, it is in relation to the viewport.
+基本的`PositionComponent`有 `position`、`size`、 `scale`、`angle` 和
+`anchor` ，用来改变组件的呈现方式。
 
 
-### Size
+### 位置
 
-The `size` of the component when the zoom level of the camera is 1.0 (no zoom, default).
-The `size` is *not* in relation to the parent of the component.
-
-
-### Scale
-
-The `scale` is how much the component and its children should be scaled. Since it is represented
-by a `Vector2`, you can scale in a uniform way by changing `x` and `y` with the same amount, or in a
-non-uniform way, by change `x` or `y` by different amounts.
+`position` 只是一个`Vector2` ，它表示组件锚点相对于其父组件的位置；如果父组件是一个 `FlameGame`，那么它就相对于视图端口。
 
 
-### Angle
+### 大小
 
-The `angle` is the rotation angle around the anchor, represented as a double in radians. It is
-relative to the parent's angle.
-
-
-### Anchor
-
-The `anchor` is where on the component that the position and rotation should be defined from (the
-default is `Anchor.topLeft`). So if you have the anchor set as `Anchor.center` the component's
-position on the screen will be in the center of the component and if an `angle` is applied, it is
-rotated around the anchor, so in this case around the center of the component. You can think of it
-as the point within the component by which Flame "grabs" it.
+当相机的缩放级别为1.0(默认无缩放)时，组件的`szie`。`size`与其父组件无关。
 
 
-### PositionComponent children
+### 缩放
 
-All children of the `PositionComponent` will be transformed in relation to the parent, which means
-that the `position`, `angle` and `scale` will be relative to the parents state.
-So if you, for example, wanted to position a child 50 logical pixels above the center of the parent
-you would do this:
+`scale`是组件及其子组件应该被缩放的程度。由于它是由`Vector2`表示的，所以可以通过用相同的量来改变`x`和`y`，也可以通过用不同的量来改变 `x` 或 `y`，从而以一种统一的方式进行缩放。
+
+
+### 角度
+
+`angle`是锚周围的旋转角度，用双弧度表示。它是相对于父角的。
+
+
+### 锚
+
+`anchor`是组件上应该定义位置和旋转的位置（默认值是 `Anchor.topLeft`）。因此，如果你将锚定位置设置为`Anchor.center`，如果应用了`angle`，锚将会显示在组件中间，它将围绕着锚定位置旋转，所以在这种情况下，围绕组件的中心旋转。你可以把它看作是组件中的一个点，通过它 `Flame`可以“抓取”它。
+
+### PositionComponent子元素
+
+所有`PositionComponent`的子元素都将相对于父元素进行转换。这意味着 `position`、`size`和 `scale`的效果将相对于父元素的状态。例如，如果你想把一个子元素的逻辑像素定位在父元素的中心以上，你可以这样做：
 
 ```dart
 Future<void> onLoad() async {
@@ -322,33 +255,22 @@ Future<void> onLoad() async {
 }
 ```
 
-Remember that most components that are rendered on the screen are `PositionComponent`s, so
-this pattern can be used in for example [](#spritecomponent) and [](#spriteanimationcomponent) too.
+请记住，在屏幕上呈现的大多数组件都是`PositionComponents`，因此这个模式也可以在例如[spritcomponent](#spritecomponent)和[SpriteAnimationComponent](#spriteanimationcomponent)中使用。
 
-### Render PositionComponent
+### 渲染PositionComponent
 
-When implementing the `render` method for a component that extends `PositionComponent` remember to
-render from the top left corner (0.0). Your render method should not handle where on the screen your
-component should be rendered. To handle where and how your component should be rendered use the
-`position`, `angle` and `anchor` properties and Flame will automatically handle the rest for you.
+当为扩展`PositionComponent`的组件实现呈现方法时，请记住从左上角(0.0)进行呈现。渲染方法不应该处理组件在屏幕上应该呈现的位置。要处理您的组件应该呈现的位置和方式，可以使用 `position`, `angle` 和 `anchor` 属性，而Flame将自动处理其余部分。
 
-If you want to know where on the screen the bounding box of the component is you can use the
-`toRect` method.
+如果您想知道组件的边界框在屏幕上的什么位置，您可以使用`toRect`方法。
 
-In the event that you want to change the direction of your components rendering, you can also use
-`flipHorizontally()` and `flipVertically()` to flip anything drawn to canvas during
-`render(Canvas canvas)`, around the anchor point. These methods are available on all
-`PositionComponent` objects, and are especially useful on `SpriteComponent` and
-`SpriteAnimationComponent`.
+如果要更改组件呈现的方向，你可以使用`fliphhorizontal()`和`flipvertical()`在锚点周围来翻转任何绘制到画布上的`render(Canvas canvas)`。这些方法适用于所有`PositionComponent`对象，尤其适用于`SpriteComponent`和`SpriteAnimationComponent`。
 
-In case you want to flip a component around its center without having to change the anchor to
-`Anchor.center`, you can use `flipHorizontallyAroundCenter()` and `flipVerticallyAroundCenter()`.
+如果您希望在不更改锚点到`Anchor.center`的情况下绕中心翻转组件，则可以使用 `flipHorizontallyAroundCenter()`和 `flipVerticallyAroundCenter()`。
 
 
 ## SpriteComponent
 
-The most commonly used implementation of `PositionComponent` is `SpriteComponent`, and it can be
-created with a `Sprite`:
+`PositionComponent`最常用的实现是`SpriteComponent`，它可以用一个`Sprite`创建：
 
 ```dart
 import 'package:flame/components/component.dart';
@@ -362,20 +284,19 @@ class MyGame extends FlameGame {
     final size = Vector2.all(128.0);
     final player = SpriteComponent(size: size, sprite: sprite);
 
-    // screen coordinates
-    player.position = ... // Vector2(0.0, 0.0) by default, can also be set in the constructor
-    player.angle = ... // 0 by default, can also be set in the constructor
-    add(player); // Adds the component
+    // 屏幕坐标
+    player.position = ... // 默认值为Vector2(0.0, 0.0)，也可以在构造函数中设置
+    player.angle = ... // 默认为0，也可以在构造函数中设置
+    add(player); // 添加组件
   }
 }
 ```
 
-
 ## SpriteAnimationComponent
 
-This class is used to represent a Component that has sprites that run in a single cyclic animation.
+此类用于表示在单个循环动画中运行的子精灵图的组件。
 
-This will create a simple three frame animation using 3 different images:
+这将使用3个不同的图像创建一个简单的三帧动画：
 
 ```dart
 final sprites = [0, 1, 2]
@@ -390,8 +311,7 @@ this.player = SpriteAnimationComponent(
 );
 ```
 
-If you have a sprite sheet, you can use the `sequenced` constructor from the `SpriteAnimationData`
-class (check more details on [Images &gt; Animation](rendering/images.md#animation)):
+如果你有一个精灵表，你可以使用`SpriteAnimationData`类的序列构造函数(查看 [Images &gt; Animation](/guide/flame/rendering/images.md)的更多细节)：
 
 ```dart
 final size = Vector2.all(64.0);
@@ -406,34 +326,29 @@ this.player = SpriteAnimationComponent.fromFrameData(
 );
 ```
 
-If you are not using `FlameGame`, don't forget this component needs to be updated, because the
-animation object needs to be ticked to move the frames.
+如果您不使用`FlameGame`，不要忘记这个组件需要更新，因为动画对象需要勾选来移动帧。
 
-To listen when the animation is done (when it reaches the last frame and is not looping) you can
-use `animation.completed`.
+你可以使用 `animation.completed`来监听动画完成（当它到达最后一帧并且没有循环的时候）。
 
-Example:
+示例：
 
 ```dart
 await animation.completed;
 doSomething();
 
-// or alternatively
+// 或者
 
 animation.completed.whenComplete(doSomething);
 ```
 
 
-## SpriteAnimationGroup
+## SpriteAnimationGroupComponent
 
-`SpriteAnimationGroupComponent` is a simple wrapper around `SpriteAnimationComponent` which enables
-your component to hold several animations and change the current playing animation in runtime.
+`SpriteAnimationGroupComponent`是一个围绕`SpriteAnimationComponent`的简单包装器，它使你的组件能够保存多个动画，并在运行时更改当前播放的动画。
 
-Its use is very similar to the `SpriteAnimationComponent` but instead of being initialized with a
-single animation, this component receives a Map of a generic type `T` as key and a
-`SpriteAnimation` as value, and the current animation.
+它的使用非常类似于`SpriteAnimationComponent`，但不是用单个动画初始化，这个组件接收一个通用类型`T`的`Map`作为键，一个`SpriteAnimation`作为值，以及当前的动画。
 
-Example:
+示例：
 
 ```dart
 enum RobotState {
@@ -452,16 +367,16 @@ final robot = SpriteAnimationGroupComponent<RobotState>(
   current: RobotState.idle,
 );
 
-// Changes current animation to "running"
+// 将当前动画更改为“运行”
 robot.current = RobotState.running;
 ```
 
 
-## SpriteGroup
+## SpriteGroupComponent
 
-`SpriteGroupComponent` is pretty similar to its animation counterpart, but especially for sprites.
+`SpriteGroupComponent`与它对应的动画非常相似，但对于精灵来说尤其如此。
 
-Example:
+示例：
 
 ```dart
 class ButtonComponent extends SpriteGroupComponent<ButtonState>
@@ -469,7 +384,7 @@ class ButtonComponent extends SpriteGroupComponent<ButtonState>
   @override
   Future<void>? onLoad() async {
     final pressedSprite = await gameRef.loadSprite(/* omitted */);
-    final unpressedSprite = await gameRef.loadSprite(/* omitted /*);
+    final unpressedSprite = await gameRef.loadSprite(/* omitted */);
 
     sprites = {
       ButtonState.pressed: pressedSprite,
@@ -479,18 +394,19 @@ class ButtonComponent extends SpriteGroupComponent<ButtonState>
     current = ButtonState.unpressed;
   }
 
-  // tap methods handler omitted...
+  // Tap方法处理程序...
 }
 ```
 
-
 ## SvgComponent
 
-**Note**: To use SVG with Flame, use the [`flame_svg`](https://github.com/flame-engine/flame_svg)
-package.
+::: tip 提示
 
-This component uses an instance of `Svg` class to represent a Component that has a svg that is
-rendered in the game:
+ 要想在Flame使用SVG，可以使用[flame_svg](https://github.com/flame-engine/flame_svg)包
+
+:::
+
+这个组件使用一个Svg类的实例来表示一个在游戏中呈现Svg的组件：
 
 ```dart
 final svg = await Svg.load('android.svg');
@@ -501,19 +417,17 @@ final android = SvgComponent.fromSvg(
 );
 ```
 
-
 ## FlareActorComponent
 
-**Note**: The previous implementation of a Flare integration API using `FlareAnimation` and
-`FlareComponent` has been deprecated.
+::: warning 注意
 
-To use Flare within Flame, use the [`flame_flare`](https://github.com/flame-engine/flame_flare)
-package.
+注意: 以前使用`FlareAnimation `和`FlareComponent `的 Flare 集成 API 的实现已经被废弃。
 
-This is the interface for using a [flare animation](https://pub.dev/packages/flare_flutter) within
-flame. `FlareActorComponent` has almost the same API as of flare's `FlareActor` widget. It receives
-the animation filename (that is loaded by default with `Flame.bundle`), it can also receive a
-FlareController that can play multiple animations and control nodes.
+:::
+
+在Flame中使用 Flare，可以使用 [`flame_flare`](https://github.com/flame-engine/flame_flare)包。
+
+这是在Flame中使用 [flare animation](https://pub.dev/packages/flare_flutter)的界面。`FlareActorComponent`的API与 flare 的`FlareActor`小部件几乎相同。它接收动画文件名（默认情况下由`Flame.bundle`加载），它还可以接收一个`FlareController`，能播放多个动画并且控制节点。
 
 ```dart
 import 'package:flame_flare/flame_flare.dart';
@@ -525,7 +439,7 @@ class YourFlareController extends FlareControls {
   void initialize(FlutterActorArtboard artboard) {
     super.initialize(artboard);
 
-    // get flare node
+    // g获取flare节点
     rightHand = artboard.getNode('right_hand');
   }
 }
@@ -545,34 +459,29 @@ flareAnimation.x = 50;
 flareAnimation.y = 240;
 add(flareAnimation);
 
-// to play an animation
+// 播放一个动画
 controller.play('rise_up');
 
-// you can add another animation to play at the same time
+// 你可以同时播放另一个动画
 controller.play('close_door_way_out');
 
-// also, you can get a flare node and modify it
+// 此外，您可以获得一个flare节点并对其进行修改
 controller.rightHandNode.rotation = math.pi;
 ```
 
-You can also change the current playing animation by using the `updateAnimation` method.
+还可以使用`updateAnimation`方法更改当前播放的动画。
 
-For a working example, check the example in the
-[flame_flare repository](https://github.com/flame-engine/flame_flare/tree/main/example).
-
+有关工作的示例，请在[flame_flare repository](https://github.com/flame-engine/flame_flare/tree/main/example)中查看。
 
 ## ParallaxComponent
 
-This `Component` can be used to render backgrounds with a depth feeling by drawing several
-transparent images on top of each other, where each image or animation (`ParallaxRenderer`) is
-moving with a different velocity.
+这个组件可以用来渲染带有深度感的背景，方法是在每个图像或动画（`ParallaxRenderer`）以不同的速度移动的情况下，将几个透明的图像叠加在一起。
 
-The rationale is that when you look at the horizon and moving, closer objects seem to move faster
-than distant ones.
+其基本原理是，当你看着地平线移动时，距离近的物体似乎比距离远的物体移动得更快。
 
-This component simulates this effect, making a more realistic background effect.
+这个组件模拟了这个效果，制造了一个更加真实的背景效果。
 
-The simplest `ParallaxComponent` is created like this:
+最简单的`ParallaxComponent`是这样创建的：
 
 ```dart
 @override
@@ -585,7 +494,7 @@ Future<void> onLoad() async {
 }
 ```
 
-A ParallaxComponent can also "load itself" by implementing the `onLoad` method:
+`ParallaxComponent`也可以通过实现`onLoad`方法来加载自己：
 
 ```dart
 class MyParallaxComponent extends ParallaxComponent with HasGameRef<MyGame> {
@@ -606,13 +515,9 @@ class MyGame extends FlameGame {
 }
 ```
 
-This creates a static background. If you want a moving parallax (which is the whole point of a
-parallax), you can do it in a few different ways depending on how fine-grained you want to set the
-settings for each layer.
+这将创建一个静态背景。如果你想要一个移动的视差(这是视差的全部意义) ，你可以用几种不同的方法来实现，这取决于你想要如何为每一层设置细粒度。
 
-They simplest way is to set the named optional parameters `baseVelocity` and
-`velocityMultiplierDelta` in the `load` helper function. For example if you want to move your
-background images along the X-axis with a faster speed the "closer" the image is:
+最简单的方法是在加载助手函数中设置命名的可选参数`basvelocity`和`velocityMultiplierDelta`。例如，如果你想以更快的速度沿着`x`轴移动你的背景图像，图像越近：
 
 ```dart
 final parallaxComponent = await loadParallaxComponent(
@@ -622,8 +527,7 @@ final parallaxComponent = await loadParallaxComponent(
 );
 ```
 
-You can set the baseSpeed and layerDelta at any time, for example if your character jumps or your
-game speeds up.
+你可以在任何时候设置baseSpeed和layerDelta，例如如果你的角色跳跃或你的游戏加速：
 
 ```dart
 final parallax = parallaxComponent.parallax;
@@ -631,13 +535,9 @@ parallax.baseSpeed = Vector2(100, 0);
 parallax.velocityMultiplierDelta = Vector2(2.0, 1.0);
 ```
 
-By default, the images are aligned to the bottom left, repeated along the X-axis and scaled
-proportionally so that the image covers the height of the screen. If you want to change this
-behavior, for example if you are not making a side-scrolling game, you can set the `repeat`,
-`alignment` and `fill` parameters for each `ParallaxRenderer` and add them to `ParallaxLayer`s that
-you then pass in to the `ParallaxComponent`'s constructor.
+默认情况下，图像左下对齐，沿 x 轴重复，并按比例缩放，以便图像覆盖屏幕的高度。如果你想改变这种行为，例如，如果你不是在做一个侧滚动游戏，你可以设置每个 `ParallaxRenderer `的`repeat`、`alignment`和`fill`，并将它们添加到 `ParallaxLayers `中，然后传递到 `ParallaxComponent `的构造函数中。
 
-Advanced example:
+高级例子：
 ```dart
 final images = [
   loadParallaxImage('stars.jpg', repeat: ImageRepeat.repeat, alignment: Alignment.center, fill: LayerFill.width),
@@ -653,52 +553,33 @@ final parallaxComponent = ParallaxComponent.fromParallax(
 );
 ```
 
- - The stars image in this example will be repeatedly drawn in both axis, align in the center and be
- scaled to fill the screen width.
- - The planets image will be repeated in Y-axis, aligned to the bottom left of the screen and not be
- scaled.
- - The dust image will be repeated in X-axis, aligned to the top right and scaled to fill the screen
- height.
+ - 此示例中的星星图像将在两个轴上重复绘制，在中心对齐并缩放以填充屏幕宽度
+ - 行星图像将以 y 轴重复，与屏幕左下角对齐且不会缩放
+ - 尘埃图像将在 x 轴重复，对齐到右上角和缩放，以填补屏幕高度
 
-Once you are done setting up your `ParallaxComponent`, add it to the game like with any other
-component (`game.add(parallaxComponent`).
-Also, don't forget to add you images to the `pubspec.yaml` file as assets or they wont be found.
+完成设置`ParallaxComponent`后，将其添加到游戏中，就像添加任何其他组件一样（`game.add(parallaxComponent`）。此外，请不要忘记将图像添加到`pubspec.yaml`文件中，否则它们将不会被找到。
 
-The `Parallax` file contains an extension of the game which adds `loadParallax`, `loadParallaxLayer`
-, `loadParallaxImage` and `loadParallaxAnimation` so that it automatically uses your game's image
-cache instead of the global one. The same goes for the `ParallaxComponent` file, but that provides
-`loadParallaxComponent`.
+`Parallax`文件包含了游戏的扩展，它添加了`loadParallax`、`loadParallaxLayer`、`loadParallaxImage`和`loadParallaxAnimation`，因此它会自动使用游戏的图像缓存而不是全局缓存。对于`ParallaxComponent`文件也是一样，但它提供了`loadParallaxComponent`。
 
-If you want a fullscreen `ParallaxComponent` simply omit the `size` argument and it will take the
-size of the game, it will also resize to fullscreen when the game changes size or orientation.
+如果你想要一个全屏的`ParallaxComponent`，只需要忽略`size`参数，它就会占用游戏的大小，当游戏改变大小或方向时，它也会调整到全屏。
 
-Flame provides two kinds of `ParallaxRenderer`: `ParallaxImage` and `ParallaxAnimation`,
-`ParallaxImage` is a static image renderer and `ParallaxAnimation` is, as it's name implies, an
-animation and frame based renderer.
-It is also possible to create custom renderers by extending the `ParallaxRenderer` class.
+Flame提供了两种类型的`ParallaxRenderer`：`ParallaxImage`和`ParallaxAnimation`，`ParallaxImage`是一个静态图像渲染器，而`ParallaxAnimation`，顾名思义，是一个基于动画和帧的渲染器。也可以通过扩展`ParallaxRenderer`类来创建自定义渲染器。
 
-Three example implementations can be found in the
-[examples directory](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/parallax).
+可以在[examples directory](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/parallax)找到3个示例实现。
 
 
-## ShapeComponents
+## ShapeComponent
 
-A `ShapeComponent` is the base class for representing a scalable geometrical shape. The shapes have
-different ways of defining how they look, but they all have a size and angle that can be modified
-and the shape definition will scale or rotate the shape accordingly.
+`ShapeComponent`是表示可伸缩几何形状的基类。形状有不同的方式来定义它们的外观，但是它们都有一个可以修改的大小和角度，形状定义将相应地缩放或旋转形状。
 
-These shapes are meant as a tool for using geometrical shapes in a more general way than together
-with the collision detection system, where you want to use the
-[ShapeHitbox](collision_detection.md#shapehitbox)es.
+这些形状是一种工具，用于以更一般的方式使用几何形状，而不是与碰撞检测系统一起使用，在碰撞检测系统中，你需要使用[ShapeHitboxes](/guide/flame/collision-detection.md)。
 
 
 ### PolygonComponent
 
-A `PolygonComponent` is created by giving it a list of points in the constructor, called vertices.
-This list will be transformed into a polygon with a size, which can still be scaled and rotated.
+`PolygonComponent`是通过在构造函数中给它一个点列表（称为顶点）来创建的。这个列表将被转换成一个具有大小的多边形，它仍然可以被缩放和旋转。
 
-For example, this would create a square going from (50, 50) to (100, 100), with it's center in
-(75, 75):
+例如，这将创建一个从(50,50)到(100,100)的正方形，其中心为(75,75) ：
 ```dart
 void main() {
   PolygonComponent([
@@ -710,10 +591,9 @@ void main() {
 }
 ```
 
-A `PolygonComponent` can also be created with a list of relative vertices, which are points defined
-in relation to the given size, most often the size of the intended parent.
+也可以使用相对顶点列表创建`PolygonComponent`，这些顶点是根据给定的大小定义的，通常是目标父组件的大小。
 
-For example you could create a diamond shapes polygon like this:
+例如，你可以创建一个像这样的菱形多边形：
 
 ```dart
 void main() {
@@ -729,26 +609,19 @@ void main() {
 }
 ```
 
-The vertices in the example defines percentages of the length from the center to the edge of the
-screen in both x and y axis, so for our first item in our list (`Vector2(0.0, 1.0)`) we are pointing
-on the middle of the top wall of the bounding box, since the coordinate system here is defined from
-the center of the polygon.
+例子中的顶点定义了 x 轴和 y 轴从屏幕中心到边缘的长度的百分比，因此对于我们列表中的第一个项目（`Vector2(0.0,1.0)`） ，我们将指向框顶壁的中间，因为这里的坐标系是从多边形的中心定义的。
 
-![An example of how to define a polygon shape](../images/polygon_shape.png)
+![An example of how to define a polygon shape](/images/polygon-shape.png)
 
-In the image you can see how the polygon shape formed by the purple arrows is defined by the red
-arrows.
+在图像中，您可以看到由紫色箭头形成的多边形形状如何由红色箭头定义。
 
-Remember to define the lists in a counter clockwise manner (if you think in the screen coordinate
-system where the y-axis is flipped, otherwise it is clockwise).
-
+记住以逆时针的方式定义列表（如果在屏幕坐标系统中y轴翻转，则为顺时针）。
 
 ### RectangleComponent
 
-A `RectangleComponent` is created very similarly to how a `PositionComponent` is created, since it
-also has a bounding rectangle.
+`RectangleComponent`的创建方式与`PositionComponent`非常相似，因为它也有一个边框。
 
-Something like this for example:
+例如：
 
 ```dart
 void main() {
@@ -761,13 +634,9 @@ void main() {
 }
 ```
 
-Dart also already has an excellent way to create rectangles and that class is called `Rect`, you can
-create a Flame `RectangleComponent` from a `Rect` by using the `Rectangle.fromRect` factory, and
-just like when setting the vertices of the `PolygonComponent`, your rectangle will be sized
-according to the `Rect` if you use this constructor.
+还有一个很好的创建矩形的方法，这个类被称为 `Rect`，你可以使用 `Rectangle.fromRect` 创建一个Flame `RectangleComponent` ，就像设置 `PolygonComponent `的顶点一样，如果你使用这个构造函数，矩形的大小也会根据 `Rect `来调整。
 
-The following would create a `RectangleComponent` with its top left corner in `(10, 10)` and a size
-of `(100, 50)`.
+下面将创建一个左上角坐标为(10, 10)，大小为(100, 50)的 `RectangleComponent`：
 
 ```dart
 void main() {
@@ -777,14 +646,9 @@ void main() {
 }
 ```
 
-You can also create a `RectangleComponent` by defining a relation to the intended parent's size,
-you can use the default constructor to build your rectangle from a position, size and angle. The
-`relation` is a vector defined in relation to the parent size, for example a `relation` that is
-`Vector2(0.5, 0.8)` would create a rectangle that is 50% of the width of the parent's size and
-80% of its height.
+你也可以通过定义一个与预期父对象大小的关系来创建`RectangleComponent`，你可以使用默认构造函数从位置、大小和角度来构建你的`RectangleComponent`。`relation`是根据父尺寸定义的向量，例如，一个`relation`是Vector2(0.5,  0.8)，将创建一个其宽度为父元素大小的50%，高度为其高度的80%的矩形。
 
-In the example below a `RectangleComponent` of size `(25.0, 30.0)` positioned at `(100, 100)` would
-be created.
+在下面的示例中，将创建位于(100, 100)，大小为(25.0，30.0)的矩形：
 
 ```dart
 void main() {
@@ -796,9 +660,7 @@ void main() {
 }
 ```
 
-Since a square is a simplified version of a rectangle, there is also a constructor for creating a
-square `RectangleComponent`, the only difference is that the `size` argument is a `double` instead
-of a `Vector2`.
+由于正方形是矩形的简化版本，因此也有一个用于创建正方形矩形组件的构造函数，唯一的区别是`size`参数是`double`，而不是`Vector2`。
 
 ```dart
 void main() {
@@ -809,14 +671,11 @@ void main() {
 }
 ```
 
-
 ### CircleComponent
 
-If you know how long your circle's position and/or how long the radius is going to be from the start
-you can use the optional arguments `radius` and `position` to set those.
+如果你知道你的圆的位置和（或）半径从一开始是多长，你可以使用可选的参数半径和位置来设置它们。
 
-The following would create a `CircleComponent` with its center in `(100, 100)` with a radius of 5,
-and therefore a size of `Vector2(10, 10)`.
+下面将创建一个`CircleComponent`，其中心坐标为(100,100) ，半径为5，因此大小为 Vector2(10, 10)。
 
 ```dart
 void main() {
@@ -824,11 +683,9 @@ void main() {
 }
 ```
 
-When creating a `CircleComponent` with the `relative` constructor you can define how long the
-radius is in comparison to the shortest edge of the of the bounding box defined by `size`.
+当使用相对构造函数创建`CircleComponent`时，您可以定义半径与根据大小定义的边界框的最短边相比有多长。
 
-The following example would result in a `CircleComponent` that defines a circle with a radius of 40
-(a diameter of 80).
+下面的示例将导致 `CircleComponent `定义一个半径为40（直径为80）的圆：
 
 ```dart
 void main() {
@@ -836,97 +693,69 @@ void main() {
 }
 ```
 
-
 ## SpriteBodyComponent
 
-See [SpriteBodyComponent](../other_modules/forge2d.md#spritebodycomponent) in the Forge2D documentation.
-
+请参阅 Forge2D 文档中的  [SpriteBodyComponent](../other_modules/forge2d.md#spritebodycomponent) 
 
 ## TiledComponent
 
-Currently we have a very basic implementation of a Tiled component. This API uses the lib
-[tiled.dart](https://github.com/flame-engine/tiled.dart) to parse map files and render visible
-layers.
+目前我们有一个非常基本的平铺组件实现。这个 API 使用 [tiled](https://github.com/flame-engine/tiled.dart) 来解析映射文件和呈现可见层。
 
-An example of how to use the API can be found
-[here](https://github.com/flame-engine/flame_tiled/tree/main/example).
-
+如何使用 API 的示例可以在[这里](https://github.com/flame-engine/flame_tiled/tree/main/example)找到。
 
 ## IsometricTileMapComponent
 
-This component allows you to render an isometric map based on a cartesian matrix of blocks and an
-isometric tileset.
+该组件允许您基于块的笛卡尔矩阵和等距贴图集渲染一个等距贴图。
 
-A simple example on how to use it:
+一个简单例子：
 
 ```dart
-// Creates a tileset, the block ids are automatically assigned sequentially starting at 0,
-// from left to right and then top to bottom.
+// 创建一个tileset，块的id从0开始自动分配
+// 从左到右，再从上到下
 final tilesetImage = await images.load('tileset.png');
 final tileset = IsometricTileset(tilesetImage, 32);
-// Each element is a block id, -1 means nothing
+// 每个元素都是一个块id， -1表示什么都不是
 final matrix = [[0, 1, 0], [1, 0, 0], [1, 1, 1]];
 add(IsometricTileMapComponent(tileset, matrix));
 ```
 
-It also provides methods for converting coordinates so you can handle clicks, hovers, render
-entities on top of tiles, add a selector, etc.
+它还提供了转换坐标的方法，这样您就可以处理鼠标点击、悬停、贴图顶部的呈现实体、添加选择器等。
 
-You can also specify the `tileHeight`, which is the vertical distance between the bottom and top
-planes of each cuboid in your tile. Basically, it's the height of the front-most edge of your
-cuboid; normally it's half (default) or a quarter of the tile size. On the image below you can see
-the height colored in the darker tone:
+您还可以指定`tileHeight`，这是您的平铺中每个长方体的底部和顶部平面之间的垂直距离。基本上，它是长方体最前端边缘的高度；通常它是一半(默认)或四分之一的磁贴大小。在下面的图片中，你可以看到高度用深色调调整：
 
-![An example of how to determine the tileHeight](../images/tile-height-example.png)
+![An example of how to determine the tileHeight](/images/tile-height-example.png)
 
-This is an example of how a quarter-length map looks like:
+这是一个四分之一长度的地图是什么样子的例子：
 
-![An example of a isometric map with selector](../images/isometric.png)
+![An example of a isometric map with selector](/images/isometric.png)
 
-Flame's Example app contains a more in-depth example, featuring how to parse coordinates to make a
-selector. The code can be found
-[here](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/tile_maps/isometric_tile_map.dart),
-and a live version can be seen [here](https://examples.flame-engine.org/#/Tile%20Maps_Isometric%20Tile%20Map).
-
+Flame 的示例应用程序包含了一个更深入的示例，介绍了如何解析坐标以生成选择器。代码可以在[这里](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/tile_maps/isometric_tile_map.dart)找到，在线版可以在[这里](https://examples.flame-engine.org/#/Tile%20Maps_Isometric%20Tile%20Map)看到。
 
 ## NineTileBoxComponent
 
-A Nine Tile Box is a rectangle drawn using a grid sprite.
+点九磁贴盒是一个使用网格精灵图绘制的矩形。
 
-The grid sprite is a 3x3 grid and with 9 blocks, representing the 4 corners, the 4 sides and the
-middle.
+网格精灵图是一个3x3的网格和9个方块，代表4个角，4个边和中间。
 
-The corners are drawn at the same size, the sides are stretched on the side direction and the middle
-is expanded both ways.
+角被画在相同的大小，边被拉伸在一边的方向和中间被扩大的两种方式。
 
-Using this, you can get a box/rectangle that expands well to any sizes. This is useful for making
-panels, dialogs, borders.
+使用这个，您可以得到一个可以很好地扩展到任何大小的框/矩形。这对于制作面板、对话框、边框非常有用。
 
-Check the example app
-[nine_tile_box](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/utils/nine_tile_box.dart)
-for details on how to use it.
+查看示例应用程序[nine_tile_box](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/utils/nine_tile_box.dart)了解如何使用它的详细信息
 
+## 自定义绘制组件
 
-## CustomPainterComponent
+`CustomPainter `是与 `CustomPaint `小部件一起使用的 Flutter 类，用于在 Flutter 应用程序中呈现自定义形状。
 
-A `CustomPainter` is a Flutter class used with the `CustomPaint` widget to render custom
-shapes inside a Flutter application.
+Flame 提供了一个组件，可以调用`CustomPainterComponent` 渲染一个`CustomPainter` ，它接收一个自定义的`painter `并在游戏画布上渲染它。
 
-Flame provides a component that can render a `CustomPainter` called `CustomPainterComponent`, it
-receives a custom painter and renders it on the game canvas.
+这可以用来在你的 Flame 游戏和 Flutter 小部件之间共享自定义渲染逻辑。
 
-This can be used for sharing custom rendering logic between your Flame game, and your Flutter
-widgets.
-
-Check the example app
-[custom_painter_component](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/widgets/custom_painter_component.dart)
-for details on how to use it.
+查看应用程序[custom_painter_component](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/widgets/custom_painter_component.dart)的示例，了解如何使用它的详细信息。
 
 
-## Effects
+## 特效
 
-Flame provides a set of effects that can be applied to a certain type of components, these effects
-can be used to animate some properties of your components, like position or dimensions.
-You can check the list of those effects [here](effects.md).
+Flame提供了一组可以应用于特定类型组件的特效，这些特效可以用于动画组件的一些属性，如位置或尺寸。你可以在[这里](/guide/flame/effects.md)查看这些影响的列表。
 
-Examples of the running effects can be found [here](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/effects);
+运行效果的例子可以在[这里](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/effects)找到。

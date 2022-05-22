@@ -12,6 +12,9 @@ module.exports = [
   },
   {
     text: '文档仓库',
-    children: [{ text: 'Github', link: 'https://github.com/ilgnefz/flame-cn' }, { text: 'Gitee', link: 'https://gitee.com/ilgnefz' }]
+    children: [
+      { text: 'Github', link: 'https://github.com/ilgnefz/flame-cn' },
+      { text: 'Gitee', link: 'https://gitee.com/ilgnefz/flame-cn' }
+    ]
   }
 ]

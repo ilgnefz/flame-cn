@@ -1,3 +1,14 @@
+---
+prev:
+  text: 组件
+  link: /guide/flame/components.md
+next:
+  text: 碰撞检测
+  link: /guide/flame/collision-detection.md
+---
+
+
+
 # Supported Platforms
 
 Since Flame runs on top of Flutter, so its supported platforms depend on which platforms that are
