@@ -1,7 +1,19 @@
+---
+prev:
+  text: 平台
+  link: /guide/flame/platforms.md
+next:
+  text: 特效
+  link: /guide/flame/effect.md
+---
+
 # Collision detection
 
-Collision detection is needed in most games to detect and act upon two components intersecting each
-other. For example an arrow hitting an enemy or the player picking up a coin.
+# 碰撞检测
+
+大多数游戏都需要碰撞检测来检测两个相互交叉的组件并对其采取行动。
+
+ 例如，用箭击中敌人或玩家捡起硬币。
 
 In most collision detection systems you use something called hitboxes to create more precise
 bounding boxes of your components. In Flame the hitboxes are areas of the component that can react
