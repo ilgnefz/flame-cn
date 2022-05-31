@@ -48,5 +48,15 @@ Flame是基于Flutter的2D游戏引擎，该库为Flame引擎的中文译文。
   - [ ] Tiled
   - [ ] 启动屏幕
 
-该站点使用 VuePress2.0 生成，如果你也想对本文档进行翻译，可克隆仓库到本地使用`npm i`安装依赖后，去 [VuePress](https://v2.vuepress.vuejs.org/zh/) 查看具体的使用教程。
+该站点使用 VuePress2.x 生成，如果你也想对本文档进行翻译，可克隆仓库到本地使用`npm i`安装依赖后，去 [VuePress2.x](https://v2.vuepress.vuejs.org/zh/) 查看具体的使用教程。
+
+如果您只是单纯的翻译，可不用学习 VuePress2.x 的教程，只需翻译更改 guide 下的md文件即可。
+
+本站点文档都是在本人闲时翻译，进度较慢。
+
+该仓库由于两个分支，主分支`master`为项目内容，`site` 分支为站点。
+
+运行`npm run deploy`可将代码推送到`site`分支。打开`deploy.sh`可以修改推送信息。
+
+如果您在阅读中发现了有些不太适合的翻译，可以在[issues](https://github.com/ilgnefz/flame-cn/issues)提交您的意见。
 

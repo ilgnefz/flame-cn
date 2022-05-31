@@ -568,7 +568,7 @@ Flame提供了两种类型的`ParallaxRenderer`：`ParallaxImage`和`ParallaxAni
 可以在[examples directory](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/parallax)找到3个示例实现。
 
 
-## ShapeComponent
+## ShapeComponents
 
 `ShapeComponent`是表示可伸缩几何形状的基类。形状有不同的方式来定义它们的外观，但是它们都有一个可以修改的大小和角度，形状定义将相应地缩放或旋转形状。
 
