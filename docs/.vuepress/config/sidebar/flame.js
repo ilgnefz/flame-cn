@@ -243,6 +243,131 @@ const gameLoop = {
     ]
   }
 
+  const effects = {
+    text: "特效",
+    collapsible: true,
+    link: "/guide/flame/effects.md",
+    children: [
+      {
+        text: "概述",
+        link: "#概述",
+      },{
+        text: "内置特效",
+        collapsible: true,
+        link: "#内置特效",
+        children: [
+          {
+            text: "Effect",
+            link: "#effect",
+          },{
+            text: "MoveByEffect",
+            link: "#movebyeffect",
+          },{
+            text: "MoveToEffect",
+            link: "#movetoeffect",
+          },{
+            text: "MoveAlongPathEffect",
+            link: "#movealongpatheffect",
+          },{
+            text: "RotateEffect.by",
+            link: "#rotateeffect-by",
+          },{
+            text: "RotateEffect.to",
+            link: "#rotateeffect-to",
+          },{
+            text: "ScaleEffect.by",
+            link: "#scaleeffect-by",
+          },{
+            text: "ScaleEffect.to",
+            link: "#scaleeffect-to",
+          },{
+            text: "SizeEffect.by",
+            link: "#sizeeffect-by",
+          },{
+            text: "SizeEffect.to",
+            link: "#sizeeffect-to",
+          },{
+            text: "AnchorByEffect",
+            link: "#anchorbyeffect",
+          },{
+            text: "AnchorToEffect",
+            link: "#anchortoeffect",
+          },{
+            text: "OpacityEffect",
+            link: "#opacityeffect",
+          },{
+            text: "SequenceEffect",
+            link: "#sequenceeffect",
+          },{
+            text: "RemoveEffect",
+            link: "#removeeffect",
+          }
+        ]
+      },{
+        text: "ColorEffect",
+        link: "#coloreffect",
+      },{
+        text: "创建新的特效",
+        link: "#创建新的特效",
+      },{
+        text: "特效控制器",
+        collapsible: true,
+        link: "#特效控制器",
+        children: [
+          {
+            text: "EffectController",
+            link: "#effectcontroller",
+          },{
+            text: "LinearEffectController",
+            link: "#lineareffectcontroller",
+          },{
+            text: "ReverseLinearEffectController",
+            link: "#reverselineareffectcontroller",
+          },{
+            text: "CurvedEffectController",
+            link: "#curvedeffectcontroller",
+          },{
+            text: "ReverseCurvedEffectController",
+            link: "#reversecurvedeffectcontroller",
+          },{
+            text: "PauseEffectController",
+            link: "#pauseeffectcontroller",
+          },{
+            text: "RepeatedEffectController",
+            link: "#repeatedeffectcontroller",
+          },{
+            text: "InfiniteEffectController",
+            link: "#infiniteeffectcontroller",
+          },{
+            text: "SequenceEffectController",
+            link: "#sequenceeffectcontroller",
+          },{
+            text: "SpeedEffectController",
+            link: "#speedeffectcontroller",
+          },{
+            text: "DelayedEffectController",
+            link: "#delayedeffectcontroller",
+          },{
+            text: "NoiseEffectController",
+            link: "#noiseeffectcontroller",
+          },{
+            text: "RandomEffectController",
+            link: "#randomeffectcontroller",
+          },{
+            text: "SineEffectController",
+            link: "#sineeffectcontroller",
+          },{
+            text: "ZigzagEffectController",
+            link: "#zigzageffectcontroller",
+          }
+        ]
+      },{
+        text: "参考",
+        link: "#参考",
+      }
+    ]
+  }
+
 const flame = {
     text: "Flame",
     link: "/guide/flame/file-structure.md",
@@ -256,12 +381,9 @@ const flame = {
       components,
       platforms,
       collisionDetection,
+      effects,
       {
-        text: "特效",
-        link: "/guide/flame/effects.md",
-      },
-      {
-        text: "相机和视图",
+        text: "相机和视口",
         link: "/guide/flame/camera-and-viewport.md",
       },
       {
