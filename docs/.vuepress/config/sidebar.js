@@ -35,4 +35,11 @@ const started = {
 
 const flame = require('./sidebar/flame')
 
-module.exports = [started, flame];
+const flameAudio = require('./sidebar/flame_audio')
+
+const tutorials = require('./sidebar/tutorials')
+
+const otherModules = require('./sidebar/other_modules')
+
+
+module.exports = [started, flame, flameAudio, tutorials, otherModules];

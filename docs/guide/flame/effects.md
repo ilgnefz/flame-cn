@@ -168,7 +168,7 @@ final effect = SizeEffect.by(Vector2(20, -50), EffectController(duration: 1));
 此外，更改组件的大小不会传播到其子组件（如果有的话）。 `SizeEffect` 的替代方案是 `ScaleEffect`，它的工作范围更广，也可以扩展子元素。
 
 
-### `SizeEffect.to`
+### SizeEffect.to
 
 将目标组件的大小更改为指定的大小。目标大小不能为负：
 
@@ -177,7 +177,7 @@ final effect = SizeEffect.to(Vector2(120, 120), EffectController(duration: 1));
 ```
 
 
-### `AnchorByEffect`
+### AnchorByEffect
 
 用指定的偏移量更改目标锚点的位置。这个特效也可以使用`AnchorEffect.by()`来创建：
 
@@ -186,7 +186,7 @@ final effect = AnchorByEffect(Vector2(0.1, 0.1), EffectController(speed: 1));
 ```
 
 
-### `AnchorToEffect`
+### AnchorToEffect
 
 改变目标锚点的位置。这个特效也可以使用`AnchorEffect.to()`来创建：
 
