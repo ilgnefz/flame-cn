@@ -67,7 +67,7 @@ Launch Android Studio, then in the project selection window choose `[Open]`
 and navigate to your project directory. With any luck, the project will now
 look like this:
 
-![](../images/tutorials/android-studio-screenshot-1.webp)
+![](/images/tutorials/android-studio-screenshot-1.webp)
 
 If you see only the `main.dart` file but not the side panel, then click the
 vertical `[Project]` button at the left edge of the window.
@@ -77,7 +77,7 @@ in the top left corner that says `[Android]` in the screenshot. In this
 dropdown select the first option "Project". Your project window should now
 look like this:
 
-![](../images/tutorials/android-studio-screenshot-2.webp)
+![](/images/tutorials/android-studio-screenshot-2.webp)
 
 The important part is that you should be able to see all files in your
 project directory.
