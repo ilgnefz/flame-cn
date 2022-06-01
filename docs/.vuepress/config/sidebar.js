@@ -22,7 +22,7 @@ const started = {
       children: [
         {
           text: "多人游戏（网络编程）",
-          link: "#多人游戏（网络编程）",
+          link: "#多人游戏-网络编程",
         },
         {
           text: "外部资源",

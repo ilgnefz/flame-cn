@@ -1,155 +1,98 @@
-# Camera component
+---
+prev:
+  text: 摄像机和视口
+  link: /guide/flame/camera-and-viewport.md
+next:
+  text: 输入
+  link: /guide/flame/inputs/gesture-input.md
+---
 
-```{note}
-This document describes a new experimental API. The more traditional approach
-for handling a camera is described in [](camera_and_viewport.md).
-```
+# 摄像机组件
 
-Camera-as-a-component is an alternative way of structuring a game, an approach
-that allows more flexibility in placing the camera, or even having more than
-one camera simultaneously.
+::: tip 提示
+本文档描述了一个新的实验性API。处理摄像机的更传统的方法在 [摄像机和视口](/guide/flame/camera-and-viewport.md)。
+:::
 
-In order to understand how this approach works, imagine that your game world is
-an entity that exists _somewhere_ independently from your application. Imagine
-that your game is merely a window through which you can look into that world.
-That you can close that window at any moment, and the game world would still be
-there. Or, on the contrary, you can open multiple windows that all look at the
-same world (or different worlds) at the same time.
+摄像机作为组件是构建游戏的另一种方法，这种方法允许更灵活地放置摄像机，甚至同时拥有多个摄像机。
 
-With this mindset, we can now understand how camera-as-a-component works.
+为了理解这种方法的工作原理，假设您的游戏世界是一个独立于您的应用程序而存在于某处的实体。 想象一下，您的游戏只是一个窗口，您可以通过它观察那个世界。 你可以随时关闭那个窗口，游戏世界仍然存在。 或者，相反，您可以打开多个同时查看同一个世界（或不同世界）的窗口。
 
-First, there is the [](#world) class, which contains all components that are
-inside your game world. The `World` component can be mounted anywhere, for
-example at the root of your game class.
+有了这种心态，我们现在可以理解摄像机作为组件的工作原理。
 
-Then, a [](#cameracomponent) class that "looks at" the `World`. The
-`CameraComponent` has a `Viewport` and a `Viewfinder` inside, allowing both the
-flexibility of rendering the world at any place on the screen, and also control
-the viewing location and angle.
+首先是[World](#world)类，它包含游戏世界中的所有组件。`World `组件可以挂载在任何地方，例如在游戏类的根目录。
+
+然后，一个“观察”世界的 [CameraComponent](#cameracomponent)类。内置`Viewport`和`Viewfinder`，可以灵活地在屏幕上的任何位置显示世界，还可以控制观看位置和角度。
 
 
 ## World
 
-This component should be used to host all other components that comprise your
-game world. The main property of the `World` class is that it does not render
-through traditional means -- instead, create one or more [](#cameracomponent)s
-to "look at" the world.
+这个组件应该用于托管构成游戏世界的所有其他组件。World类的主要属性是它不通过传统的方式渲染，而是创建一个或多个[camerarcomponent](#cameracomponent)来查看世界。
 
-A game can have multiple `World` instances that can be rendered either at the
-same time, or at different times. For example, if you have two worlds A and B
-and a single camera, then switching that camera's target from A to B will
-instantaneously switch the view to world B without having to unmount A and
-then mount B.
+游戏可以有多个`World`实例，可以在同一时间或不同时间进行渲染。例如，如果你有两个世界 A 和 B 和一个单一的摄像机，然后将摄像机的目标从 A 切换到 B，将立即切换到世界B的视图，而不需要卸载 A，然后挂载 B。
 
 
 ## CameraComponent
 
-This is a component through which a `World` is rendered. It requires a
-reference to a `World` instance during construction; however later the target
-world can be replaced with another one. Multiple cameras can observe the same
-world at the same time.
+这是一个渲染`World`的组件。它需要在构造过程中引用一个`World`实例；然而，之后目标世界可以被另一个世界取代。多个摄像头可以同时观察同一个世界。
 
-A `CameraComponent` has two other components inside: a [](#viewport) and a
-[](#viewfinder). Unlike the `World` object, the camera owns the viewport and
-the viewfinder, which means those components are children of the camera.
+一个`CameraComponent`内部还有两个组件:一个[Viewport](#viewport)和一个[Viewfinder](#viewfinder)。与World对象不同，摄像机拥有视口和取景器，这意味着这些组件是摄像机的子组件。
 
-There is also a static property `CameraComponent.currentCamera` which is not
-null only during the rendering stage, and it returns the camera object that
-currently performs rendering. This is needed only for certain advanced use
-cases where the rendering of a component depends on the camera settings. For
-example, some components may decide to skip rendering themselves and their
-children if they are outside of the camera's viewport.
+还有一个静态属性 `CameraComponent.currentCamera`，它仅在渲染阶段不为空，并返回当前执行渲染的摄像机对象。这仅在某些高级用例中需要，在这些用例中，组件的呈现取决于摄像机设置。例如，一些组件可能决定跳过呈现自己和他们的子组件，如果他们在摄像机的视区之外。
 
 
 ## Viewport
 
-The `Viewport` is a window through which the `World` is seen. That window
-has a certain size, shape, and position on the screen. There are multiple kinds
-of viewports available, and you can always implement your own.
+`Viewport`是一个窗口，通过它可以看到`World`。该窗口在屏幕上具有一定的大小、形状和位置。有多种可用的视口，您可以始终实现自己的视口。
 
-The `Viewport` is a component, which means you can add other components to it.
-These children components will be affected by the viewport's position, but not
-by its clip mask. Thus, if a viewport is a "window" into the game world, then
-its children are things that you can put on top of the window.
+`Viewport`是一个组件，这意味着您可以向它添加其他组件。这些子组件将受视口位置的影响，但不受其剪辑蒙版的影响。因此，如果视口是进入游戏世界的窗口，那么它的子窗口就是你可以放在窗口顶部的东西。
 
-Adding elements to the viewport is a convenient way to implement "HUD"
-components.
+向视口添加元素是实现 HUD 组件的一种方便方法。
 
-The following viewports are available:
-  - `MaxViewport` (default) -- this viewport expands to the maximum size allowed
-    by the game, i.e. it will be equal to the size of the game canvas.
-  - `FixedSizeViewport` -- a simple rectangular viewport with predefined size.
-  - `FixedAspectRatioViewport` -- a rectangular viewport which expands to fit
-    into the game canvas, but preserving its aspect ratio.
-  - `CircularViewport` -- a viewport in the shape of a circle, fixed size.
+以下视口可用：
+  - `MaxViewport`：默认值。 这个视口会扩展到游戏所允许的最大尺寸，即它将等于游戏画布的大小。
+  - `FixedSizeViewport`：具有预定义大小的简单矩形视口。
+  - `FixedAspectRatioViewport`：一个可以扩展到游戏画布中的矩形视口，但保持其纵横比。`CircularViewport`：圆形的视口，大小固定。
 
 
 ## Viewfinder
 
-This part of the camera is responsible for knowing which location in the
-underlying game world we are currently looking at. The `Viewfinder` also
-controls the zoom level, and the rotation angle of the view.
+摄像机的这一部分负责了解我们当前正在查看的底层游戏世界中的哪个位置。 `Viewfinder`还控制缩放级别和视口的旋转角度。
 
-The `anchor` property of the viewfinder allows you to designate which point
-inside the viewport serves as a "logical center" of the camera. For example,
-in side-scrolling action games it is common to have the camera focused on the
-main character who is displayed not in the center of the screen but closer to
-the lower-left corner. This off-center position would be the "logical center"
-of the camera, controlled by the viewfinder's `anchor`.
+取景器（Viewfinder）的锚点属性允许你指定视口内的哪个点作为摄像机的逻辑中心。例如，在横向卷轴动作游戏中，镜头通常会聚焦在主角身上，而主角并不出现在屏幕中央，而是更靠近左下角的位置。这个偏离中心的位置将是摄像机的逻辑中心，由取景器的锚控制。
 
-Components added to the `Viewfinder` as children will be rendered as if they
-were part of the world (but on top). It is more useful to add behavioral
-components to the viewfinder, for example [](effects.md) or other controllers.
+添加到取景器中的子组件将被渲染成世界的一部分（但在上面）。更有用的是在取景器中添加行为组件，例如[Effects](/guide/flame/effects.md)或其他控制器。
 
 
-## Camera controls
+## 摄像机控制
 
-There are several ways to modify camera's settings at runtime:
+有几种方法可以在运行时修改摄像机的设置：
 
-  1. Do it manually. You can always override the `CameraComponent.update()`
-     method (or the same method on the viewfinder or viewport) and within it
-     change the viewfinder's position or zoom as you see fit. This approach may
-     be viable in some circumstances, but in general it is not recommended.
+1. 手动操作。你总是可以覆盖 `CameraComponent.update()`方法（或取景器或取景窗上的相同方法），并在其中根据你的需要改变取景器的位置或缩放。这种方法在某些情况下可能是可行的，但一般不推荐使用。
+2. 对摄像机的`Viewfinder`或`Viewport`应用效果和/或行为。效果和行为是特殊类型的组件，其目的是随着时间的推移修改它们附加到的组件的某些属性。
+3. 使用特殊的摄像机功能，如 `follow()`和 `moveTo()`。实际上，这种方法使用了与第(2)条中相同的效果/行为。
 
-  2. Apply effects and/or behaviors to the camera's `Viewfinder` or `Viewport`.
-     The effects and behaviors are special kinds of components whose purpose is
-     to modify over time some property of a component that they attach to.
+摄像头有几种方法来控制它的行为：
 
-  3. Use special camera functions such as `follow()` and `moveTo()`. Under the
-     hood, this approach uses the same effects/behaviors as in (2).
+ - `Camera.follow()`：强制摄像机跟随提供的目标。你可以选择限制摄像机的最大移动速度，或者只允许它水平/垂直移动。
+   
+ - `Camera.stop()`：将撤消前一次调用的效果，并将摄像机停在当前位置。
+   
+ - `Camera.moveTo()`：可用于将摄像机移动到世界地图上的指定点。如果摄像机已经跟随另一个组件或者向另一个点移动，那么这些行为将被自动取消。
+   
+ - `Camera.setBounds()`：允许您添加限制摄像机允许去的地方。这些限制的形式是一个`Shape`，通常是一个矩形，但也可以是任何其他形状。
 
-Camera has several methods for controlling its behavior:
+## 与传统Camera的比较
 
- - `Camera.follow()` will force the camera to follow the provided target.
-   Optionally you can limit the maximum speed of movement of the camera, or
-   allow it to move horizontally/vertically only.
+与普通 [Camera](camera_and_viewport.md)相比，`CameraComponent`有几个优点和缺点。
 
- - `Camera.stop()` will undo the effect of the previous call and stop the camera
-   at its current position.
+优点：
+  - 多个摄像机可以同时添加到游戏中
+  - 更灵活地选择位置和视口的大小
+  - 将摄像机从一个世界切换到另一个世界可以瞬间发生，而不需要卸载一个世界然后安装另一个世界
+  - 支持旋转的世界视图
+  - (NYI) 效果可以应用于视口或取景器
+  - (NYI)更灵活的摄像机控制器
 
- - `Camera.moveTo()` can be used to move the camera to the designated point on
-   the world map. If the camera was already following another component or
-   moving towards another point, those behaviors would be automatically
-   cancelled.
-
- - `Camera.setBounds()` allows you to add limits to where the camera is allowed to go. These limits
-   are in the form of a `Shape`, which is commonly a rectangle, but can also be any other shape.
-
-
-## Comparison to the traditional camera
-
-Compared to the normal [Camera](camera_and_viewport.md), the `CameraComponent`
-has several advantages and drawbacks.
-
-Pros:
-  - Multiple cameras can be added to the game at the same time;
-  - More flexibility in choosing the placement and the size of the viewport;
-  - Switching camera from one world to another can happen instantaneously,
-    without having to unmount one world and then mount another;
-  - Support rotation of the world view;
-  - Effects can be applied either to the viewport, or to the viewfinder;
-  - More flexible camera controllers.
-
-Cons (we are planning to eliminate these in the near future):
-  - Camera controls are not yet implemented;
-  - Events propagation may not always work correctly.
+缺点（我们计划在不久的将来消除这些缺点）：
+  - 摄像机控制尚未实现
+  - 事件传播可能并不总是正确工作

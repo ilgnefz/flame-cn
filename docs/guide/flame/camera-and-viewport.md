@@ -1,101 +1,65 @@
-# Camera and Viewport
+---
+prev:
+  text: 特效
+  link: /guide/flame/effects.md
+next:
+  text: 摄像机组件
+  link: /guide/flame/camera-component.md
+---
 
-When rendering on Flutter, the regular coordinate space used are logical pixels. That means one
-pixel for Flutter is already not necessarily one real pixel on the device, because of the [device's
-pixel ratio](https://api.flutter.dev/flutter/widgets/MediaQueryData/devicePixelRatio.html). When it
-gets to the Flame level, we always consider the most fundamental level to be logical pixels, so all
-the device specific complexity is abstracted away.
+# 摄像机和视口
 
-However, that still leaves you with arbitrarily shaped and sized screens. And it's very likely that
-your game has some sort of game world with an intrinsic coordinate system that does not map to
-screen coordinates. Flame adds two distinct concepts to help transform coordinate spaces. For the
-former, we have the Viewport class. And for the later, we have the Camera class.
+在 Flutter 上渲染时，使用的常规坐标空间是逻辑像素。 因为[设备像素比](https://api.flutter.dev/flutter/widgets/MediaQueryData/devicePixelRatio.html)，意味着 Flutter 的一个像素不一定是设备上的一个真实像素。当它到达 Flame 级别时，我们总是考虑最基本的级别是逻辑像素，因此所有与设备相关的复杂性都被抽象出来了。
 
-## Viewport
+然而，这仍然会给你带来任意形状和大小的屏幕的问题。很可能你的游戏拥有一些带有内在坐标系统的游戏世界，不会映射到屏幕坐标。Flame 添加了两个不同的概念来帮助转换坐标空间。对于前者，我们有 `Viewport `类，后着，我们有`Camera`类。
 
-The Viewport is an attempt to unify multiple screen (or, rather, game widget) sizes into a single
-configuration for your game by translating and resizing the canvas.
+## 视口
 
-The `Viewport` interface has multiple implementations and can be used from scratch on your `Game`
-or, if you are using `FlameGame` instead, it's already built-in (with a default no-op viewport).
+`Viewport`试图通过转换和调整画布的大小，将多个屏幕（或者游戏小部件）大小统一到游戏的单个配置中。
 
-These are the viewports available to pick from (or you can implement the interface yourself to suit
-your needs):
+`Viewport `接口有多个实现，可以在您的游戏中从头开始使用，或者，如果您使用的是 `FlameGame`，它已经内置了(带有默认的无操作 `Viewport`)。
 
- * `DefaultViewport`: this is the no-op viewport that is associated by default with any `FlameGame`.
- * `FixedResolutionViewport`: this viewport transforms your Canvas so that, from the game
-   perspective, the dimensions are always set to a fixed pre-defined value. This means it will scale
-   the game as much as possible and add black bars if needed.
+以下是可供选择的视口（或者你可以自己实现接口以满足需求） ：
 
-When using `FlameGame`, the operations performed by the viewport are done automatically to every
-render operation, and the `size` property in the game, instead of the logical widget size, becomes
-the size as seen through the viewport together with the zoom of the camera. If for some reason you
-need to access the original real logical pixel size, you can use `canvasSize`. For a more in depth
-description on what each `Viewport` does and how it operates, check the documentation on its class.
+ * `DefaultViewport`：这是默认情况下与任何 `FlameGame `相关联的无操作视口。
+ * `FixedResolutionViewport`：这个视口会转换您的 `Canvas`，以便从游戏的角度来看，尺寸始终设置为固定的预定义值。 这意味着它将尽可能地扩展游戏并在需要时添加黑条。
 
-## Camera
+当使用`FlameGame`时，视口执行的操作会自动执行到每个渲染操作中，而游戏中的`size`属性，而不是逻辑小部件大小，会变成通过视口与镜头的变焦所看到的大小。如果出于某些原因需要访问原始的逻辑像素大小，可以使用`canvasSize`。关于每个`Viewport`做什么以及如何操作的更深入的描述，请查看其类的文档。
 
-Unlike the `Viewport`, the `Camera` is a more dynamic `Canvas` transformation that is normally
-dependent on:
+## 摄像机
 
- * World coordinates that do not match screen coordinates 1:1.
- * Centering or following the player around the game world (if the world is bigger than the screen).
- * User controlled zooming in and out.
+与`Viewport`不同，`Camera`是一个更动态的`Canvas`转换，通常依赖于：
 
-There is only one Camera implementation but it allows for many different configurations. Again, you
-can use it standalone on your `Game` but it's already included and wired into `FlameGame`.
+ * 与屏幕坐标 1:1 不匹配的世界坐标。
+ * 在游戏世界中围绕或跟随玩家（如果世界比屏幕大）。
+ * 用户控制放大和缩小。
 
-One important thing to note about the Camera is that since (unlike the Viewport) it's intended to be
-dynamic, most camera movements won't immediately happen. Instead, the camera has a configurable
-speed and is updated on the game loop. If you want to immediately move your camera (like on your
-first camera setup at game start) you can use the `snap` function. Calling snap during the game can
-lead to jarring or unnatural camera movements though, so avoid that unless desired (say for a map
-transition, for example). Carefully check the docs for each method for more details about how it
-affects the camera movement.
+只有一个 `Camera `实现，但它允许许多不同的配置。您可以在游戏中单独使用它，但它已经包含并连接到 `FlameGame`。
 
-Another important note is that the camera is applied after the viewport, and only to non-HUD
-components. So screen size here is considering the effective size after Viewport transformations.
+关于摄像头，需要注意的一件重要事情是，由于（不像 Viewport）它是动态的，大多数摄像头的移动不会立即发生。相反，摄像头有一个可配置的速度和更新的游戏循环。如果你想立即移动你的摄像头（比如在你的第一个Camera设置在游戏开始） ，你可以使用快照功能。不过，在游戏中调用 `snap `可能会导致不和谐或不自然的摄像机移动，所以除非你想要，否则不要这样做（例如，对于地图过渡）。仔细检查每个方法的文档，了解更多关于它如何影响摄像头移动的细节。
 
-There are two types of transformations that the Camera can apply to the Canvas. The first and most
-complex one is translation. That can be applied by several factors:
+另一个重要的注意事项是，摄像头应用在视口之后，并且只适用于非 HUD 组件。所以这里的屏幕大小考虑的是`Viewport`转换后的有效大小。
 
- * nothing: by default the camera won't apply any transformation, so it's optional to use it.
- * relative offset: you can configure this to decide "where the center of the camera should be on
-   the screen". By default it's the top left corner, meaning that the centered coordinate or object
-   will always be on the top left corner of the screen. You can smoothly change the relative offset
-   during gameplay (that can be used to apply a dialogue or item pickup temporary camera transition
-   for example).
- * moveTo: if you want to ad-hoc move your camera you can use this method; it will smoothly
-   transition the camera to a new position, ignoring follows but respecting relative offset and
-   world bounds. This can be reset by `resetMovement` if used in conjunction to follow so that the
-   followed object starts being considered again.
- * follow: you can use this method so that your camera continuously "follow" an object (for example,
-   a `PositionComponent`). This is not smooth because the movement of the followed object itself is
-   assumed to already be smooth (i.e. if your character teleport the camera will also immediately
-   teleport).
- * world bounds: when using follow, you can optionally define the bounds of the world. If that is
-   done, the camera will stop following/moving so that out-of-bounds areas are not shown (as long as
-   the world is bigger than the screen).
+`Camera `可以应用于 `Canvas `的转换有两种类型。第一个也是最复杂的一个是翻译。这可以通过以下几个因素得到应用：
 
-Finally the second transformation that the camera applies is scaling. That allows for dynamic
-zooming, and it's controlled by the `zoom` field. There is no zoom speed, that must be controlled by
-you when changing. The `zoom` variable is immediately applied.
+ * nothing：默认情况下，摄像机不会应用任何转换，所以使用它是可选的。
+ * relative offset：你可以配置它来决定相机的中心应该在屏幕上的哪个位置。默认情况下，它位于左上角，这意味着居中坐标或对象将始终位于屏幕的左上角。你可以在游戏过程中平滑地改变相对偏移（例如，可以用于应用对话或物品拾取临时摄像机过渡）。
+ * moveTo： 如果你想临时移动你的相机，你可以使用这个方法; 它将平滑地移动相机到一个新的位置，忽略跟随但遵守相对偏移和世界边界。 如果与跟随一起使用，则可以通过 `resetMovement `重置，以便再次开始考虑被跟随的对象。
+ * follow：你可以使用这个方法让你的相机持续跟随一个对象（例如，一个`PositionComponent`）。这并不流畅，因为跟随的物体本身的移动已经是平滑的（例如，如果你的角色传送，摄像机也会立即传送）。
+ * world bounds：使用跟随时，您可以选择定义世界的边界。 如果这样做了，摄像机将停止跟随/移动，以便不显示界外区域（只要世界大于屏幕）。
 
-When dealing with input events, it is imperative to convert screen coordinates to world coordinates
-(or, for some reasons, you might want to do the reverse). The Camera provides two functions,
-`screenToWorld` and `worldToScreen` to easily convert between these coordinate spaces.
+最后，相机应用的第二个变换是缩放。这允许动态缩放，并由`zoom`字段控制。没有缩放速度，那必须由你在改变时控制。`zoom`变量立即被应用。
+
+在处理输入事件时，必须将屏幕坐标转换为世界坐标(或者，由于某些原因，您可能希望进行相反的操作)。`Camera`提供了两个功能，`screenToWorld`和`worldToScreen`，方便地在这些坐标空间之间进行转换。
 
 
 ### Camera.followVector2
 
-Immediately snaps the camera to start following a `Vector2`.
+立即捕捉摄像机以开始跟随 `Vector2`。
 
-This means that the camera will move so that the position vector is in a fixed position on the
-screen. That position is determined by a fraction of screen size defined by the `relativeOffset`
-argument (defaults to the center). The `worldBounds` argument can be optionally set to add
-boundaries to how far the camera is allowed to move.
+这意味着摄像机将移动，以使位置矢量位于屏幕上的固定位置。 该位置由 `relativeOffset `参数定义的屏幕大小的一部分确定（默认为中心）。 可以选择设置 `worldBounds `参数以将边界添加到允许相机移动的距离。
 
-Example:
+示例：
 
 ```dart
 class MyGame extends FlameGame {
@@ -105,25 +69,16 @@ class MyGame extends FlameGame {
      camera.followVector2(someVector);
   }
 }
-
 ```
 
 
 ### Camera.followComponent
 
-Immediately snaps the camera to start following a `PositionComponent`.
+立即捕捉摄像机以开始跟随 `PositionComponent`。
 
-This means that the camera will move so that the position vector of the component is in a fixed
-position on the screen. That position is determined by a fraction of screen size defined by the
-`relativeOffset` argument (defaults to the center).
-The `worldBounds` argument can be optionally set to add boundaries to how far the camera is allowed
-to move.
+这意味着摄像机将移动，以使组件的位置矢量位于屏幕上的固定位置。 该位置由 `relativeOffset `参数定义的屏幕大小的一部分确定（默认为中心）。 可以选择设置 `worldBounds `参数以将边界添加到允许相机移动的距离。
 
-The component is "grabbed" by its anchor (default top left).
-So for example if you want the center of the object to be at the fixed position, set the components
-anchor to center.
-
-Example:
+示例：
 
 ```dart
 class MyGame extends FlameGame {
@@ -142,12 +97,9 @@ class MyGame extends FlameGame {
 }
 ```
 
+### 在游戏类中使用摄像机
 
-### Using the camera with the Game class
-
-If you are not using `FlameGame`, but instead are using the `Game` mixin, then you need to manage
-calling certain camera methods yourself. Let's say we have the following game structure, and we 
-want to add the camera functionality:
+如果你不使用`FlameGame`，而是使用`Game `mixin，那么你需要自己管理调用某些摄像机方法。假设我们有如下的游戏结构，我们想要添加摄像机功能：
 
 ```dart
 class YourGame with Game {
@@ -161,7 +113,7 @@ class YourGame with Game {
 }
 ```
 
-We first create a new camera instance on load and assign our game as the reference:
+我们首先创建一个新的摄像头实例，并将我们的游戏作为参考：
 
 ```dart
   // ...
@@ -181,11 +133,9 @@ We first create a new camera instance on load and assign our game as the referen
   // ...
 ```
 
-The camera can also be made aware of which position to follow, this is an optional feature as you 
-can also use the camare for just moving,snapping or shaking.
+摄像机还可以知道要跟随哪个位置，这是一项可选功能，因为您也可以使用摄像机进行移动、捕捉或摇晃。
 
-To do this the `Camera` class provides multiple methods for it but let's showcase the simplest one 
-and that is the `followVector2`:
+为了做到这一点，`Camera `类提供了多种方法，但是让我们来展示一下最简单的方法，那就是下面的 `vector2`：
 
 ```dart
   // Somewhere in your code.
@@ -196,8 +146,7 @@ and that is the `followVector2`:
   );
 ```
 
-Now that the camera is created and it is aware of both the world bounds and the position it should 
-follow, it can be used to translate the canvas in the render method:
+现在摄像机已经创建并且它知道世界边界和它应该遵守的位置，它可以用来在渲染方法中翻译画布：
 
 ```dart
   // ...
@@ -211,8 +160,7 @@ follow, it can be used to translate the canvas in the render method:
   // ...
 ```
 
-The only thing left to do is to call the `update` method on the `Camera` so it can smoothly follow 
-your given position:
+唯一要做的就是调用 `Camera `上的 `update `方法，这样它就可以顺利地跟随你给定的位置：
 
 ```dart
   // ...

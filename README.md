@@ -58,4 +58,4 @@ Flame 是基于 Flutter 的 2D 游戏引擎，该库为 Flame 引擎的中文译
 
 运行`npm run deploy`可将代码推送到`site`分支。打开`deploy.sh`可以修改推送信息。
 
-如果您在阅读中发现了有些不太适合的翻译，可以在[issues](https://github.com/ilgnefz/flame-cn/issues)提交您的意见。
+文档的全部内容都是机翻，但是是对比了不同翻译软件综合选择了最合适的。如果您在阅读中发现了有些不太适合的翻译，可以在[issues](https://github.com/ilgnefz/flame-cn/issues)提交您的意见。
