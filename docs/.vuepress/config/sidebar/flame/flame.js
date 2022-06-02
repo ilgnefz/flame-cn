@@ -26,6 +26,10 @@ const particles = require('./render/particles')
 
 const layers = require('./render/layers')
 
+const util = require('./other/util')
+
+const widgets = require('./other/widgets')
+
 
 const flame = {
   text: "Flame",
@@ -76,15 +80,17 @@ const flame = {
         {
           text: "调试",
           link: "/guide/flame/other/debug.md",
+          collapsible: true,
+          children: [{
+            text: "帧数",
+            link: "#帧数"
+          }, {
+            text: "FlameGame特性",
+            link: "#flamegame特性"
+          }]
         },
-        {
-          text: "实用工具",
-          link: "/guide/flame/other/util.md",
-        },
-        {
-          text: "小部件",
-          link: "/guide/flame/other/widgets.md",
-        },
+        util,
+        widgets,
       ],
     },
   ],

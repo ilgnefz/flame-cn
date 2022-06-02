@@ -1,51 +1,46 @@
-# Widgets
+---
+prev:
+  text: 实用工具
+  link: /guide/flame/other/util.md
+next:
+  text: 一般音频
+  link: /guide/flame_audio/audio.md
+---
 
-One advantage when developing games with Flutter is the ability to use Flutter's extensive toolset
-for building UIs, Flame tries to expand on that by introducing widgets that are made with games in
-mind.
+# 小部件
 
-Here you can find all the available widgets provided by Flame.
+使用 Flutter 开发游戏的一个优势是可以使用 Flutter 广泛的工具集来构建 UI，Flame 试图通过引入游戏中的小部件来扩展这一功能。
 
-You can also see all the widgets showcased inside a
-[Dashbook](https://github.com/erickzanardo/dashbook) sandbox
-[here](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/widgets)
+在这里您可以找到所有由Flame提供的小部件。
 
-## Nine Tile Box
+您还可以在[这里](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/widgets)看到 [Dashbook](https://github.com/erickzanardo/dashbook) 沙箱中显示的所有小部件。
 
-A Nine Tile Box is a rectangle drawn using a grid sprite.
+## NineTileBox
 
-The grid sprite is a 3x3 grid and with 9 blocks, representing the 4 corners, the 4 sides and the
-middle.
+`NineTileBox` 是一个使用网格精灵绘制的矩形。
 
-The corners are drawn at the same size, the sides are stretched on the side direction and the middle
-is expanded both ways.
+网格精灵是一个 3x3 的网格，有 9 个方块，分别代表 4 个角、4 个边和中间。
 
-The `NineTileBox` widget implements a `Container` using that standard. This pattern is also
-implemented as a component in the `NineTileBoxComponent` so that you can add this feature directly
-to your `FlameGame`. To get to know more about this, check the component docs
-[here](../components.md#ninetileboxcomponent).
+角以相同的尺寸绘制，边沿侧向拉伸，中间向两边展开。
 
-Here you can find an example of how to use it (without using the `NineTileBoxComponent`):
+`NineTileBox` 小部件使用该标准实现了一个容器。 这个模式也被实现为 `NineTileBoxComponent `中的一个组件，因此您可以直接将此功能添加到您的 `FlameGame`。 要了解更多信息，请在[这里](../components.md#ninetileboxcomponent)查看组件文档。
+
+这里您可以找到一个如何使用它的例子（不使用 `NineTileBoxComponent`）：
 
 ```dart
 import 'package:flame/widgets/nine_tile_box.dart';
 
 NineTileBox.asset(
-    image: image, // dart:ui image instance
-    tileSize: 16, // The width/height of the tile on your grid image
-    destTileSize: 50, // The dimensions to be used when drawing the tile on the canvas
-    child: SomeWidget(), // Any Flutter widget
+    image: image, // dart:ui 图像实例
+    tileSize: 16, // 网格图像上平铺的宽度/高度
+    destTileSize: 50, // 在画布上绘制瓷砖时要使用的尺寸
+    child: SomeWidget(), // 任何 Flutter 小部件
 )
 ```
 
 ## SpriteButton
 
-`SpriteButton` is a simple widget that creates a button based on Flame sprites. This can be very
-useful when trying to create non-default looking buttons. For example when it is easier for you to
-achieve your wanted look by drawing the button in a graphics editor, instead of making it directly
-in Flutter.
-
-How to use it:
+`SpriteButton` 是一个基于 Flame 精灵创建按钮的简单小部件。这在创建非默认外观按钮时非常有用。例如，在图形编辑器中绘制按钮比在Flutter中直接制作按钮更容易实现您想要的外观。
 
 ```dart
 SpriteButton.asset(
@@ -60,10 +55,9 @@ SpriteButton.asset(
 
 ## SpriteWidget
 
-`SpriteWidget` is a widget used to display a [Sprite](../rendering/images.md#sprite) inside a widget
-tree.
+`SpriteWidget` 是用于在小部件树中显示 [Sprite](../rendering/images.html#精灵图) 的小部件。
 
-This is how to use it:
+以下是如何使用它：
 
 ```dart
 SpriteWidget.asset(
@@ -74,10 +68,9 @@ SpriteWidget.asset(
 
 ## SpriteAnimationWidget
 
-`SpriteAnimationWidget` is a widget used to display [SpriteAnimations](../rendering/images.md#animation) inside
-a widget tree.
+`SpriteAnimationWidget` 是一个用于在小部件树中显示 [SpriteAnimations](../rendering/images.md#动画) 的小部件。
 
-This is how to use it:
+以下是如何使用它：
 
 ```dart
 SpriteAnimationWidget.asset(

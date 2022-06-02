@@ -1,4 +1,4 @@
-const flameAudio = {
+module.exports = {
     text: "Flame音频",
     link: "/guide/flame_audio/audio.md",
     collapsible: true,
@@ -12,5 +12,3 @@ const flameAudio = {
         }
     ]
 }
-
-module.exports = flameAudio

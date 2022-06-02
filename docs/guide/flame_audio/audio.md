@@ -1,24 +1,30 @@
-# Audio
+---
+prev:
+  text: 实用工具
+  link: /guide/flame/other/util.md
+next:
+  text: 一般音频
+  link: /guide/flame_audio/audio.md
+---
 
-Playing audio is essential for any game, so we made it simple!
+# 音频
 
-First you have to add [flame_audio](https://github.com/flame-engine/flame_audio) to your dependency
-list in your `pubspec.yaml` file:
+对于任何游戏来说，播放音频都是必不可少的，所以我们将其简单化！
+
+首先，你必须在你的 `pubspec.yaml` 文件中添加 [flame_audio](https://github.com/flame-engine/flame_audio) 到你的依赖列表：
 
 ```yaml
 dependencies:
   flame_audio: <VERSION>
 ```
 
-The latest version can be found on [pub.dev](https://pub.dev/packages/flame_audio/install).
+最新版本可以在 [pub.dev](https://pub.dev/packages/flame_audio/install) 上找到。
 
-After installing the `flame_audio` package you can add audio files in the assets section of your
-`pubspec.yaml` file. Make sure that the audio files exists in the paths that you provide.
+在安装了 `flame _ audio` 包之后，您可以在 `pubspec.yaml` 文件的 `assets` 部分中添加音频文件。确保音频文件存在于您提供的路径中。
 
-The default directory for `FlameAudio` is `assets/audio` (which can be changed) and for `AudioPool`
-the default directory is `assets/audio/sfx`.
+`FlameAudio` 的默认目录是 `assets/audio` (可以更改) ，`AudioPool` 的默认目录是 `assets/audio/sfx`。
 
-For the examples below, your `pubspec.yaml` file needs to contain something like this:
+对于下面的例子，您的 `pubspec.yaml` 文件需要包含如下内容：
 
 ```yaml
 flutter:
@@ -27,37 +33,30 @@ flutter:
     - assets/audio/music.mp3
 ```
 
-(The default directory for `FlameAudio` is `assets/audio` (which can be changed) and for `AudioPool`
-the default directory is `assets/audio/sfx`.)
-
-Then you have the following methods at your disposal:
+然后你可以使用以下方法：
 
 ```dart
 import 'package:flame_audio/flame_audio.dart';
 
-// For shorter reused audio clips, like sound effects
+// 用于较短的重复使用的音频片段，如声音效果
 FlameAudio.play('explosion.mp3');
 
-// For looping an audio file
+// 用于循环播放音频文件
 FlameAudio.loop('music.mp3');
 
-// For playing a longer audio file
+// 用于播放较长的音频文件
 FlameAudio.playLongAudio('music.mp3');
 
-// For looping a longer audio file
+// 用于循环较长的音频文件
 FlameAudio.loopLongAudio('music.mp3');
 
-// For background music that should be paused/played when the pausing/resuming the game
+// 暂停/恢复游戏时应暂停/播放的背景音乐
 FlameAudio.bgm.play('music.mp3');
 ```
 
-The difference between the `play/loop` and `playLongAudio/loopLongAudio` is that `play/loop` makes
-use of optimized features that allow sounds to be looped without gaps between their iterations, and
-almost no drop on the game frame rate will happen. You should whenever possible, prefer the former
-methods.
+`play/loop` 和 `playLongAudio/loopLongAudio` 的区别在于 `play/loop` 使用了优化的功能，允许声音在迭代之间没有间隙地循环，并且几乎不会发生游戏帧率下降。 您应该尽可能选择前一种方法。
 
-`playLongAudio/loopLongAudio` allows for audios of any length to be played, but they do create frame
-rate drop, and the looped audio will have a small gap between iterations.
+`playLongAudio/loopLongAudio` 允许播放任何长度的音频，但它们确实会造成帧率下降，并且循环播放的音频在迭代之间会有一个小的间隙。
 
 You can use [the `Bgm` class](bgm.md) (via `FlameAudio.bgm`) to play looping background music
 tracks. The `Bgm` class lets Flame automatically manage the pausing and resuming of background music
