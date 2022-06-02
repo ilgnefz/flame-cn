@@ -1,47 +1,46 @@
-# Keyboard Input
+---
+prev:
+  text: 手势输入
+  link: /guide/flame/inputs/gesture-input.md
+next:
+  text: 其他输入
+  link: /guide/flame/inputs/other-inputs.md
+---
 
-This includes documentation for keyboard inputs.
+# 键盘输入
 
-For other input documents, see also:
+这是关于键盘输入的文档。
 
-- [Gesture Input](gesture-input.md): for mouse and touch pointer gestures
-- [Other Inputs](other-inputs.md): For joysticks, game pads, etc.
+有关其他输入的文档，请参考：
 
-## Intro
+- [手势输入](/guide/flame/inputs/gesture-input.md)：鼠标和触摸指针手势
+- [其他输入](/guide/flame/inputs/other-inputs.md)：操纵杆、游戏手柄等
 
-The keyboard API on flame relies on the 
-[Flutter's Focus widget](https://api.flutter.dev/flutter/widgets/Focus-class.html).
+## 介绍
 
-To customize focus behavior, see [Controlling focus](#controlling-focus).
+键盘 API 依赖于 Flutter 的 [Focus 小部件](https://api.flutter.dev/flutter/widgets/Focus-class.html)。
 
-There are two ways a game can react to key strokes; at the game level and at a component level.
-For each we have a mixin that can me added to a `Game` or `Component` class.
+若要自定义焦点行为，请查看[控制焦点](#控制焦点).
 
-### Receive keyboard events in a game level
+游戏对按键的反应有两种方式;在游戏层面和组件层面。对于每个类，我们都有一个mixin，可以添加到`Game` 或`Component`类中。
 
-To make a `Game` sub class sensitive to key stroke, mix it with `KeyboardEvents`.
+### 在游戏关卡中接收键盘事件
 
-After that, it will be possible to override an `onKeyEvent` method.
+要使 `Game `子类对按键敏感，请将其与 `KeyboardEvents `混合使用。
 
-This method receives two parameters, first the
-[`RawKeyEvent`](https://api.flutter.dev/flutter/services/RawKeyEvent-class.html)
-that triggers the callback in the first place. The second is a set of the currently pressed
-[`LogicalKeyboardKey`](https://api.flutter.dev/flutter/widgets/KeyEventResult-class.html).
+之后，就可以重写 onKeyEvent 方法了。
 
-The return value is a
-[`KeyEventResult`](https://api.flutter.dev/flutter/widgets/KeyEventResult-class.html).
+这个方法接收两个参数，第一个是 [RawKeyEvent](https://api.flutter.dev/flutter/services/RawKeyEvent-class.html)，它首先触发回调。第二个是一组当前按下的 [LogicalKeyboardKey](https://api.flutter.dev/flutter/widgets/KeyEventResult-class.html)。
 
-`KeyEventResult.handled` will tell the framework that the key stroke was resolved inside of Flame
-and skip any other keyboard handler widgets apart of `GameWidget`.
+返回值是一个[KeyEventResult](https://api.flutter.dev/flutter/widgets/KeyEventResult-class.html)。
 
-`KeyEventResult.ignored` will tell the framework to keep testing this event in any other keyboard
-handler widget apart of `GameWidget`. If the event is not resolved by any handler, the framework
-will trigger `SystemSoundType.alert`.
+`KeyEventResult.handled` 将告诉框架按键是在Flame内部解决的，并跳过`GameWidget`之外的任何其他键盘处理程序小部件。
 
-`KeyEventResult.skipRemainingHandlers` is very similar to `.ignored`, apart from the fact that will
-skip any other handler widget and will straight up play the alert sound.
+`KeyEventResult.ignored` 将告诉框架继续在除 `GameWidget `之外的任何其他键盘处理程序小部件中测试此事件。 如果事件没有被任何处理程序解析，框架将触发 `SystemSoundType.alert`。
 
-Minimal example:
+`KeyEventResult.skipRemainingHandlers` 与 `.ignored` 非常相似，除了将跳过任何其他处理程序小部件并直接播放警报声音的事实之外。
+
+最小示例：
 
 ```dart
 class MyGame extends FlameGame with KeyboardEvents {
@@ -69,38 +68,28 @@ class MyGame extends FlameGame with KeyboardEvents {
 }
 ```
 
-### Receive keyboard events in a component level
+### 在组件级别接收键盘事件
 
-To receive keyboard events directly in components, there is the mixin `KeyboardHandler`.
+要直接在组件中接收键盘事件，需要使用 mixin `KeyboardHandler`。
 
-Similarly to `Tappable` and `Draggable`, `KeyboardHandler` can be mixed into any subclass of
-`Component`.
+类似于 `Tappable `和 `Draggable`，`KeyboardHandler `可以混合到 `Component `的任何子类中。
 
-KeyboardHandlers must only be added to games that are mixed with `HasKeyboardHandlerComponents`.
+键盘控制程序只能添加到与 `HasKeyboardHandlerComponents`混合的游戏中。
 
-> ⚠️ Note: If `HasKeyboardHandlerComponents` is used, you must remove `KeyboardEvents`
-> from the game mixin list to avoid conflicts.
+> ⚠️ 注意： 如果使用 `HasKeyboardHandlerComponents`，则必须从游戏混合列表中删除 `keyboardents` 以避免冲突。
 
-After applying `KeyboardHandler`, it will be possible to override an `onKeyEvent` method.
+在应用 `KeyboardHandler` 之后，可以重写 `onKeyEvent` 方法。
 
-This method receives two parameters. First the
-[`RawKeyEvent`](https://api.flutter.dev/flutter/services/RawKeyEvent-class.html)
-that triggered the callback in the first place. The second is a set of the currently pressed
-[`LogicalKeyboardKey`](https://api.flutter.dev/flutter/widgets/KeyEventResult-class.html)s.
+该方法接收两个参数。 首先是触发回调的 [RawKeyEvent](https://api.flutter.dev/flutter/services/RawKeyEvent-class.html)。 第二个是一组当前按下的 [LogicalKeyboardKey](https://api.flutter.dev/flutter/widgets/KeyEventResult-class.html)。
 
-The returned value should be `true` to allow the continuous propagation of the key event among other
-components. To not allow any other component to receive the event, return `false`.
+返回的值应该为 `true`，以允许键盘事件在其他组件之间不断传播。若要不允许任何其他组件接收事件，请返回 `false`。
 
-### Controlling focus
+### 控制焦点
 
-On the widget level, it is possible to use the
-[`FocusNode`](https://api.flutter.dev/flutter/widgets/FocusNode-class.html) API to control whether
-the game is focused or not.
+在小部件级别，可以使用 [FocusNode](https://api.flutter.dev/flutter/widgets/FocusNode-class.html) API来控制游戏是否被聚焦。
 
-`GameWidget` has an optional `focusNode` parameter that allow its focus to be controlled externally.
+`GameWidget `有一个可选的 `focusNode `参数，允许从外部控制其焦点。
 
-By default `GameWidget` has its `autofocus` set to true, which means it will get focused once it is
-mounted. To override that behavior, set `autofocus` to false.
+默认情况下，`GameWidget `的 `autofocus `设置为 `true`，这意味着一旦挂载它就会获得焦点。 要覆盖该行为，请将 `autofocus `设置为 `false`。
 
-For a more complete example see 
-[here](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/input/keyboard.dart).
+更完整的例子见[这里](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/input/keyboard.dart)。

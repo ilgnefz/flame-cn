@@ -151,11 +151,11 @@ class MyComponent extends Component with ParentIsA<MyParentComponent> {
 }
 ```
 
-如果你试图将`MyComponent`添加到一个不是`MyParentComponent`的父组件，将抛出断言错误。
+如果您试图将`MyComponent`添加到一个不是`MyParentComponent`的父组件，将抛出断言错误。
 
 ### 查询子组件
 
-已经添加到组件中的子组件存在于名为`children`的`QueryableOrderedSet`中。要查询集合中特定类型的组件，可以使用`query<T>()`函数。默认情况下，`strictMode`在子节点设置为`false`，但如果你设置为`true`，那么在使用查询之前必须注册到`children.register`。
+已经添加到组件中的子组件存在于名为`children`的`QueryableOrderedSet`中。要查询集合中特定类型的组件，可以使用`query<T>()`函数。默认情况下，`strictMode`在子节点设置为`false`，但如果您设置为`true`，那么在使用查询之前必须注册到`children.register`。
 
 示例：
 
@@ -181,7 +181,7 @@ void update(double dt) {
 
 可迭代对象按照从前到后的顺序检索组件，即首先检索组件前面的组件，然后再是后面的组件。
 
-这个方法只能返回实现`containsLocalPoint()`方法的组件。`PositionComponent`（这是Flame中许多组件的基类）提供了这样的一个实现。然而，如果你要定义一个派生自`Component`的自定义类，你就必须自己实现`containsLocalPoint()`方法。
+这个方法只能返回实现`containsLocalPoint()`方法的组件。`PositionComponent`（这是Flame中许多组件的基类）提供了这样的一个实现。然而，如果您要定义一个派生自`Component`的自定义类，您就必须自己实现`containsLocalPoint()`方法。
 
 这里有一个怎样使用 `componentsAtPoint()`的例子：
 
@@ -203,7 +203,7 @@ void onDragUpdate(DragUpdateInfo info) {
  - `PositionType.viewport`：仅遵从视口 (忽略摄像机).
  - `PositionType.widget`：与Flutter游戏部件（即原始画布）的坐标系统相关的位置
 
-您的大部分组件可能会根据`PositionType.game`来定位，因为您希望它们遵从摄像机和视口。但是通常情况下，你希望按钮和文本总是显示在屏幕上，不管你是否移动相机，然后你就会想使用 `PositionType.viewport`。在一些罕见的情况下，当你不希望组件遵从摄像机或视口时，你想使用`PositionType.widget`来定位你的组件；这可能为了控制器或操纵杆，如果他们必须呆在视口内，将不符合人体工程学的使用。
+您的大部分组件可能会根据`PositionType.game`来定位，因为您希望它们遵从摄像机和视口。但是通常情况下，您希望按钮和文本总是显示在屏幕上，不管您是否移动相机，然后您就会想使用 `PositionType.viewport`。在一些罕见的情况下，当您不希望组件遵从摄像机或视口时，您想使用`PositionType.widget`来定位您的组件；这可能为了控制器或操纵杆，如果他们必须呆在视口内，将不符合人体工程学的使用。
 
 请注意，只有当组件直接添加到根`FlameGame`而不是作为另一个组件的子组件时，才会考虑这种设置。
 
@@ -237,11 +237,11 @@ void onDragUpdate(DragUpdateInfo info) {
 
 ### 锚
 
-`anchor`是组件上应该定义位置和旋转的位置（默认值是 `Anchor.topLeft`）。因此，如果你将锚定位置设置为`Anchor.center`，如果应用了`angle`，锚将会显示在组件中间，它将围绕着锚定位置旋转，所以在这种情况下，围绕组件的中心旋转。你可以把它看作是组件中的一个点，通过它 `Flame`可以“抓取”它。
+`anchor`是组件上应该定义位置和旋转的位置（默认值是 `Anchor.topLeft`）。因此，如果您将锚定位置设置为`Anchor.center`，如果应用了`angle`，锚将会显示在组件中间，它将围绕着锚定位置旋转，所以在这种情况下，围绕组件的中心旋转。您可以把它看作是组件中的一个点，通过它 `Flame`可以“抓取”它。
 
 ### PositionComponent子元素
 
-所有`PositionComponent`的子元素都将相对于父元素进行转换。这意味着 `position`、`size`和 `scale`的效果将相对于父元素的状态。例如，如果你想把一个子元素的逻辑像素定位在父元素的中心以上，你可以这样做：
+所有`PositionComponent`的子元素都将相对于父元素进行转换。这意味着 `position`、`size`和 `scale`的效果将相对于父元素的状态。例如，如果您想把一个子元素的逻辑像素定位在父元素的中心以上，您可以这样做：
 
 ```dart
 Future<void> onLoad() async {
@@ -263,7 +263,7 @@ Future<void> onLoad() async {
 
 如果您想知道组件的边界框在屏幕上的什么位置，您可以使用`toRect`方法。
 
-如果要更改组件呈现的方向，你可以使用`fliphhorizontal()`和`flipvertical()`在锚点周围来翻转任何绘制到画布上的`render(Canvas canvas)`。这些方法适用于所有`PositionComponent`对象，尤其适用于`SpriteComponent`和`SpriteAnimationComponent`。
+如果要更改组件呈现的方向，您可以使用`fliphhorizontal()`和`flipvertical()`在锚点周围来翻转任何绘制到画布上的`render(Canvas canvas)`。这些方法适用于所有`PositionComponent`对象，尤其适用于`SpriteComponent`和`SpriteAnimationComponent`。
 
 如果您希望在不更改锚点到`Anchor.center`的情况下绕中心翻转组件，则可以使用 `flipHorizontallyAroundCenter()`和 `flipVerticallyAroundCenter()`。
 
@@ -311,7 +311,7 @@ this.player = SpriteAnimationComponent(
 );
 ```
 
-如果你有一个精灵表，你可以使用`SpriteAnimationData`类的序列构造函数(查看 [Images &gt; Animation](/guide/flame/rendering/images.md)的更多细节)：
+如果您有一个精灵表，您可以使用`SpriteAnimationData`类的序列构造函数(查看 [Images &gt; Animation](/guide/flame/rendering/images.md)的更多细节)：
 
 ```dart
 final size = Vector2.all(64.0);
@@ -328,7 +328,7 @@ this.player = SpriteAnimationComponent.fromFrameData(
 
 如果您不使用`FlameGame`，不要忘记这个组件需要更新，因为动画对象需要勾选来移动帧。
 
-你可以使用 `animation.completed`来监听动画完成（当它到达最后一帧并且没有循环的时候）。
+您可以使用 `animation.completed`来监听动画完成（当它到达最后一帧并且没有循环的时候）。
 
 示例：
 
@@ -344,7 +344,7 @@ animation.completed.whenComplete(doSomething);
 
 ## SpriteAnimationGroupComponent
 
-`SpriteAnimationGroupComponent`是一个围绕`SpriteAnimationComponent`的简单包装器，它使你的组件能够保存多个动画，并在运行时更改当前播放的动画。
+`SpriteAnimationGroupComponent`是一个围绕`SpriteAnimationComponent`的简单包装器，它使您的组件能够保存多个动画，并在运行时更改当前播放的动画。
 
 它的使用非常类似于`SpriteAnimationComponent`，但不是用单个动画初始化，这个组件接收一个通用类型`T`的`Map`作为键，一个`SpriteAnimation`作为值，以及当前的动画。
 
@@ -462,7 +462,7 @@ add(flareAnimation);
 // 播放一个动画
 controller.play('rise_up');
 
-// 你可以同时播放另一个动画
+// 您可以同时播放另一个动画
 controller.play('close_door_way_out');
 
 // 此外，您可以获得一个flare节点并对其进行修改
@@ -477,7 +477,7 @@ controller.rightHandNode.rotation = math.pi;
 
 这个组件可以用来渲染带有深度感的背景，方法是在每个图像或动画（`ParallaxRenderer`）以不同的速度移动的情况下，将几个透明的图像叠加在一起。
 
-其基本原理是，当你看着地平线移动时，距离近的物体似乎比距离远的物体移动得更快。
+其基本原理是，当您看着地平线移动时，距离近的物体似乎比距离远的物体移动得更快。
 
 这个组件模拟了这个效果，制造了一个更加真实的背景效果。
 
@@ -515,9 +515,9 @@ class MyGame extends FlameGame {
 }
 ```
 
-这将创建一个静态背景。如果你想要一个移动的视差(这是视差的全部意义) ，你可以用几种不同的方法来实现，这取决于你想要如何为每一层设置细粒度。
+这将创建一个静态背景。如果您想要一个移动的视差(这是视差的全部意义) ，您可以用几种不同的方法来实现，这取决于您想要如何为每一层设置细粒度。
 
-最简单的方法是在加载助手函数中设置命名的可选参数`basvelocity`和`velocityMultiplierDelta`。例如，如果你想以更快的速度沿着`x`轴移动你的背景图像，图像越近：
+最简单的方法是在加载助手函数中设置命名的可选参数`basvelocity`和`velocityMultiplierDelta`。例如，如果您想以更快的速度沿着`x`轴移动您的背景图像，图像越近：
 
 ```dart
 final parallaxComponent = await loadParallaxComponent(
@@ -527,7 +527,7 @@ final parallaxComponent = await loadParallaxComponent(
 );
 ```
 
-你可以在任何时候设置baseSpeed和layerDelta，例如如果你的角色跳跃或你的游戏加速：
+您可以在任何时候设置baseSpeed和layerDelta，例如如果您的角色跳跃或您的游戏加速：
 
 ```dart
 final parallax = parallaxComponent.parallax;
@@ -535,7 +535,7 @@ parallax.baseSpeed = Vector2(100, 0);
 parallax.velocityMultiplierDelta = Vector2(2.0, 1.0);
 ```
 
-默认情况下，图像左下对齐，沿 x 轴重复，并按比例缩放，以便图像覆盖屏幕的高度。如果你想改变这种行为，例如，如果你不是在做一个侧滚动游戏，你可以设置每个 `ParallaxRenderer `的`repeat`、`alignment`和`fill`，并将它们添加到 `ParallaxLayers `中，然后传递到 `ParallaxComponent `的构造函数中。
+默认情况下，图像左下对齐，沿 x 轴重复，并按比例缩放，以便图像覆盖屏幕的高度。如果您想改变这种行为，例如，如果您不是在做一个侧滚动游戏，您可以设置每个 `ParallaxRenderer `的`repeat`、`alignment`和`fill`，并将它们添加到 `ParallaxLayers `中，然后传递到 `ParallaxComponent `的构造函数中。
 
 高级例子：
 ```dart
@@ -561,7 +561,7 @@ final parallaxComponent = ParallaxComponent.fromParallax(
 
 `Parallax`文件包含了游戏的扩展，它添加了`loadParallax`、`loadParallaxLayer`、`loadParallaxImage`和`loadParallaxAnimation`，因此它会自动使用游戏的图像缓存而不是全局缓存。对于`ParallaxComponent`文件也是一样，但它提供了`loadParallaxComponent`。
 
-如果你想要一个全屏的`ParallaxComponent`，只需要忽略`size`参数，它就会占用游戏的大小，当游戏改变大小或方向时，它也会调整到全屏。
+如果您想要一个全屏的`ParallaxComponent`，只需要忽略`size`参数，它就会占用游戏的大小，当游戏改变大小或方向时，它也会调整到全屏。
 
 Flame提供了两种类型的`ParallaxRenderer`：`ParallaxImage`和`ParallaxAnimation`，`ParallaxImage`是一个静态图像渲染器，而`ParallaxAnimation`，顾名思义，是一个基于动画和帧的渲染器。也可以通过扩展`ParallaxRenderer`类来创建自定义渲染器。
 
@@ -572,7 +572,7 @@ Flame提供了两种类型的`ParallaxRenderer`：`ParallaxImage`和`ParallaxAni
 
 `ShapeComponent`是表示可伸缩几何形状的基类。形状有不同的方式来定义它们的外观，但是它们都有一个可以修改的大小和角度，形状定义将相应地缩放或旋转形状。
 
-这些形状是一种工具，用于以更一般的方式使用几何形状，而不是与碰撞检测系统一起使用，在碰撞检测系统中，你需要使用[ShapeHitboxes](/guide/flame/collision-detection.md)。
+这些形状是一种工具，用于以更一般的方式使用几何形状，而不是与碰撞检测系统一起使用，在碰撞检测系统中，您需要使用[ShapeHitboxes](/guide/flame/collision-detection.md)。
 
 
 ### PolygonComponent
@@ -593,7 +593,7 @@ void main() {
 
 也可以使用相对顶点列表创建`PolygonComponent`，这些顶点是根据给定的大小定义的，通常是目标父组件的大小。
 
-例如，你可以创建一个像这样的菱形多边形：
+例如，您可以创建一个像这样的菱形多边形：
 
 ```dart
 void main() {
@@ -634,7 +634,7 @@ void main() {
 }
 ```
 
-还有一个很好的创建矩形的方法，这个类被称为 `Rect`，你可以使用 `Rectangle.fromRect` 创建一个Flame `RectangleComponent` ，就像设置 `PolygonComponent `的顶点一样，如果你使用这个构造函数，矩形的大小也会根据 `Rect `来调整。
+还有一个很好的创建矩形的方法，这个类被称为 `Rect`，您可以使用 `Rectangle.fromRect` 创建一个Flame `RectangleComponent` ，就像设置 `PolygonComponent `的顶点一样，如果您使用这个构造函数，矩形的大小也会根据 `Rect `来调整。
 
 下面将创建一个左上角坐标为(10, 10)，大小为(100, 50)的 `RectangleComponent`：
 
@@ -646,7 +646,7 @@ void main() {
 }
 ```
 
-你也可以通过定义一个与预期父对象大小的关系来创建`RectangleComponent`，你可以使用默认构造函数从位置、大小和角度来构建你的`RectangleComponent`。`relation`是根据父尺寸定义的向量，例如，一个`relation`是Vector2(0.5,  0.8)，将创建一个其宽度为父元素大小的50%，高度为其高度的80%的矩形。
+您也可以通过定义一个与预期父对象大小的关系来创建`RectangleComponent`，您可以使用默认构造函数从位置、大小和角度来构建您的`RectangleComponent`。`relation`是根据父尺寸定义的向量，例如，一个`relation`是Vector2(0.5,  0.8)，将创建一个其宽度为父元素大小的50%，高度为其高度的80%的矩形。
 
 在下面的示例中，将创建位于(100, 100)，大小为(25.0，30.0)的矩形：
 
@@ -673,7 +673,7 @@ void main() {
 
 ### CircleComponent
 
-如果你知道你的圆的位置和（或）半径从一开始是多长，你可以使用可选的参数半径和位置来设置它们。
+如果您知道您的圆的位置和（或）半径从一开始是多长，您可以使用可选的参数半径和位置来设置它们。
 
 下面将创建一个`CircleComponent`，其中心坐标为(100,100) ，半径为5，因此大小为 Vector2(10, 10)。
 
@@ -721,7 +721,7 @@ add(IsometricTileMapComponent(tileset, matrix));
 
 它还提供了转换坐标的方法，这样您就可以处理鼠标点击、悬停、贴图顶部的呈现实体、添加选择器等。
 
-您还可以指定`tileHeight`，这是您的平铺中每个长方体的底部和顶部平面之间的垂直距离。基本上，它是长方体最前端边缘的高度；通常它是一半(默认)或四分之一的磁贴大小。在下面的图片中，你可以看到高度用深色调调整：
+您还可以指定`tileHeight`，这是您的平铺中每个长方体的底部和顶部平面之间的垂直距离。基本上，它是长方体最前端边缘的高度；通常它是一半(默认)或四分之一的磁贴大小。在下面的图片中，您可以看到高度用深色调调整：
 
 ![An example of how to determine the tileHeight](/images/tile-height-example.png)
 
@@ -749,13 +749,13 @@ Flame 的示例应用程序包含了一个更深入的示例，介绍了如何�
 
 Flame 提供了一个组件，可以调用`CustomPainterComponent` 渲染一个`CustomPainter` ，它接收一个自定义的`painter `并在游戏画布上渲染它。
 
-这可以用来在你的 Flame 游戏和 Flutter 小部件之间共享自定义渲染逻辑。
+这可以用来在您的 Flame 游戏和 Flutter 小部件之间共享自定义渲染逻辑。
 
 查看应用程序[custom_painter_component](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/widgets/custom_painter_component.dart)的示例，了解如何使用它的详细信息。
 
 
 ## 特效
 
-Flame提供了一组可以应用于特定类型组件的特效，这些特效可以用于动画组件的一些属性，如位置或尺寸。你可以在[这里](/guide/flame/effects.md)查看这些影响的列表。
+Flame提供了一组可以应用于特定类型组件的特效，这些特效可以用于动画组件的一些属性，如位置或尺寸。您可以在[这里](/guide/flame/effects.md)查看这些影响的列表。
 
 运行效果的例子可以在[这里](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/effects)找到。

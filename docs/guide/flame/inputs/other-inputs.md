@@ -1,19 +1,28 @@
-# Other inputs
+---
+prev:
+  text: 键盘输入
+  link: /guide/flame/inputs/keyboard-input.md
+next:
+  text: 渲染
+  link: /guide/flame/rendering/images.md
+---
 
-This includes documentation for input methods besides keyboard and mouse.
+# 其他输入
 
-For other input documents, see also:
+这是关于除了键盘和鼠标以外的输入方法的文档。
 
-- [Gesture Input](gesture-input.md): for mouse and touch pointer gestures
-- [Keyboard Input](keyboard-input.md): for keystrokes
+有关其他输入的文档，请参考：
 
-## Joystick
+- [手势输入](/guide/flame/inputs/gesture-input.md)：鼠标和触摸指针手势
+- [键盘输入](/guide/flame/inputs/keyboard-input.md)：键盘
 
-Flame provides a component capable of creating a virtual joystick for taking input for your game.
-To use this feature, you need to create a `JoystickComponent`, configure it the way you want, and
-add it to your game.
+## 操作杆
 
-Check this example to get a better understanding:
+Flame提供了一个组件，能够为您的游戏创建一个虚拟操纵杆。
+
+要使用这一功能，你需要创建一个`JoystickComponent`，按你想要的方式配置它，并将其添加到游戏中。
+
+查看这个示例可以更好地理解：
 
 ```dart
 class MyGame extends FlameGame with HasDraggables {
@@ -82,55 +91,34 @@ class JoystickPlayer extends SpriteComponent with HasGameRef {
 }
 ```
 
-So in this example, we create the classes `MyGame` and `Player`. `MyGame` creates a joystick which is
-passed to the `Player` when it is created. In the `Player` class we act upon the current state of
-the joystick.
+在这个示例中，我们创建了`MyGame`和`Player`类。`MyGame`创造了一个操纵杆，并在创造时传递给`Player`。在`Player`类中，我们根据操纵杆的当前状态进行操作。
 
-The joystick has a few fields that change depending on what state it is in.
-These are the fields that should be used to know the state of the joystick:
- - `intensity`: The percentage [0.0, 1.0] that the knob is dragged from the epicenter to the edge of
-  the joystick (or `knobRadius` if that is set).
- - `delta`: The absolute amount (defined as a `Vector2`) that the knob is dragged from its epicenter.
- - `velocity`: The percentage, presented as a `Vector2`, and direction that the knob is currently
-  pulled from its base position to a edge of the joystick.
+操纵杆有几个字段会根据它所处的状态而变化。这些字段应该用于了解操纵杆的状态：
 
-If you want to create buttons to go with your joystick, check out
-[`HudButtonComponent`](#hudbuttoncomponent).
+ - `intensity`：旋钮从震中拖动到操纵杆边缘的百分比 [0.0，1.0]（如果设置了，则为`knobRadius`）。
+ - `delta`：旋钮从震中拖动的绝对量（定义为 `Vector2`）。
+ - `velocity`：以 `Vector2` 表示的百分比，以及旋钮当前从基础位置拉到操纵杆边缘的方向。
 
-A full examples of how to use it can be found
-[here](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/input/joystick.dart).
-And it can be seen running [here](https://examples.flame-engine.org/#/Controls_Joystick).
+如果您想创建与操纵杆一起使用的按钮，请查看 [HudButtonComponent](#hudbuttoncomponent).
+
+如何使用它的完整例子可以在[这里](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/input/joystick.dart)找到，也可以在[这里](https://examples.flame-engine.org/#/Controls_Joystick)看到。
 
 ## HudButtonComponent
 
-A `HudButtonComponent` is a button that can be defined with margins to the edge of the `Viewport`
-instead of with a position. It takes two `PositionComponent`s. `button` and `buttonDown`, the first
-is used for when the button is idle and the second is shown when the button is being pressed. The
-second one is optional if you don't want to change the look of the button when it is pressed, or if
-you handle this through the `button` component.
+`HudButtonComponent` 是一个可以定义为 `Viewport `边缘的边距而不是位置的按钮。它接受两个 `PositionComponents`。 `button`和`buttonDown`，第一个用于按钮空闲时显示，第二个在按下按钮时显示。 如果您不想在按钮被按下时更改它的外观，或者如果您想通过`button`组件处理它，那么第二个选项是可选的。
 
-As the name suggests this button is a hud by default, which means that it will be static on your
-screen even if the camera for the game moves around. You can also use this component as a non-hud by
-setting `hudButtonComponent.respectCamera = true;`.
+顾名思义，这个按钮默认是一个hub的，这意味着即使游戏的摄像机移动了，它在屏幕上也会是静态的。通过设置 `hudButtonComponent.respectCamera = true`，您还可以将此组件用作非 hud的。
 
-If you want to act upon the button being pressed (which would be the common thing to do) and released,
-you can either pass in callback functions as the `onPressed` and `onReleased` arguments, or you can
-extend the component and override `onTapDown`, `onTapUp` and/or `onTapCancel` and implement your logic there.
+如果你想按下并释放按钮（这是常见的事情） ，你可以传入回调函数作为 `onPressed` 和 `onReleased `参数，或者你可以扩展组件并覆盖 `onTapDown`、 `onTapUp `和/或 `onTapCancel `并在那里实现你的逻辑。
 
 ## SpriteButtonComponent
 
-A `SpriteButtonComponent` is a button that is defined by two `Sprite`s, one that represents
-when the button is pressed and one that represents when the button is released.
+`SpriteButtonComponent` 是由两个 `Sprites` 定义的按钮，一个表示按钮被按下的时间，另一个表示按钮被释放的时间。
 
 ## ButtonComponent
 
-A `ButtonComponent` is a button that is defined by two `PositionComponent`s, one that represents
-when the button is pressed and one that represents when the button is released. If you only want
-to use sprites for the button, use the [](#spritebuttoncomponent) instead, but this component can be
-good to use if you for example want to have a `SpriteAnimationComponent` as a button, or anything
-else which isn't a pure sprite.
+`ButtonComponent `是由两个 `PositionComponents `定义的按钮，一个表示按钮被按下的时间，另一个表示按钮被释放的时间。如果你只想为按钮使用 `SpriteButtonComponent`，那么可以使用 SpriteButtonComponent，但是如果你想使用一个 [SpriteAnimationComponent](#spritebuttoncomponent)作为按钮，或者其他任何不是纯精灵图的组件，那么这个组件是不错的选择。
 
 ## Gamepad
 
-Flame has a separate plugin to support external game controllers (gamepads), check
-[here](https://github.com/flame-engine/flame_gamepad) for more information.
+Flame有一个独立的插件来支持外部游戏控制器（手柄），查看[这里](https://github.com/flame-engine/flame_gamepad)了解更多信息。

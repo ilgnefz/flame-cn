@@ -46,5 +46,5 @@ flutter:
     - assets/images/enemy.png
 ```
 
-如果你想改变这个结构，可以使用prefix参数创建你自己的`AssetsCache`、 `ImagesCache`、`AudioCache`和`SoundPool`实例，而不是使用由Flame提供的全局实例。
+如果您想改变这个结构，可以使用prefix参数创建您自己的`AssetsCache`、 `ImagesCache`、`AudioCache`和`SoundPool`实例，而不是使用由Flame提供的全局实例。
 

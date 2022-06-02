@@ -21,7 +21,7 @@ Flame保持它在Flutter稳定通道的支持。开发、测试和主通道应�
 
 要在 web 上使用 Flame，您需要确保您的游戏使用 CanvasKit/Skia 渲染器。 这将提高它在 Web 上的性能，因为它是使用 canvas 元素而不是单独的 DOM 元素。
 
-要使用skia运行你的游戏，用下面的命令：
+要使用skia运行您的游戏，用下面的命令：
 ```console
 $ flutter run -d chrome --web-renderer canvaskit
 ```
@@ -33,7 +33,7 @@ $ flutter build web --release --web-renderer canvaskit
 
 ## 部署您的游戏到Github Pages
 
-一个简单的在线部署游戏的方法是使用 [GitHub Pages](https://pages.github.com/)。这是 GitHub 的一个很酷的功能，通过它你可以很容易地从你的仓库中托管 web 内容。在这里，我们将讲解使用 GitHub 页面托管游戏的最简单方法。首先，让我们在部署文件的位置创建一个分支:
+一个简单的在线部署游戏的方法是使用 [GitHub Pages](https://pages.github.com/)。这是 GitHub 的一个很酷的功能，通过它您可以很容易地从您的仓库中托管 web 内容。在这里，我们将讲解使用 GitHub 页面托管游戏的最简单方法。首先，让我们在部署文件的位置创建一个分支:
 
 ```bash
 git checkout -b gh-pages
@@ -76,4 +76,4 @@ jobs:
 
 另一个例子：使用`flame_audio`包预缓存音频也不起作用，因为Audioplayers在Web端不支持。 这可以通过使用 `http` 包并请求获取音频文件来解决，这将使浏览器缓存文件产生与移动设备相同的效果。
 
-如果你想在Web平台创建 `ui.Image` 的实例，你可以使用我们的 `Flame.images.decodeImageFromPixels` 方法。 这包装了 ui 库中的 `decodeImageFromPixels`，支持 Web 平台。 如果 `runAsWeb` 参数设置为 `true`（默认设置为 `kIsWeb`），它将使用内部图像方法解码图像。 当 `runAsWeb` 为 `false` 时，它将使用 `decodeImageFromPixels`，目前 Web端不支持。
+如果您想在Web平台创建 `ui.Image` 的实例，您可以使用我们的 `Flame.images.decodeImageFromPixels` 方法。 这包装了 ui 库中的 `decodeImageFromPixels`，支持 Web 平台。 如果 `runAsWeb` 参数设置为 `true`（默认设置为 `kIsWeb`），它将使用内部图像方法解码图像。 当 `runAsWeb` 为 `false` 时，它将使用 `decodeImageFromPixels`，目前 Web端不支持。

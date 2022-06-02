@@ -37,7 +37,7 @@ dependencies:
 
 ## 入门
 
-[教程](https://github.com/flame-engine/flame/tree/main/tutorials)文件夹中有一组教程，您可以按照它们开始学习。所有特性的简单示例都可以在[示例](https://github.com/flame-engine/flame/tree/main/examples)文件夹中找到。你也可以查看[awesome-flame](https://github.com/flame-engine/awesome-flame#articles--tutorials)库，它包含了社区编写的大量优秀教程和文章，帮助您上手使用Flame。
+[教程](https://github.com/flame-engine/flame/tree/main/tutorials)文件夹中有一组教程，您可以按照它们开始学习。所有特性的简单示例都可以在[示例](https://github.com/flame-engine/flame/tree/main/examples)文件夹中找到。您也可以查看[awesome-flame](https://github.com/flame-engine/awesome-flame#articles--tutorials)库，它包含了社区编写的大量优秀教程和文章，帮助您上手使用Flame。
 
 ## 其他
 

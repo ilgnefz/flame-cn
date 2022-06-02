@@ -33,7 +33,7 @@ const started = {
   ],
 };
 
-const flame = require('./sidebar/flame')
+const flame = require('./sidebar/flame/flame')
 
 const flameAudio = require('./sidebar/flame_audio')
 

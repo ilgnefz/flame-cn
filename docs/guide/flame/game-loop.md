@@ -71,13 +71,13 @@ main() {
 
 ## 调试模式
 
-Flame的`FlameGame`类提供了一个名为`debugMode`的变量，默认为`false`。当它被设置为`true`时来启用游戏组件的调试功能。**请注意**，此变量的值在添加到游戏中时会传递给其组件，所以如果你在运行时更改`debugMode`，默认情况下不会影响已添加的组件。
+Flame的`FlameGame`类提供了一个名为`debugMode`的变量，默认为`false`。当它被设置为`true`时来启用游戏组件的调试功能。**请注意**，此变量的值在添加到游戏中时会传递给其组件，所以如果您在运行时更改`debugMode`，默认情况下不会影响已添加的组件。
 
 要阅读有关`debugMode`Flame 的更多信息，请查看[调试文档](/guide/flame/other/debug.md)。
 
 ## 更改背景颜色
 
-要想改变您的`FlameGame`的背景颜色，你必须重写`backgroundColor()`。
+要想改变您的`FlameGame`的背景颜色，您必须重写`backgroundColor()`。
 
 在下面的示例中，背景颜色设置为完全透明，因此您可以看到`GameWidget`背后的小部件。默认为不透明黑色。
 
@@ -88,7 +88,7 @@ class MyGame extends FlameGame {
 }
 ```
 
-请注意，在游戏运行时，背景颜色无法动态变化。但是如果您想动态地改变它，你可以只画一个背景来覆盖整个画布。
+请注意，在游戏运行时，背景颜色无法动态变化。但是如果您想动态地改变它，您可以只画一个背景来覆盖整个画布。
 
 ## SingleGameInstance mixin
 
