@@ -5,7 +5,7 @@ module.exports = {
     children: [
         {
             text: "组件",
-            link: "#组件",
+            link: "/guide/flame/components.md#组件",
         },
         {
             text: "优先权",
@@ -33,7 +33,7 @@ module.exports = {
         },
         {
             text: "PositionComponent",
-            link: "#positioncomponent",
+            link: "/guide/flame/components.md#positioncomponent",
         },
         {
             text: "PositionComponent子元素",
@@ -45,7 +45,7 @@ module.exports = {
         },
         {
             text: "SpriteComponent",
-            link: "#spritecomponent",
+            link: "/guide/flame/components.md#spritecomponent",
         },
         {
             text: "SpriteAnimationComponent",

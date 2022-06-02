@@ -1,125 +1,94 @@
+---
+prev:
+  text: 待续...
+  link: /guide/tutorials/klondike/tbc.md
+next:
+  text: Oxygen
+  link: /guide/other_modules/oxygen.md
+---
+
 # Forge2D
 
-We (the Flame organization) maintain a ported version of the Box2D physics engine and our version
-is called Forge2D.
+我们（Flame 组织）维护了 Box2D 物理引擎的移植版本，我们的版本称为 Forge2D。
 
-If you want to use Forge2D specifically for Flame you should use our bridge library
-[flame_forge2d](https://github.com/flame-engine/flame/tree/main/packages/flame_forge2d) and if you
-just want to use it in a Dart project you can use the
-[forge2d](https://github.com/flame-engine/forge2d) library directly.
+如果你想专门为 Flame 使用 Forge2D，你应该使用我们的桥接库 [flame_forge2d](https://github.com/flame-engine/flame/tree/main/packages/flame_forge2d)，如果你只是想在 Dart 项目中使用它，你可以直接使用 [forge2d](https://github.com/flame-engine/forge2d) 库。
 
-To use it in your game you just need to add `flame_forge2d` to your pubspec.yaml, as can be seen
-in the
-[Forge2D example](https://github.com/flame-engine/flame/tree/main/packages/flame_forge2d/example)
-and in the pub.dev [installation instructions](https://pub.dev/packages/flame_forge2d).
-
+要在游戏中使用它，你只需要在你的 `pubspec.yaml` 中添加 `flame _ Forge2D`，正如 Forge2D [示例](https://github.com/flame-engine/flame/tree/main/packages/flame_forge2d/example) 和 pub.dev [安装说明](https://pub.dev/packages/flame_forge2d)中所示。
 
 ## Forge2DGame
 
-If you are going to use Forge2D in your project it can be a good idea to use the Forge2D specific
-`FlameGame` class, `Forge2DGame`.
+如果你打算在你的项目中使用 `Forge2D`，那么使用 `Forge2D` 特定的 `FlameGame` 类 `Forge2DGame` 是一个不错主意。
 
-It is called `Forge2DGame` and it will control the adding and removal of Forge2D's `BodyComponents`
-as well as your normal components.
+它被称为 `Forge2DGame`，它将控制 `Forge2D` 的 `BodyComponents` 以及您普通组件的添加和删除。
 
-In `Forge2DGame` the `Camera` has a zoom level set to 10 by default, so your components will be a
-lot bigger than in a normal Flame game. This is due to the speed limitation in the `Forge2D` world,
-which you would hit very quickly if you are using it with `zoom = 1.0`. You can easily change the
-zoom level eiter by calling `super(zoom: yourZoom)` in your constructor, or do
-`game.camera.zoom = yourZoom;` at a later stage.
+在 `Forge2DGame` 中，`Camera` 的缩放级别默认设置为 10，因此您的组件将比普通 `Flame` 游戏大得多。这是由于 Forge2D 世界中的速度限制，如果在 zoom=1.0 的情况下使用它，您会很快遇到这种限制。 您可以通过在构造函数中调用 `super(zoom: yourZoom)` 轻松更改缩放级别，或者稍后执行 `game.camera.zoom = yourZoom;` 。
 
-If you are previously familiar with Box2D it can be good to know that the whole concept of the
-Box2d world is mapped to `world` in the `Forge2DGame` component and every `Body` that you want to
-use as a component should be a wrapped in a `BodyComponent`, and added to your `Forge2DGame`.
+如果您以前熟悉 `Box2D`，那么这对你来说是件好事。 `Box2d` 世界的整个概念都映射到 `Forge2DGame` 的世界中，并且您想用作组件的每个 `Body` 都包装在 `BodyComponent` 中，然后添加到了 `Forge2DGame` 中。
 
-You can have for example a HUD and other non-physics-related components in your `Forge2DGame`'s
-component list along with your physical entities. When the update is called, it will use the Forge2D
-physics engine to properly update every `BodyComponent` and other components in the game will be
-updated according to the normal `FlameGame` way.
+例如，在 `Forge2DGame` 的组件列表中可以有一个 HUD 和其他非物理相关的组件以及物理实体。当调用更新时，它将使用 `Forge2D` 物理引擎正确地更新每个 `BodyComponent`，游戏中的其他组件将按照正常的 `FlameGame` 方式更新。
 
-In `Forge2DGame` the gravity is flipped compared to `Forge2D` to keep the same coordinate system as
-in Flame, so a positive y-axis in the gravity like `Vector2(0, 10)` would be pulling bodies
-downwards, meanwhile a negative y-axis would pull them upwards. The gravity can be set directly in
-the constructor of the `Forge2DGame`.
+在 `Forge2D game` 中，为了保持与 Flame 中相同的坐标系，重力是翻转过来的，所以重力中的正 y 轴如 `Vector2(0,10)` 会将物体向下拉，同时负 y 轴会将物体向上拉。重力可以在 `Forge2DGame` 的构造函数中直接设置。
 
-A simple `Forge2DGame` implementation examples can be seen in the
-[examples folder](https://github.com/flame-engine/flame/tree/main/packages/flame_forge2d/example).
-
+在 [examples 文件夹 ](https://github.com/flame-engine/flame/tree/main/packages/flame_forge2d/example)中可以看到一个简单的 Forge2DGame 实现示例。
 
 ## BodyComponent
 
-The `BodyComponent` is a wrapped for the `Forge2D` body, which is the body that the physics engine
-is interacting with. To create a `BodyComponent` you need to override `createBody()` and create and
-return your created body.
+`BodyComponent` 是 `Forge2D body` 的一个包装，`Forge2D body` 是物理引擎与之交互的主体。要创建 `BodyComponent`，您需要重写 `createBody()`，并创建和返回已创建的 `body`。
 
-The `BodyComponent` is by default having `renderBody = true`, since otherwise it wouldn't show
-anything after you have created a `Body` and added the `BodyComponent` to the game. If you want to
-turn it off you can just set (or override) `renderBody` to false.
+`BodyComponent` 默认设置为 `renderBody = true`，否则在您创建 `Body` 并将 `BodyComponent` 添加到游戏后它不会显示任何内容。 如果你想关闭它，你可以设置（或覆盖）`renderBody` 为 `false`。
 
-Just like any other Flame component you can add children to the `BodyComponent`, which can be very
-useful if you want to add for example animations or other components on top of your body.
+就像任何其他 Flame 组件一样，您可以将子组件添加到 `BodyComponent`，如果您想在 `body `顶部添加例如动画或其他组件，这将非常有用。
 
-The body that you create in `createBody` should be defined according to Flame's coordinate system,
-not according to the coordinate system of Forge2D (where the Y-axis is flipped).
+您在 `createBody` 中创建的 `body` 应该根据 Flame 的坐标系定义，而不是根据 `Forge2D` 的坐标系（Y 轴翻转的地方）。
 
+## 联系回调
 
-## Contact callbacks
+如果您正在使用 `Forge2DGame`，您可以利用它处理两个 `BodyComponents` 之间的联系。
 
-`Forge2DGame` provides a simple out of the box solution to propagate contact events.
-
-Contact events occur whenever two `Fixture`s meet each other. These events allows listening when
-these `Fixture`s begin to come in contact (`beginContact`) and cease being in contact
-(`endContact`).
-
-There are multiple ways to listen to these events. One common way is to use the `ContactCallbacks`
-class as a mixin in the `BodyComponent` where you are interested in these events.
+在为 `BodyComponent` 创建主体定义时，请确保将 `userData` 设置为当前对象，否则将无法检测冲突。像这样：
 
 ```dart
-class Ball extends BodyComponent with ContactCallbacks {
-  ...
-  void beginContact(Object other, Contact contact) {
-    if (other is Wall) {
-      // Do something here.
-    }
-  }
-  ...
-}
+final bodyDef = BodyDef()
+  // 能够知道碰撞涉及到哪个部件
+  ..userData = this;
 ```
 
-In order for the above to work, the `Ball`'s `body.userData` or contacting `fixture.userData` must be
-set to a `ContactCallback`. And if `Wall` is a `BodyComponent` its `body.userData` or contacting 
-`fixture.userData` must be set to `Wall`. 
-
-If `userData` is `null` the contact events are ignored, it is `null` by default.
-
-A convenient way of setting `userData` is to assign it when creating the body. For example:
+现在您必须实现 `ContactCallback `，您可以在其中设置当它们接触时它应该做出反应的两种类型。 如果你有两个名为 Ball 和 Wall 的 `BodyComponent`，并且你想在它们接触时做一些事情，你可以这样做：
 
 ```dart
-class Ball extends BodyComponent with ContactCallbacks {
-  ...
+class BallWallCallback extends ContactCallback<Ball, Wall> {
+  BallWallCallback();
 
   @override
-  Body createBody() {
-    ...
-    final bodyDef = BodyDef(
-      userData = this,
-    );
-    ...
+  void begin(Ball ball, Wall wall, Contact contact) {
+    wall.remove();
   }
 
+  @override
+  void end(Ball ball, Wall wall, Contact contact) {}
 }
 ```
 
-Every time `Ball` and `Wall` begin to come in contact `beginContact` will be called, and once the
-fixtures cease being in contact, `endContact` will be called.
+然后你可以简单地将 `BallWallCallback `添加到 `Forge2DGame`：
 
-An implementation example can be seen in the
-[Flame Forge2D example](https://github.com/flame-engine/flame/blob/main/packages/flame_forge2d/example/lib/balls.dart).
+```dart
+class MyGame extends Forge2DGame {
+  MyGame(Forge2DComponent box) : super(box) {
+    addContactCallback(BallWallCallback());
+  }
+}
+```
 
+每次 Ball 和 Wall 接触时，`begin` 将被调用，一旦对象停止接触，`end` 将被调用。
+
+如果您希望一个对象与其他所有主体交互，请将 `BodyComponent` 作为您 `ContactCallback` 的参数之一，如下所示：
+
+```dart
+class BallAnythingCallback implements ContactCallback<Ball, BodyComponent> ...
+```
+
+可以在[Flame Forge2D 示例](https://github.com/flame-engine/flame_forge2d/blob/main/example)中看到一个实现示例。
 
 ### Forge2DCamera.followBodyComponent
 
-Just like with normal `PositionComponent`s you can make the `Forge2DCamera` follow `BodyComponent`s
-by calling `camera.followBodyComponent(...)` which works the same as
-[camera.followComponent](../flame/camera_and_viewport.md#camerafollowcomponent). When you want to
-stop following a `BodyComponent` you should call `camera.unfollowBodyComponent`.
+就像使用正常定位组件一样，你可以通过调用 `camera.followBodyComponent(...)` 使 `Forge2DCamera` 跟随 `BodyComponents`，后者的工作原理与 `camera.followComponent` 相同。当你想停止跟踪一个 `BodyComponent` 时，你应该调用 `camera.unfollowBodyComponent`。

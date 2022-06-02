@@ -1,10 +1,18 @@
-# Splash screen
+---
+prev:
+  text: Tiled
+  link: /guide/other_modules/tiled.md
+---
+
+
+
+# 闪屏页
 
 ![](https://raw.githubusercontent.com/flame-engine/flame_splash_screen/main/demogif.gif)
 
-Style your flame game with a beautiful splash screen.
+用漂亮的闪屏设计你的 Flame 游戏。
 
-FlameSplashScreen is a very customizable splash screen package. 
+`FlameSplashScreen`是一个可定制的闪屏包。
 
 ```dart
 FlameSplashScreen(
@@ -13,5 +21,4 @@ FlameSplashScreen(
 )
 ```
 
-Check the [package's repo](https://github.com/flame-engine/flame_splash_screen) and the
-[pub page](https://pub.dev/packages/flame_splash_screen) for more details.
+查看包的 [repo](https://github.com/flame-engine/flame_splash_screen) 和 [pub 页面](https://pub.dev/packages/flame_splash_screen) 以获取更多详细信息。

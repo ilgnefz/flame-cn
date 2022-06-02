@@ -42,11 +42,11 @@ Flame 是基于 Flutter 的 2D 游戏引擎，该库为 Flame 引擎的中文译
     - [ ] 2.脚手架
     - [ ] 3.卡片
     - [ ] 待续...
-- [ ] 其它模块
-  - [ ] Forge2D
-  - [ ] Oxygen
-  - [ ] Tiled
-  - [ ] 启动屏幕
+- [x] 其它模块
+  - [x] Forge2D
+  - [x] Oxygen
+  - [x] Tiled
+  - [x] 闪屏页
 
 该站点使用 VuePress2.x 生成，如果你也想对本文档进行翻译，可克隆仓库到本地使用`npm i`安装依赖后，去 [VuePress2.x](https://v2.vuepress.vuejs.org/zh/) 查看具体的使用教程。
 

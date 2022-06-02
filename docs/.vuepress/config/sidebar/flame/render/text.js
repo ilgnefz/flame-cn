@@ -15,7 +15,7 @@ module.exports = {
             collapsible: true,
             children: [{
                 text: "TextComponent",
-                link: "#textcomponent"
+                link: "/guide/flame/rendering/text.md#textcomponent"
             }, {
                 text: "TextBoxComponent",
                 link: "#textboxcomponent"
