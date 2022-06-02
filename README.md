@@ -32,9 +32,9 @@ Flame 是基于 Flutter 的 2D 游戏引擎，该库为 Flame 引擎的中文译
     - [x] 调试
     - [x] 实用工具
     - [x] 小部件
-- [ ] Flame 音频
-  - [ ] 一般音频
-  - [ ] 背景音乐
+- [x] Flame 音频
+  - [x] 一般音频
+  - [x] 背景音乐
 - [ ] 教程
   - [ ] Bare Flame game
   - [ ] Klondike

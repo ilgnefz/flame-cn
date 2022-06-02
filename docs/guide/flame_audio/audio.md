@@ -11,7 +11,7 @@ next:
 
 对于任何游戏来说，播放音频都是必不可少的，所以我们将其简单化！
 
-首先，你必须在你的 `pubspec.yaml` 文件中添加 [flame_audio](https://github.com/flame-engine/flame_audio) 到你的依赖列表：
+首先，您必须在您的 `pubspec.yaml` 文件中添加 [flame_audio](https://github.com/flame-engine/flame_audio) 到您的依赖列表：
 
 ```yaml
 dependencies:
@@ -33,7 +33,7 @@ flutter:
     - assets/audio/music.mp3
 ```
 
-然后你可以使用以下方法：
+然后您可以使用以下方法：
 
 ```dart
 import 'package:flame_audio/flame_audio.dart';
@@ -58,47 +58,34 @@ FlameAudio.bgm.play('music.mp3');
 
 `playLongAudio/loopLongAudio` 允许播放任何长度的音频，但它们确实会造成帧率下降，并且循环播放的音频在迭代之间会有一个小的间隙。
 
-You can use [the `Bgm` class](bgm.md) (via `FlameAudio.bgm`) to play looping background music
-tracks. The `Bgm` class lets Flame automatically manage the pausing and resuming of background music
-tracks when the game is backgrounded or comes back to the foreground.
+您可以使用 [Bgm](bgm.md) 类（通过 `FlameAudio.bgm`）播放循环背景音乐曲目。 `Bgm` 类让 Flame 在游戏进入后台或回到前台时自动管理背景音乐曲目的暂停和恢复。
 
-Some file formats that work across devices and that we recommend are: MP3, OGG and WAV.
+我们推荐的一些跨设备工作的文件格式是：MP3、OGG 和 WAV。
 
-This bridge library (flame_audio) uses [audioplayers](https://github.com/luanpotter/audioplayer) in
-order to allow for playing multiple sounds simultaneously (crucial in a game). You can check the
-link for a more in-depth explanation.
+这个桥接库（flame_audio）使用 [audioplayers](https://github.com/luanpotter/audioplayer) 来允许同时播放多个声音（在游戏中至关重要）。 您可以查看链接以获得更深入的解释。
 
-Finally, you can pre-load your audios. Audios need to be stored in the memory the first time they
-are requested; therefore, the first time you play each mp3 you might get a delay. In order to
-pre-load your audios, just use:
+最后，您可以预加载音频。 音频需要在第一次被请求时存储在内存中； 因此，第一次播放每个 mp3 时，您可能会遇到延迟。 为了预加载您的音频，只需使用：
 
 ```dart
 await FlameAudio.audioCache.load('explosion.mp3');
 ```
 
-You can load all your audios in the beginning in your game's `onLoad` method so that they always
-play smoothly. To load multiple audio files, use the `loadAll` method:
+您可以在游戏的 onLoad 方法中一开始就加载所有音频，以便它们始终流畅播放。 要加载多个音频文件，请使用 `loadAll` 方法：
 
 ```dart
 await FlameAudio.audioCache.loadAll(['explosion.mp3', 'music.mp3'])
 ```
 
-Finally, you can use the `clear` method to remove a file that has been loaded into the cache:
+最后，您可以使用 `clear` 方法删除加载到缓存中的文件：
 
 ```dart
 FlameAudio.audioCache.clear('explosion.mp3');
 ```
 
-There is also a `clearCache` method, that clears the whole cache.
+还有一个 `clearCache` 方法，可以清除整个缓存。
 
-This might be useful if, for instance, your game has multiple levels and each has a different
-set of sounds and music.
+例如，如果您的游戏有多个关卡，每个关卡都有不同的声音和音乐组合，那么这可能会很有用。
 
-Both load methods return a `Future` for the `File`s loaded.
+在 `play` 和 `loop` 中，您都可以传递一个额外的可选双参数，音量（默认为 1.0）。
 
-Both on `play` and `loop` you can pass an additional optional double parameter, the `volume`
-(defaults to `1.0`).
-
-Both the `play` and `loop` methods return an instance of an `AudioPlayer` from the
-[audioplayers](https://github.com/luanpotter/audioplayer) lib, that allows you to stop, pause and
-configure other parameters.
+`play` 和 `loop` 方法都从 [audioplayers](https://github.com/luanpotter/audioplayer) 库返回一个 `AudioPlayer` 的实例，它允许您停止、暂停和配置其他参数。
