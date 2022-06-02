@@ -1,7 +1,15 @@
-# Images
+---
+prev:
+  text: 其他输入
+  link: /guide/flame/inputs/other-inputs.md
+next:
+  text: 文本渲染
+  link: /guide/flame/rendering/text.md
+---
 
-To start off you must have an appropriate folder structure and add the files to the `pubspec.yaml`
-file, like this:
+# 图片
+
+首先，您必须有一个合适的文件夹结构，并将这些文件添加到 `pubspec.yaml` 文件中，如下所示：
 
 ```yaml
 flutter:
@@ -10,41 +18,30 @@ flutter:
     - assets/images/enemy.png
 ```
 
-Images can be in any format supported by Flutter, which include: JPEG, WebP, PNG, GIF, animated GIF,
-animated WebP, BMP, and WBMP. Other formats would require additional libraries. For example, SVG
-images can be loaded via the `flame_svg` library.
+图像可以是 Flutter 支持的任何格式，包括: JPEG、 WebP、 PNG、 GIF、 GIF 动画、 WebP 动画、 BMP 和 WBMP。其他格式将需要额外的库。例如，可以通过 [flame_svg](https://pub.dev/packages/flame_svg) 库加载 SVG 图像。
 
 
-## Loading images
+## 载入图片
 
-Flame bundles an utility class called `Images` that allows you to easily load and cache images from
-the assets directory into memory.
+Flame 捆绑了一个名为 `Images` 的实用程序类，它允许您轻松地从资产目录加载和缓存映像到内存中。
 
-Flutter has a handful of types related to images, and converting everything properly from a local
-asset to an `Image` that can be drawn on Canvas is a bit convoluted. This class allows you to obtain
-an `Image` that can be drawn on the `Canvas` using the `drawImageRect` method.
+Flutter 有一些与图像相关的类型，将所有内容从本地资源正确转换为可以在 `Canvas`上绘制的图像有点复杂。 此类允许您使用 `drawImageRect` 方法获取可以在 `Canvas` 上绘制的图像。
 
-It automatically caches any image loaded by filename, so you can safely call it many times.
+它会自动缓存按文件名加载的任何图像，因此您可以安全地多次调用它。
 
-The methods for loading and clearing the cache are: `load`, `loadAll`, `clear` and `clearCache`.
-They return `Future`s for loading the images. These futures must be awaited for before the images
-can be used in any way. If you do not want to await these futures right away, you can initiate 
-multiple `load()` operations and then await for all of them at once using `Images.ready()` method.
+加载和清除缓存的方法有：`load`、`loadAll`、`clear`和`clearCache`。 他们返回 `Futures `以加载图像。 在这些图像以任何方式使用之前，必须等待这些 `Future`。如果您不想立即等待这些`Future`，可以启动多个 `load()` 操作，然后使用 `Image.ready()` 方法一次等待所有的这些操作。
 
-To synchronously retrieve a previously cached image, the `fromCache` method can be used. If an image
-with that key was not previously loaded, it will throw an exception.
+要同步检索以前缓存的映像，可以使用 `fromCache` 方法。如果以前没有加载具有该键的映像，则将引发异常。
 
-To add an already loaded image to the cache, the `add` method can be used and you can set the key
-that the image should have in the cache.
+若要将已加载的图像添加到缓存中，可以使用 `add` 方法，并可以设置图像在缓存中应该具有的键。
 
-You can also use `ImageExtension.fromPixels()` to dynamically create an image during the game.
+您还可以使用 `ImageExtension.fromPixels()` 在游戏期间动态创建图像。
 
-For `clear` and `clearCache`, do note that `dispose` is called for each removed image from the
-cache, so make sure that you don't use the image afterwards.
+对于 `clear` 和 `clearCache`，请务必注意，对于每个从缓存中删除的图像，都会调用 `dispose`，因此请确保事后不使用该图像。
 
-### Standalone usage
+### 单独使用
 
-It can manually be used by instantiating it:
+它可以通过实例化来手动使用：
 
 ```dart
 import 'package:flame/images.dart';
@@ -52,13 +49,13 @@ final imagesLoader = Images();
 Image image = await imagesLoader.load('yourImage.png');
 ```
 
-But Flame also offers two ways of using this class without instantiating it yourself.
+但是 Flame 也提供了两种不需要自己实例化就可以使用这个类的方法。
 
 ### Flame.images
 
-There is a singleton, provided by the `Flame` class, that can be used as a global image cache.
+这是一个单例模式，由 Flame 类提供，可以用作全局图像缓存。
 
-Example:
+示例：
 
 ```dart
 import 'package:flame/flame.dart';
@@ -72,13 +69,11 @@ final playerSprite = Sprite(image);
 
 ### Game.images
 
-The `Game` class offers some utility methods for handling images loading too. It bundles an instance
-of the `Images` class, that can be used to load image assets to be used during the game. The game
-will automatically free the cache when the game widget is removed from the widget tree.
+`Game` 类也提供了一些处理图像加载的实用方法。它捆绑了一个 `Images` 类的实例，可以用来加载在游戏中使用的图像资源。当游戏小部件从小部件树中移除时，游戏将自动释放缓存。
 
-The `onLoad` method from the `Game` class is a great place for the initial assets to be loaded.
+`Game `类中的 `onLoad` 方法是装载初始资源的好地方。
 
-Example:
+示例：
 
 ```dart
 class MyGame extends Game {
@@ -93,7 +88,7 @@ class MyGame extends Game {
 }
 ```
 
-Loaded assets can also be retrieved while the game is running by `images.fromCache`, for example:
+当游戏运行时，也可以通过 `images.fromCache` 检索已加载的资产，例如：
 
 ```dart
 class MyGame extends Game {
@@ -115,22 +110,20 @@ class MyGame extends Game {
 }
 ```
 
-## Sprite
+## 精灵图
 
-Flame offers a `Sprite` class that represents an image, or a region of an image.
+Flame 提供了一个`Sprite`类，用于表示图像或图像区域。
 
-You can create a `Sprite` by providing it an `Image` and coordinates that defines the piece of the
-image that that sprite represents.
+您可以通过提供一个`Image`和坐标来定义精灵图所代表的图像部分来创建一个`Sprite`。
 
-For example, this will create a sprite representing the whole image of the file passed:
+例如，这将创造一个代表所传递文件的整个图像的精灵图：
 
 ```dart
 final image = await images.load('player.png');
 Sprite player = Sprite(image);
 ```
 
-You can also specify the coordinates in the original image where the sprite is located. This allows
-you to use sprite sheets and reduce the number of images in memory, for example:
+您还可以在原始图像中指定精灵所在的坐标。这允许您使用精灵表并减少内存中的图像数量，例如：
 
 ```dart
 final image = await images.load('player.png');
@@ -141,10 +134,9 @@ final playerFrame = Sprite(
 );
 ```
 
-The default values are `(0.0, 0.0)` for `srcPosition` and `null` for `srcSize` (meaning it will use
-the full width/height of the source image).
+`srcPosition` 的默认值为`(0.0,0.0)` ，`srcSize` 的默认值为 `null` (这意味着它将使用源图像的全部宽度/高度)。
 
-The `Sprite` class has a render method, that allows you to render the sprite onto a `Canvas`:
+`Sprite` 类有一个 `render` 方法，允许您将精灵渲染到 `Canvas` 上：
 
 ```dart
 final image = await images.load('block.png');
@@ -154,40 +146,31 @@ Sprite block = Sprite(image);
 block.render(canvas, 16.0, 16.0); //canvas, width, height
 ```
 
-You must pass the size to the render method, and the image will be resized accordingly.
+您必须将大小传递给渲染方法，图像将相应地调整大小。
 
-All render methods from the `Sprite` class can receive a `Paint` instance as the optional named
-parameter `overridePaint` that parameter will override the current `Sprite` paint instance for that
-render call.
+所有来自 `Sprite` 类的渲染方法都可以接收一个 `Paint` 实例作为可选的命名参数 `overridePaint`，该参数将覆盖当前渲染调用的 `Sprite` 绘制实例。
 
-`Sprite`s can also be used as widgets, to do so just use `SpriteWidget` class.
+`Sprites` 也可以用作小部件，只需要使用 `SpriteWidget ` 类即可。
 
-A complete example using sprite as widgets can be found
-[here](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/widget/sprite_widget.dart).
+[这里](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/widget/sprite_widget.dart)有一个使用精灵图作为窗口小部件的完整示例。
 
 ## SpriteBatch
 
-If you have a sprite sheet (also called an image atlas, which is an image with smaller images
-inside), and would like to render it effectively - `SpriteBatch` handles that job for you.
+如果您有一个精灵表（也称为图像图集，它是一个内部包含较小图像的图像），并且想要有效地渲染它 — `SpriteBatch `会为您处理这项工作。
 
-Give it the filename of the image, and then add rectangles which describes various part of the
-image, in addition to transforms (position, scale and rotation) and optional colors.
+给出图像的文件名，然后添加描述图像各个部分的矩形，以及变换（位置、缩放和旋转）和可选颜色。
 
-You render it with a `Canvas` and an optional `Paint`, `BlendMode` and `CullRect`.
+您可以使用 `Canvas` 和可选的 `Paint`、`BlendMode` 和 `CullRect ` 来渲染它。
 
-A `SpriteBatchComponent` is also available for your convenience.
+为了方便起见，还提供了一个 `SpriteBatchComponent`。
 
-See the examples
-[here](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/sprites/spritebatch.dart).
+请看[这里](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/sprites/spritebatch.dart)的示例。
 
 ## ImageComposition
 
-In some cases you may want to merge multiple images into a single image; this is called
-[Compositing](https://en.wikipedia.org/wiki/Compositing). This can be useful for example when
-working with the [SpriteBatch](#spritebatch) API to optimize your drawing calls.
+在某些情况下，您可能希望将多个图像合并到一个图像中； 这就是所谓的[合成](https://en.wikipedia.org/wiki/Compositing)。例如，在使用  [SpriteBatch](#spritebatch) API 优化绘图调用时，这可能非常有用。
 
-For such usecases Flame comes with the `ImageComposition` class. This allows you to add multiple
-images, each at their own position, onto a new image:
+对于这种情况，Flame 自带 `ImageComposition` 类。这允许您在一个新图像上添加多个图像，每个图像的位置都不同：
 
 ```dart
 final composition = ImageComposition()
@@ -201,19 +184,15 @@ final composition = ImageComposition()
 Image image = await composition.compose();
 ```
 
-**Note:** Composing images is expensive, we do not recommend you run this every tick as it affect
-the performance badly. Instead we recommend to have your compositions pre-rendered so you can just
-reuse the output image.
+**注意**：合成图像代价昂贵，我们不建议您每次运行都运行它，因为它会严重影响性能。 相反，我们建议您预先渲染您的作品，以便您可以重复使用输出图像。
 
 ## Svg
 
-Flame provides a simple API to render SVG images in your game.
+Flame 提供了一个简单的 API 来在游戏中渲染 SVG 图像。
 
-Svg support is provided by the `flame_svg` external package, be sure to put it in your pubspec file
-to use it.
+对 Svg 的支持是由 [flame_svg](https://pub.dev/packages/flame_svg) 外部包提供的，一定要把它放在您的 pubspec 文件中使用。
 
-To use it just import the `Svg` class from `'package:flame_svg/flame_svg.dart'`, and use the
-following snippet to render it on the canvas:
+要使用它，只需从 `'package:flame_svg/flame_svg.dart'` 导入 Svg 类。使用下面的代码片段在画布上渲染它：
 
 ```dart
 Svg svgInstance = Svg('android.svg');
@@ -224,7 +203,7 @@ final size = Vector2(300, 300);
 svgInstance.renderPosition(canvas, position, size);
 ```
 
-or use the [SvgComponent]:
+或者使用 `SvgComponent`：
 
 ```dart
 class MyGame extends FlameGame {
@@ -240,21 +219,19 @@ class MyGame extends FlameGame {
 }
 ```
 
-## Animation
+## 动画
 
-The Animation class helps you create a cyclic animation of sprites.
+Animation 类可以帮助您创建一个循环的精灵图动画。
 
-You can create it by passing a list of equally sized sprites and the stepTime (that is, how many
-seconds it takes to move to the next frame):
+您可以通过传递相同大小的精灵列表和 stepTime（即移动到下一帧所需的秒数）来创建它：
 
 ```dart
 final a = SpriteAnimation.spriteList(sprites, stepTime: 0.02);
 ```
 
-After the animation is created, you need to call its `update` method and render the current frame's
-sprite on your game instance.
+在动画创建之后，您需要调用它的 `update` 方法并在您的游戏实例上渲染当前帧的精灵图。
 
-Example:
+示例：
 
 ```dart
 class MyGame extends Game {
@@ -274,7 +251,7 @@ class MyGame extends Game {
 }
 ```
 
-A better alternative to generate a list of sprites is to use the `fromFrameData` constructor:
+一个更好的生成子图标列表的方法是使用 `fromFrameData` 构造器：
 
 ```dart
 const amountOfFrames = 8;
@@ -288,15 +265,11 @@ final a = SpriteAnimation.fromFrameData(
 );
 ```
 
-This constructor makes creating an `Animation` very easy when using sprite sheets.
+当使用精灵表时，这个构造函数使创建动画变得非常容易。
 
-In the constructor you pass an image instance and the frame data, which contains some parameters
-that can be used to describe the animation. Check the documentation on the constructors available on
-the `SpriteAnimationFrameData` class to see all the parameters.
+在构造函数中，传递一个图像实例和帧数据，其中包含一些可用于描述动画的参数。请查看 `SpriteAnimationFrameData` 类中可用的构造函数的文档，以查看所有参数。
 
-If you use Aseprite for your animations, Flame does provide some support for Aseprite animation's
-JSON data. To use this feature you will need to export the Sprite Sheet's JSON data, and use
-something like the following snippet:
+如果您的动画使用了 Aseprite，那么 Flame 确实为 Aseprite 动画的 JSON 数据提供了一些支持。要使用这个功能，您需要导出精灵表的 JSON 数据，并使用如下代码片段：
 
 ```dart
 final image = await images.load('chopper.png');
@@ -304,24 +277,19 @@ final jsonData = await assets.readJson('chopper.json');
 final animation = SpriteAnimation.fromAsepriteData(image, jsonData);
 ```
 
-**Note:** trimmed sprite sheets are not supported by flame, so if you export your sprite sheet this
-kway, it will have the trimmed size, not the sprite original size.
+**注意**：Flame 不支持修剪的精灵表，所以如果您将精灵表导出到这个 kway，它将具有修剪后的大小，而不是精灵的原始大小。
 
-Animations, after created, have an update and render method; the latter renders the current frame,
-and the former ticks the internal clock to update the frames.
+动画在创建之后，有一个更新和渲染方法；后者渲染当前帧，而前者通过内部计时来更新帧。
 
-Animations are normally used inside `SpriteAnimationComponent`s, but custom components with several
-Animations can be created as well.
+动画通常在 `SpriteAnimationComponents` 中使用，但也可以创建具有多个动画的自定义组件。
 
-A complete example of using animations as widgets can be found
-[here](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/widgets/sprite_animation_widget.dart).
+使用动画作为小部件的完整示例可以在[这里](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/widgets/sprite_animation_widget.dart)找到。
 
 ## FlareAnimation
 
-Flame provides a simple wrapper of [Flare](https://rive.app/#LearnMore) animations so you can use
-them in Flame games.
+Flame 提供了一个简单的 [Flare](https://rive.app/#LearnMore) 动画包装器，因此您可以在 Flame 游戏中使用它们。
 
-Check the following snippet on how to use this wrapper:
+查看下面的代码片段了解如何使用这个包装器：
 
 ```dart
 class MyGame extends Game {
@@ -358,18 +326,13 @@ class MyGame extends Game {
 }
 ```
 
-FlareAnimations are normally used inside `FlareComponent`s, that way `FlameGame` will handle calling
-`render` and `update` automatically.
+`FlareAnimations` 通常在 `FlareComponents` 中使用，这样 `FlameGame` 将自动处理调用 `render` 和 `update`。
 
-You can see a full example of how to use Flare together with Flame in the example
-[here](https://github.com/flame-engine/flame_flare/tree/main/example).
+您可以在[这里](https://github.com/flame-engine/flame_flare/tree/main/example)看到如何将 Flare 与 Flame 一起使用的完整示例。
 
 ## SpriteSheet
 
-Sprite sheets are big images with several frames of the same sprite on it and is a very good way to
-organize and keep your animations stored. Flame provides a very simple utility class to deal with
-SpriteSheets, with it you can load your sprite sheet image and extract animations from it. Below is
-a very simple example of how to use it:
+精灵表是带有若干帧相同精灵的大图像，是组织和保存动画的好方法。Flame 提供了一个非常简单的实用程序类来处理 SpriteSheets，有了它，您可以加载您的精灵表图像，并从中提取动画。下面是如何使用它的一个非常简单的例子：
 
 ```dart
 import 'package:flame/sprite.dart';
@@ -382,13 +345,12 @@ final spritesheet = SpriteSheet(
 final animation = spritesheet.createAnimation(0, stepTime: 0.1);
 ```
 
-Now you can use the animation directly or use it in an animation component.
+现在您可以直接使用动画或在动画组件中使用它。
 
-You can also get a single frame of the sprite sheet using the `getSprite` method:
+您也可以使用 `getSprite` 方法得到精灵表的某个单帧：
 
 ```dart
 spritesheet.getSprite(0, 0) // row, column;
 ```
 
-You can see a full example of the `SpriteSheet` class
-[here](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/sprites/spritesheet.dart).
+您可以在[这里](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/sprites/spritesheet.dart)看到 `SpriteSheet` 类的完整示例。

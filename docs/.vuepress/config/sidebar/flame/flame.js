@@ -18,6 +18,15 @@ const keyboardInput = require('./input/keyboard_input')
 
 const otherInputs = require('./input/other_inputs')
 
+const images = require('./render/images')
+
+const text = require('./render/text')
+
+const particles = require('./render/particles')
+
+const layers = require('./render/layers')
+
+
 const flame = {
   text: "Flame",
   link: "/guide/flame/file-structure.md",
@@ -49,26 +58,14 @@ const flame = {
       collapsible: true,
       link: "/guide/flame/rendering/images.md",
       children: [
-        {
-          text: "图片、精灵图和动画",
-          link: "/guide/flame/rendering/images.md",
-        },
-        {
-          text: "文本渲染",
-          link: "/guide/flame/rendering/text.md",
-        },
+        images,
+        text,
         {
           text: "颜色和调色板",
           link: "/guide/flame/rendering/palette.md",
         },
-        {
-          text: "粒子",
-          link: "/guide/flame/rendering/particles.md",
-        },
-        {
-          text: "图层",
-          link: "/guide/flame/rendering/layers.md",
-        },
+        particles,
+        layers,
       ],
     },
     {

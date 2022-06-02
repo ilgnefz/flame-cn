@@ -1,9 +1,17 @@
-# Particles
+---
+prev:
+  text: 颜色和调色板
+  link: /guide/flame/rendering/palette.md
+next:
+  text: 图层
+  link: /guide/flame/rendering/layers.md
+---
 
-Flame offers a basic, yet robust and extendable particle system. The core concept of this system is
-the `Particle` class, which is very similar in its behavior to the `ParticleSystemComponent`.
+#  粒子
 
-The most basic usage of a `Particle` with `FlameGame` would look as following:
+Flame 提供了一个基本但强大且可扩展的粒子系统。 这个系统的核心概念是 `Particle` 类，它的行为与 `ParticleSystemComponent` 非常相似。
+
+在 `FlameGame` 中 `Particle` 的最基本用法如下所示：
 
 ```dart
 import 'package:flame/components.dart';
@@ -20,28 +28,23 @@ game.add(
 );
 ```
 
-When using `Particle` with a custom `Game` implementation, please ensure that both the `update` and
-`render` methods are called during each game loop tick.
+当在自定义 `Game` 实现中使用 `Particle` 时，请确保在每个游戏刻度循环期间都调用了`update`和`render`方法。
 
-Main approaches to implement desired particle effects:
-* Composition of existing behaviors.
-* Use behavior chaining (just a syntactic sugar of the first one).
-* Using `ComputedParticle`.
+实现所需粒子效果的主要方法：
+* 现有行为的组合。
+* 使用行为链（只是第一个的语法糖）。
+* 使用 `ComputedParticle`.
 
-Composition works in a similar fashion to those of Flutter widgets by defining the effect from top
-to bottom. Chaining allows to express the same composition trees more fluently by defining behaviors
-from bottom to top. Computed particles in their turn fully delegate implementation of the behavior
-to your code. Any of the approaches could be used in conjunction with existing behaviors where
-needed.
+组合的工作方式与 Flutter 小部件的工作方式相似，通过定义从上到下的效果。 链接允许通过定义从下到上的行为更流畅地表达相同的组合树。 计算粒子又将行为的实现完全委托给您的代码。 任何方法都可以在需要时与现有行为结合使用。
 
 ```dart
 Random rnd = Random();
 
 Vector2 randomVector2() => (Vector2.random(rnd) - Vector2.random(rnd)) * 200;
 
-// Composition.
+// 组合
 //
-// Defining a particle effect as a set of nested behaviors from top to bottom, one within another:
+// 将粒子效果定义为一组从上到下、相互嵌套的嵌套行为：
 // ParticleSystemComponent
 //   > ComposedParticle
 //     > AcceleratedParticle
@@ -60,10 +63,10 @@ game.add(
   ),
 );
 
-// Chaining.
+// 链式
 //
-// Expresses the same behavior as above, but with a more fluent API.
-// Only Particles with SingleChildParticle mixin can be used as chainable behaviors.
+// 表达与上述相同的行为，但使用更流畅的 API。
+// 只有带有 SingleChildParticle mixin 的粒子才能被用作可链行为。
 game.add(
   ParticleSystemComponent(
     particle: Particle.generate(
@@ -73,10 +76,9 @@ game.add(
   )
 );
 
-// Computed Particle.
+// 计算粒子
 //
-// All the behaviors are defined explicitly. Offers greater flexibility
-// compared to built-in behaviors.
+// 与内置行为相比，所有的行为都是明确定义的。 提供更大的灵活性
 game.add(
   ParticleSystemComponent(
       particle: Particle.generate(
@@ -100,25 +102,19 @@ game.add(
 );
 ```
 
-You can find more examples of how to use different built-in particles in various combinations
-[here](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/rendering/particles_example.dart).
+您可以在[这里](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/rendering/particles_example.dart)找到更多关于如何使用不同组合的内置粒子的示例。
 
 
-## Lifecycle
+## 生命周期
 
-A behavior common to all `Particle`s is that all of them accept a `lifespan` argument. This value is
-used to make the `ParticleSystemComponent` remove itself once its internal `Particle` has reached
-the end of its life. Time within the `Particle` itself is tracked using the Flame `Timer` class. It
-can be configured with a `double`, represented in seconds (with microsecond precision) by passing
-it into the corresponding `Particle` constructor.
+所有 `Particle` 的共同行为是它们都接受一个 `lifespan` 参数。这个值是用来让 `ParticleSystemComponent` 在它的内部粒子到达生命结束时删除自己的。粒子本身内的时间是使用 Flame `Timer` 类来跟踪的。通过将它传递给相应的 `Particle` 构造函数，可以配置一个以秒表示的 `double` (具有微秒精度)。
 
 ```dart
 Particle(lifespan: .2); // will live for 200ms.
 Particle(lifespan: 4); // will live for 4s.
 ```
 
-It is also possible to reset a `Particle`'s lifespan by using the `setLifespan` method, which also
-accepts a `double` of seconds.
+还可以使用 `setlifesim` 方法重置 `Particle` 的生命周期，该方法也接受双精度的秒数。
 
 ```dart
 final particle = Particle(lifespan: 2);
@@ -127,9 +123,7 @@ final particle = Particle(lifespan: 2);
 particle.setLifespan(2) // will live for another 2s.
 ```
 
-During its lifetime, a `Particle` tracks the time it was alive and exposes it through the `progress`
-getter, which returns a value between `0.0` and `1.0`. This value can be used in a similar fashion
-as the `value` property of the `AnimationController` class in Flutter.
+`Particle` 在其生命周期中，跟踪其存活的时间并通过 `progress` 获取公开它，后者返回介于 0.0 和 1.0 之间的值。此值可以与 Flutter 的 `AnimationController` 类的 `value` 属性以类似的方式使用。
 
 ```dart
 final particle = Particle(lifespan: 2.0);
@@ -140,35 +134,23 @@ game.add(ParticleSystemComponent(particle: particle));
 Timer.periodic(duration * .1, () => print(particle.progress));
 ```
 
-The `lifespan` is passed down to all the descendants of a given `Particle`, if it supports any of
-the nesting behaviors.
+如果给定的 `Particle` 支持任何嵌套行为，那么它的生命期限都会传递给给定 `Particle` 的所有后代。
 
-## Built-in particles
+## 内置粒子
 
-Flame ships with a few built-in `Particle` behaviors:
-* The `TranslatedParticle` translates its `child` by given `Vector2`
-* The `MovingParticle` moves its `child` between two predefined `Vector2`, supports `Curve`
-* The `AcceleratedParticle` allows basic physics based effects, like gravitation or speed dampening
-* The `CircleParticle` renders circles of all shapes and sizes
-* The `SpriteParticle` renders Flame `Sprite` within a `Particle` effect
-* The `ImageParticle` renders *dart:ui* `Image` within a `Particle` effect
-* The `ComponentParticle` renders Flame `Component` within a `Particle` effect
-* The `FlareParticle` renders Flare animation within a `Particle` effect
+Flame 带有一些内置的粒子行为：
+* `TranslatedParticle` 通过给定的 `Vector2 `转换子粒子
+* `MovingParticle` 在两个预定义的 `Vector2` 之间移动其子粒子，支持 `Curve`
+* `AcceleratedParticle` 允许基于物理的基本效果，例如重力或速度阻尼
+* `CircleParticle` 渲染各种形状和大小的圆
+* `SpriteParticle` 使用粒子效果渲染 Flame `Sprite`
+* `ImageParticle` 在粒子效果中渲染 `dart:ui` 图像
+* `ComponentParticle` 在粒子效果中渲染 Flame 组件
+* `FlareParticle` 在粒子效果中渲染 Flare 动画
 
-More examples of how to use these behaviors together are available
-[here](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/utils/particles.dart).
-All the implementations are available in the
-[particles](https://github.com/flame-engine/flame/tree/main/packages/flame/lib/src/particles) folder
-on the Flame repository.
+更多关于如何一起使用这些行为的例子可以在[这里](https://github.com/flame-engine/flame/blob/main/examples/lib/stories/utils/particles.dart)找到。所有实现都可以在 Flame 存储库的  [particles](https://github.com/flame-engine/flame/tree/main/packages/flame/lib/src/particles) 文件夹中获得。
 
-Simply translates the underlying `Particle` to a specified `Vector2` within the rendering `Canvas`.
-Does not change or alter its position, consider using `MovingParticle` or `AcceleratedParticle`
-where change of position is required.
-
-Simply translates the underlying `Particle` to a specified `Vector2` within the rendering `Canvas`.
-Does not change or alter its position, consider using `MovingParticle` or `AcceleratedParticle`
-where change of position is required. Same effect could be achieved by translating the `Canvas`
-layer.
+只需将底层粒子转换为渲染画布中的指定 `Vector2`。 改变或不改变其位置，考虑在需要改变位置的地方使用 `MovingParticle` 或 `AcceleratedParticle`。同样的效果可以通过转换`Canvas`层来实现。
 
 ```dart
 game.add(
@@ -184,8 +166,7 @@ game.add(
 
 ## MovingParticle
 
-Moves the child `Particle` between the `from` and `to` `Vector2`s during its lifespan. Supports
-`Curve` via `CurvedParticle`.
+在其生命周期内将子粒子在 `Vector2s` 之间来回移动。 通过 `CurvedParticle` 可以支持 `Curve`。
 
 ```dart
 game.add(
@@ -205,11 +186,7 @@ game.add(
 
 ## AcceleratedParticle
 
-A basic physics particle which allows you to specify its initial `position`, `speed` and
-`acceleration` and lets the `update` cycle do the rest. All three are specified as `Vector2`s, which
-you can think of as vectors. It works especially well for physics-based "bursts", but it is not
-limited to that. Unit of the `Vector2` value is _logical px/s_. So a speed of `Vector2(0, 100)` will
-move a child `Particle` by 100 logical pixels of the device every second of game time.
+一个基本的物理粒子，允许您指定其初始位置、速度和加速度，并让更新周期完成其余的工作。 这三个都指定为 `Vector2`，您可以将其视为向量。 它特别适用于基于物理的“爆发”，但不仅限于此。 `Vector2` 值的单位是逻辑 px/s。 因此，`Vector2(0, 100)` 的速度将使子粒子在游戏时间内每秒移动设备的 100 个逻辑像素。
 
 ```dart
 final rnd = Random();
@@ -235,9 +212,7 @@ game.add(
 
 ## CircleParticle
 
-A `Particle` which renders a circle with given `Paint` at the zero offset of passed `Canvas`. Use in
-conjunction with `TranslatedParticle`, `MovingParticle` or `AcceleratedParticle` in order to achieve
-desired positioning.
+一个粒子，它使用给定的 `Paint` 在传递的 `Canvas` 的零偏移处渲染一个圆圈。 与 `TranslatedParticle`、`MovingParticle` 或 `AcceleratedParticle` 结合使用以获得所需的定位。
 
 ```dart
 game.add(
@@ -252,7 +227,7 @@ game.add(
 
 ## SpriteParticle
 
-Allows you to embed a `Sprite` into your particle effects.
+允许您将 `Sprite` 嵌入到您的粒子效果中。
 
 ```dart
 game.add(
@@ -267,7 +242,7 @@ game.add(
 
 ## ImageParticle
 
-Renders given `dart:ui` image within the particle tree.
+在粒子树中渲染给定的 `dart:ui` 图像。
 
 ```dart
 // During game initialisation
@@ -292,9 +267,7 @@ game.add(
 
 ## AnimationParticle
 
-A `Particle` which embeds an `Animation`. By default, aligns the `Animation`'s `stepTime` so that
-it's fully played during the `Particle` lifespan. It's possible to override this behavior with the
-`alignAnimationTime` argument.
+嵌入动画的粒子。 默认情况下，对齐动画的 `stepTime` 以便在粒子生命周期内完全播放。 可以使用 `alignAnimationTime` 参数覆盖此行为。
 
 ```dart
 final spritesheet = SpriteSheet(
@@ -313,10 +286,7 @@ game.add(
 
 ## ComponentParticle
 
-This `Particle` allows you to embed a `Component` within the particle effects. The `Component` could
-have its own `update` lifecycle and could be reused across different effect trees. If the only thing
-you need is to add some dynamics to an instance of a certain `Component`, please consider adding it
-to the `game` directly, without the `Particle` in the middle.
+此粒子允许您在粒子效果中嵌入组件。 组件可以有自己的更新生命周期，并且可以在不同的效果树中重复使用。如果您唯一需要的是添加一些动力学到某个组件的实例，请考虑直接将其添加到游戏中，而不是在中间添加粒子。
 
 ```dart
 final longLivingRect = RectComponent();
@@ -345,11 +315,9 @@ class RectComponent extends Component {
 
 ## FlareParticle
 
-To use Flare within Flame, use the [`flame_flare`](https://github.com/flame-engine/flame_flare)
-package.
+要在 Flame 中使用 Flare，请使用 [flame_flare](https://github.com/flame-engine/flame_flare) 包。
 
-It will provide a class called `FlareParticle` that is a container for `FlareActorAnimation`, it
-propagates the `update` and `render` methods to its child.
+它将提供一个名为 `FlareParticle `的类，它是 `FlareActorAnimation `的容器，它将 `update` 和 `render` 方法传给其子类。
 
 ```dart
 import 'package:flame_flare/flame_flare.dart';
@@ -370,18 +338,17 @@ game.add(
 
 ## ComputedParticle
 
-A `Particle` which could help you when:
-* Default behavior is not enough
-* Complex effects optimization
-* Custom easings
+在以下情况下 `Particle` 可以为您提供帮助：
+* 默认行为不够
+* 优化复杂效果
+* 定制速度
 
-When created, it delegates all the rendering to a supplied `ParticleRenderDelegate` which is called
-on each frame to perform necessary computations and render something to the `Canvas`.
+当创建时，它将所有的渲染委托给一个`ParticleRenderDelegate`，在每一帧上调用它来执行必要的计算并向 `Canvas` 渲染一些东西。
 
 ```dart
 game.add(
   ParticleSystemComponent(
-    // Renders a circle which gradually changes its color and size during the particle lifespan.
+    // 渲染一个在粒子生命期间逐渐改变其颜色和大小的圆
     particle: ComputedParticle(
       renderer: (canvas, particle) => canvas.drawCircle(
         Offset.zero,
@@ -398,21 +365,13 @@ game.add(
 )
 ```
 
-## Nesting behavior
+## 嵌套行为
 
-Flame's implementation of particles follows the same pattern of extreme composition as Flutter
-widgets. That is achieved by encapsulating small pieces of behavior in every particle and then
-nesting these behaviors together to achieve the desired visual effect.
+Flame 的粒子实现遵循与 Flutter 小部件相同的极端组合模式。 这是通过在每个粒子中封装小块行为，然后将这些行为嵌套在一起以实现所需的视觉效果来实现的。
 
-Two entities that allow `Particle`s to nest each other are: `SingleChildParticle` mixin and
-`ComposedParticle` class.
+允许粒子互相嵌套的两个实体是：`SingleChildParticle` mixin 和 `ComposedParticle` 类。
 
-A `SingleChildParticle` may help you with creating `Particles` with a custom behavior. For example,
-randomly positioning its child during each frame:
-
-The `SingleChildParticle` may help you with creating `Particles` with a custom behavior.
-
-For example, randomly positioning it's child during each frame:
+`SingleChildParticle` 可以帮助您创建具有自定义行为的粒子。 例如，在每一帧中随机定位其子节点：
 
 ```dart
 var rnd = Random();
@@ -439,4 +398,4 @@ class GlitchParticle extends Particle with SingleChildParticle {
 }
 ```
 
-The `ComposedParticle` could be used either as a standalone or within an existing `Particle` tree.
+`ComposedParticle` 可以单独使用，也可以在现有的粒子树中使用。

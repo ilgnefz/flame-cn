@@ -1,21 +1,25 @@
-# Layers
+---
+prev:
+  text: 粒子
+  link: /guide/flame/rendering/particles.md
+next:
+  text: 调试
+  link: /guide/flame/other/debug.md
+---
 
-Layers allow you to group rendering by context, as well as allow you to pre-render things. This
-enables, for example, rendering parts of your game that don't change much in memory, like a
-background. By doing this, you'll free processing power for more dynamic content that needs to be
-rendered every game tick.
+# 图层
 
-There are two types of layers on Flame:
- - `DynamicLayer`: For things that are moving or changing.
- - `PreRenderedLayer`: For things that are static.
+图层允许你根据上下文对渲染进行分组，也允许你预渲染。这可以渲染游戏中在内存中变化不大的部分，例如背景。 通过这样做，您将释放处理能力来处理需要在每个游戏时间进行渲染的更多动态内容。
+
+在 Flame 上有两种类型的图层：
+ - `DynamicLayer`：用于移动或变化的事物
+ - `PreRenderedLayer`：用于静态的东西。
 
 ## DynamicLayer
 
-Dynamic layers are layers that are rendered every time that they are drawn on the canvas. As the
-name suggests, it is meant for dynamic content and is most useful for grouping rendering of objects
-that have the same context.
+动态图层是每次在画布上绘制时渲染的图层。 顾名思义，它适用于动态内容，最适用于对具有相同上下文的对象进行分组渲染。
 
-Usage example:
+使用示例：
 ```dart
 class GameLayer extends DynamicLayer {
   final MyGame game;
@@ -40,18 +44,16 @@ class MyGame extends Game {
 
   @override
   void render(Canvas canvas) {
-    gameLayer.render(canvas); // x and y can be provided as optional position arguments
+    gameLayer.render(canvas); // x 和 y 作为可选的位置参数提供
   }
 }
 ```
 
 ## PreRenderedLayer
 
-Pre-rendered layers are rendered only once, cached in memory and then just
-replicated on the game canvas afterwards. They are useful for caching content that doesn't change
-during the game, like a background for example.
+预渲染层只渲染一次就缓存到内存中，然后再复制到游戏画布上。对于在游戏过程中不会发生变化的内容（如背景），它非常有用。
 
-Usage example:
+使用示例：
 
 ```dart
 class BackgroundLayer extends PreRenderedLayer {
@@ -73,22 +75,18 @@ class MyGame extends Game {
 
   @override
   void render(Canvas canvas) {
-    backgroundLayer.render(canvas); // x and y can be provided as optional position arguments
+    backgroundLayer.render(canvas); //  x 和 y 作为可选的位置参数提供
   }
 }
 ```
 
-## Layer Processors
+## 图层处理器
 
-Flame also provides a way to add processors on your layer, which are ways to add effects on the
-entire layer. At the moment, out of the box, only the `ShadowProcessor` is available, this processor
-renders a back drop shadow on your layer.
-
-To add processors to your layer, just add them to the layer `preProcessors` or `postProcessors`
-list. For example:
+Flame 还提供了一种在图层上添加处理器的方法，这是在整个图层上添加效果的方法。 目前，它是开箱即用的，只有 `ShadowProcessor` 可用，该处理器在您的图层上呈现背景阴影。
+使用示例：
 
 ```dart
-// Works the same for both DynamicLayer and PreRenderedLayer
+// DynamicLayer 和 PreRenderedLayer 的工作方式相同
 class BackgroundLayer extends PreRenderedLayer {
   final Sprite sprite;
 
@@ -102,7 +100,6 @@ class BackgroundLayer extends PreRenderedLayer {
   // ...
 ```
 
-Custom processors can be created by extending the `LayerProcessor` class.
+可以通过扩展 `LayerProcessor` 类来创建自定义处理器。
 
-You can check a working example of layers
-[here](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/rendering/layers.dart).
+你可以在[这里](https://github.com/flame-engine/flame/tree/main/examples/lib/stories/rendering/layers.dart)查看一个图层工作的示例。

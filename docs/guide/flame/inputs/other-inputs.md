@@ -20,7 +20,7 @@ next:
 
 Flame提供了一个组件，能够为您的游戏创建一个虚拟操纵杆。
 
-要使用这一功能，你需要创建一个`JoystickComponent`，按你想要的方式配置它，并将其添加到游戏中。
+要使用这一功能，您需要创建一个`JoystickComponent`，按您想要的方式配置它，并将其添加到游戏中。
 
 查看这个示例可以更好地理解：
 
@@ -109,7 +109,7 @@ class JoystickPlayer extends SpriteComponent with HasGameRef {
 
 顾名思义，这个按钮默认是一个hub的，这意味着即使游戏的摄像机移动了，它在屏幕上也会是静态的。通过设置 `hudButtonComponent.respectCamera = true`，您还可以将此组件用作非 hud的。
 
-如果你想按下并释放按钮（这是常见的事情） ，你可以传入回调函数作为 `onPressed` 和 `onReleased `参数，或者你可以扩展组件并覆盖 `onTapDown`、 `onTapUp `和/或 `onTapCancel `并在那里实现你的逻辑。
+如果您想按下并释放按钮（这是常见的事情） ，您可以传入回调函数作为 `onPressed` 和 `onReleased `参数，或者您可以扩展组件并覆盖 `onTapDown`、 `onTapUp `和/或 `onTapCancel `并在那里实现您的逻辑。
 
 ## SpriteButtonComponent
 
@@ -117,7 +117,7 @@ class JoystickPlayer extends SpriteComponent with HasGameRef {
 
 ## ButtonComponent
 
-`ButtonComponent `是由两个 `PositionComponents `定义的按钮，一个表示按钮被按下的时间，另一个表示按钮被释放的时间。如果你只想为按钮使用 `SpriteButtonComponent`，那么可以使用 SpriteButtonComponent，但是如果你想使用一个 [SpriteAnimationComponent](#spritebuttoncomponent)作为按钮，或者其他任何不是纯精灵图的组件，那么这个组件是不错的选择。
+`ButtonComponent `是由两个 `PositionComponents `定义的按钮，一个表示按钮被按下的时间，另一个表示按钮被释放的时间。如果您只想为按钮使用 `SpriteButtonComponent`，那么可以使用 SpriteButtonComponent，但是如果您想使用一个 [SpriteAnimationComponent](#spritebuttoncomponent)作为按钮，或者其他任何不是纯精灵图的组件，那么这个组件是不错的选择。
 
 ## Gamepad
 
