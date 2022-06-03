@@ -1,15 +1,20 @@
-# Bare Flame game
+---
+prev:
+  text: 教程
+  link: /guide/tutorials/tutorials.md
+next:
+  text: Klondike
+  link: /guide/tutorials/klondike/klondike.md
+---
 
-This tutorial assumes that you already have [Flutter], [git], and
-[Android Studio] on your computer (all of these programs are free); and that
-you have basic familiarity with using the command line. Android Studio is not
-a strict requirement, you can use other IDEs too, such as [Visual Studio Code].
+# 空白的Flame游戏
+
+本教程假设您的计算机上已经安装了 [Flutter](https://docs.flutter.dev/get-started/install)、[git](https://git-scm.com/downloads) 和 [Android Studio](https://developer.android.com/studio)（所有这些程序都是免费的）； 并且您对使用命令行有基本的了解。 Android Studio 不是严格要求，您也可以使用其他 IDE，例如 [Visual Studio Code](https://code.visualstudio.com/download)。
 
 
-## 1. Check flutter installation
+## 1. 检查Flutter安装
 
-First, let's verify that your Flutter SDK was installed correctly and is
-accessible from the command line:
+首先，让我们验证一下您的 Flutter SDK 是否正确安装，是否可以从命令行访问：
 
 ```console
 $ flutter doctor
@@ -21,21 +26,15 @@ $ flutter doctor
 [✓] Connected device (1 available)
 ```
 
-Your output will be slightly different, but the important thing is to verify
-that no errors are reported, and that your Flutter version is **2.5.0** or
-above.
+您的输出可能会略有不同，但重要的是要验证没有报错，并且您的 Flutter 版本是 **2.5.0** 或以上。
 
 
-## 2. Create project directory
+## 2. 创建项目目录
 
-Now you need to come up with a name for your project. The name can only use
-lowercase latin letters, digits, and underscores. It must also be a valid Dart
-identifier (thus, for example, it cannot be a keyword).
+现在您需要为您的项目起一个名称。 名称只能使用小写拉丁字母、数字和下划线。 它还必须是有效的 Dart 标识符（例如，它不能是关键字）。
 
-In this tutorial I'm going to call my project **syzygy**, which is a totally
-real not-made-up word.
-
-Create the directory for your new project:
+在本教程中，我将把我的项目命名为 **syzygy**，这是一个完全真实的非虚构词。
+为您的新项目创建目录：
 
 ```console
 $ mkdir -p ~/projects/syzygy
@@ -43,17 +42,16 @@ $ cd ~/projects/syzygy
 ```
 
 
-## 3. Initialize empty Flutter project
+## 3. 初始化空的Flutter项目
 
-In order to turn this barren directory into an actual Flutter project, run the
-following command:
+为了将这个荒芜的目录变成一个实际的 Flutter 项目，运行以下命令：
 
 ```console
 $ flutter create .
 ```
-(I have omitted the output for brevity, but there will be lots of output).
+（为了简洁起见，我省略了输出，但是将会有大量的输出）。
 
-You can verify that the project files were created successfully:
+您可以验证项目文件是否已成功创建：
 ```console
 $ ls
 README.md               android/   lib/           pubspec.yaml   test/
@@ -61,35 +59,26 @@ analysis_options.yaml   ios/       pubspec.lock   syzygy.iml     web/
 ```
 
 
-## 4. Open the project in Android Studio
+## 4. 在Android Studio中打开项目
 
-Launch Android Studio, then in the project selection window choose `[Open]`
-and navigate to your project directory. With any luck, the project will now
-look like this:
+启动 Android Studio，然后在项目选择窗口中选择 `[Open]` 并导航到您的项目目录。如果运气好的话，这个项目现在看起来是这样的：
 
 ![](/images/tutorials/android-studio-screenshot-1.webp)
 
-If you see only the `main.dart` file but not the side panel, then click the
-vertical `[Project]` button at the left edge of the window.
+如果您只看到 `main.dart` 文件而没有看到侧面板，那么单击窗口左边缘的垂直 `[Project]` 按钮。
 
-Before we proceed, let's fix the view in the left panel. Locate the button
-in the top left corner that says `[Android]` in the screenshot. In this
-dropdown select the first option "Project". Your project window should now
-look like this:
+在我们继续之前，让我们修复左侧面板中的视图。 在屏幕截图中找到左上角显示 [Android] 的按钮。 在此下拉列表中选择第一个选项“Project”。 您的项目窗口现在应该如下所示：
 
 ![](/images/tutorials/android-studio-screenshot-2.webp)
 
-The important part is that you should be able to see all files in your
-project directory.
+重要的是，您应该能够看到项目目录中的所有文件。
 
 
-## 5. Clean up the project files
+## 5. 清理项目文件
 
-The default project created by Flutter is not very useful for making a Flame
-game, so we should get rid of it.
+Flutter 创建的默认项目对于制作 Flame 游戏不是很有用，所以我们应该去掉它。
 
-First, open the file `pubspec.yaml` and replace it with the following code
-(adjusting the `name` and `description` to match your project):
+首先，打开文件 `pubspec.yaml`，并用以下代码替换它（调整名称和描述以匹配项目）:
 
 ```yaml
 name: syzygy
@@ -106,14 +95,9 @@ dependencies:
   flame: ^1.0.0
 ```
 
-After that, press the `[Pub get]` button at the top of the window; or
-alternatively you could run command `flutter pub get` from the terminal. This
-will "apply" the changes in `pubspec` file to your project, in particular it
-will download the Flame library which we have declared as a dependency. In the
-future, you should run `flutter pub get` whenever you make changes to this
-file.
+之后，按窗口顶部的`[Pub get]`按钮； 或者，您也可以从终端运行命令 `flutter pub get`。 这会将 `pubspec` 文件中的更改“应用”到您的项目，特别是它将下载我们已声明为依赖项的 Flame 库。 将来，每当您对此文件进行更改时，都应该运行 `flutter pub get`。
 
-Now, open file `lib/main.dart` and replace its content with the following:
+现在，打开文件` lib/main.dart`，用下面的代码替换它的内容：
 
 ```dart
 import 'package:flame/game.dart';
@@ -125,38 +109,28 @@ void main() {
 }
 ```
 
-Lastly, remove file `test/widget_test.dart` completely.
+最后，完全删除 `test/widget _ test. dart` 文件。
 
 
-## 6. Run the project
+## 6. 运行项目
 
-Let's verify that everything is working as intended, and the project can run.
+让我们验证一下，一切都按预期工作，项目可以运行了。
 
-In the menu bar at the top of the window find a dropdown that says `<no device
-selected>`. In that dropdown choose `<Chrome (web)>` instead.
+在窗口顶部的菜单栏中找到一个下拉菜单，上面写着: `< no device selected >` 。在下拉菜单中选择 `< Chrome (web) >` 。
 
-After that open the `main.dart` file and press the green arrow next to the
-`void main()` function in line 4. Select `[Run main.dart]` from the menu.
+之后打开 `main.dart` 文件并按第 4 行中 `void main()` 函数旁边的绿色箭头。从菜单中选择 `[Run main.dart]`。
 
-This should open a new Chrome window (which may take 10-30 seconds) and run
-your project in that window. For now it will simply show a black screen, which
-is expected because we created the game in its simplest blank configuration.
+这将打开一个新的 Chrome 窗口(可能需要10-30秒) ，并在该窗口中运行您的项目。现在它只会显示一个黑屏，这是意料之中的，因为我们以最简单的空白配置创建了游戏。
 
 
-## 7. Sync to GitHub
+## 7. 同步到GitHub
 
-The last step is to upload your project to GitHub. This is not required, but
-strongly recommended as it will serve as a backup for your code. This step
-assumes that you already have a GitHub account.
+最后一步是将您的项目上传到 GitHub。 这不是必需的，但强烈推荐，因为它将作为您代码的备份。 此步骤假设您已经有一个 GitHub 帐户。
 
-Log into your GitHub account, select `[Your repositories]` from your profile
-dropdown, and press the green `[New]` button. In the form enter repository
-name the same as your project name; select type "private"; and opt out of
-adding initial files like README, license and gitignore.
+登录您的 GitHub 帐户，从您的个人资料下拉列表中选择 `[Your repositories]`，然后按绿色的 `[New]` 按钮。 在表单中输入与您的项目名称相同的存储库名称； 选择类型“private”； 并选择不添加初始文件，如 README、license 和 gitignore。
 
-Now go to your project's directory in the terminal and execute the following
-commands (make sure to replace the URL with the link to the repository that
-you just created):
+现在转到终端中项目的目录并执行以下命令（确保用刚才创建的存储库链接替换 URL） ：
+
 ```console
 $ git init
 $ git add --all
@@ -166,21 +140,14 @@ $ git branch -M main
 $ git push -u origin main
 ```
 
-At this point if you go to your repository page on GitHub, you shall see that
-all your project files are there.
+现在，如果您转到 GitHub 上的存储库页面，您将看到所有的项目文件都在那里。
 
 
-## 8. Done
+## 8. 完成
 
-That's it! By this point you have
-  - Created an initial blank state Flame project;
-  - Set up the Android Studio IDE for that project;
-  - Created a GitHub repository for the project.
+就是这样！现在您已经掌握了这些点：
+  - 创建一个初始空白状态的 Flame 项目
+  - 为该项目设置 Android Studio IDE
+  - 为这个项目创建一个 GitHub 仓库
 
-Happy coding!
-
-
-[Flutter]: https://docs.flutter.dev/get-started/install
-[git]: https://git-scm.com/downloads
-[Android Studio]: https://developer.android.com/studio
-[Visual Studio Code]: https://code.visualstudio.com/download
+编程愉快！

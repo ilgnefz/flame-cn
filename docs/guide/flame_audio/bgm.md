@@ -4,7 +4,7 @@ prev:
   link: /guide/flame_audio/audio.md
 next:
   text: 教程
-  link: /guide/tutorials/bare_flame_game.md
+  link: /guide/tutorials/tutorials.md
 ---
 
 # 循环背景音乐
