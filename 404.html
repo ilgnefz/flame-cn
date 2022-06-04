@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="VuePress 2.0.0-beta.45">
+    <style>
+      :root {
+        --c-bg: #fff;
+      }
+      html.dark {
+        --c-bg: #22272e;
+      }
+      html, body {
+        background-color: var(--c-bg);
+      }
+    </style>
+    <script>
+      const userMode = localStorage.getItem('vuepress-color-scheme');
+			const systemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+			if (userMode === 'dark' || (userMode !== 'light' && systemDarkMode)) {
+				document.documentElement.classList.toggle('dark', true);
+			}
+    </script>
+    <link rel="icon" href="/images/favicon.png"><title>Flame引擎中文文档</title><meta name="description" content="Flame — 基于Flutter的2D游戏引擎">
+    <link rel="modulepreload" href="/flame-cn/assets/app.0106d251.js"><link rel="modulepreload" href="/flame-cn/assets/404.html.7de699ec.js"><link rel="modulepreload" href="/flame-cn/assets/404.html.93146c89.js"><link rel="prefetch" href="/flame-cn/assets/index.html.0b8b2f84.js"><link rel="prefetch" href="/flame-cn/assets/started.html.72450817.js"><link rel="prefetch" href="/flame-cn/assets/camera-and-viewport.html.9793f2db.js"><link rel="prefetch" href="/flame-cn/assets/camera-component.html.4666d28e.js"><link rel="prefetch" href="/flame-cn/assets/collision-detection.html.1f170355.js"><link rel="prefetch" href="/flame-cn/assets/components.html.c65546d3.js"><link rel="prefetch" href="/flame-cn/assets/effects.html.ab8f2660.js"><link rel="prefetch" href="/flame-cn/assets/file-structure.html.5fead449.js"><link rel="prefetch" href="/flame-cn/assets/game-loop.html.9e961e5f.js"><link rel="prefetch" href="/flame-cn/assets/platforms.html.11f8f099.js"><link rel="prefetch" href="/flame-cn/assets/audio.html.5d6bcada.js"><link rel="prefetch" href="/flame-cn/assets/bgm.html.8d6da2e8.js"><link rel="prefetch" href="/flame-cn/assets/forge2d.html.f15f61a9.js"><link rel="prefetch" href="/flame-cn/assets/oxygen.html.1e2925d2.js"><link rel="prefetch" href="/flame-cn/assets/splash_screen.html.47876a47.js"><link rel="prefetch" href="/flame-cn/assets/tiled.html.1022abd6.js"><link rel="prefetch" href="/flame-cn/assets/bare_flame_game.html.6be6c682.js"><link rel="prefetch" href="/flame-cn/assets/tutorials.html.3cde02b3.js"><link rel="prefetch" href="/flame-cn/assets/debug.html.e3d5c452.js"><link rel="prefetch" href="/flame-cn/assets/util.html.4c65b1ac.js"><link rel="prefetch" href="/flame-cn/assets/widgets.html.136539b7.js"><link rel="prefetch" href="/flame-cn/assets/gesture-input.html.c89bdbf5.js"><link rel="prefetch" href="/flame-cn/assets/keyboard-input.html.f014bac6.js"><link rel="prefetch" href="/flame-cn/assets/other-inputs.html.19f5b9a3.js"><link rel="prefetch" href="/flame-cn/assets/images.html.2cbd5f48.js"><link rel="prefetch" href="/flame-cn/assets/layers.html.c7d85b73.js"><link rel="prefetch" href="/flame-cn/assets/palette.html.2569ba6e.js"><link rel="prefetch" href="/flame-cn/assets/particles.html.fc3cad27.js"><link rel="prefetch" href="/flame-cn/assets/text.html.63780818.js"><link rel="prefetch" href="/flame-cn/assets/klondike.html.b005eae0.js"><link rel="prefetch" href="/flame-cn/assets/step1.html.8e1625d9.js"><link rel="prefetch" href="/flame-cn/assets/step2.html.486534cd.js"><link rel="prefetch" href="/flame-cn/assets/step3.html.04cc74df.js"><link rel="prefetch" href="/flame-cn/assets/tbc.html.da3e674d.js"><link rel="prefetch" href="/flame-cn/assets/index.html.6f0f832c.js"><link rel="prefetch" href="/flame-cn/assets/started.html.0904afb8.js"><link rel="prefetch" href="/flame-cn/assets/camera-and-viewport.html.3a0470d2.js"><link rel="prefetch" href="/flame-cn/assets/camera-component.html.a9ea96f5.js"><link rel="prefetch" href="/flame-cn/assets/collision-detection.html.b64ca33b.js"><link rel="prefetch" href="/flame-cn/assets/components.html.a28e7017.js"><link rel="prefetch" href="/flame-cn/assets/effects.html.c9332fae.js"><link rel="prefetch" href="/flame-cn/assets/file-structure.html.c436f1c4.js"><link rel="prefetch" href="/flame-cn/assets/game-loop.html.af706cf9.js"><link rel="prefetch" href="/flame-cn/assets/platforms.html.fd66119b.js"><link rel="prefetch" href="/flame-cn/assets/audio.html.f5f444b1.js"><link rel="prefetch" href="/flame-cn/assets/bgm.html.12341541.js"><link rel="prefetch" href="/flame-cn/assets/forge2d.html.4a8de694.js"><link rel="prefetch" href="/flame-cn/assets/oxygen.html.9ffad74c.js"><link rel="prefetch" href="/flame-cn/assets/splash_screen.html.3e334b75.js"><link rel="prefetch" href="/flame-cn/assets/tiled.html.47e90b23.js"><link rel="prefetch" href="/flame-cn/assets/bare_flame_game.html.76f2db98.js"><link rel="prefetch" href="/flame-cn/assets/tutorials.html.094bc70d.js"><link rel="prefetch" href="/flame-cn/assets/debug.html.0f927191.js"><link rel="prefetch" href="/flame-cn/assets/util.html.ce032317.js"><link rel="prefetch" href="/flame-cn/assets/widgets.html.fece8b09.js"><link rel="prefetch" href="/flame-cn/assets/gesture-input.html.cece48bc.js"><link rel="prefetch" href="/flame-cn/assets/keyboard-input.html.382c903f.js"><link rel="prefetch" href="/flame-cn/assets/other-inputs.html.6c41c178.js"><link rel="prefetch" href="/flame-cn/assets/images.html.c0984851.js"><link rel="prefetch" href="/flame-cn/assets/layers.html.ea02fc00.js"><link rel="prefetch" href="/flame-cn/assets/palette.html.181a7977.js"><link rel="prefetch" href="/flame-cn/assets/particles.html.46c410d6.js"><link rel="prefetch" href="/flame-cn/assets/text.html.0b6b1a96.js"><link rel="prefetch" href="/flame-cn/assets/klondike.html.e15dd0af.js"><link rel="prefetch" href="/flame-cn/assets/step1.html.08ef7cc1.js"><link rel="prefetch" href="/flame-cn/assets/step2.html.df492ce8.js"><link rel="prefetch" href="/flame-cn/assets/step3.html.8ce715d1.js"><link rel="prefetch" href="/flame-cn/assets/tbc.html.56f3f759.js"><link rel="prefetch" href="/flame-cn/assets/404.ec64c5cb.js"><link rel="prefetch" href="/flame-cn/assets/Layout.a241fed5.js">
+    <link rel="stylesheet" href="/flame-cn/assets/style.ff22a552.css">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="theme-container"><div class="theme-default-content"><h1>404</h1><blockquote>That&#39;s a Four-Oh-Four.</blockquote><a href="/flame-cn/" class="">Take me home</a></div></div><!----><!--]--></div>
+    <script type="module" src="/flame-cn/assets/app.0106d251.js" defer></script>
+  </body>
+</html>

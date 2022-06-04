@@ -1,0 +1,1 @@
+const e={key:"v-7e22e78e",path:"/guide/tutorials/klondike/tbc.html",title:"\u5F85\u7EED",lang:"zh-CN",frontmatter:{prev:{text:"3. \u5361\u7247",link:"/guide/tutorials/klondike/step3.md"}},excerpt:"",headers:[],git:{updatedTime:165435618e4,contributors:[{name:"ilgnefz",email:"ilgnefz@foxmail.com",commits:2}]},filePathRelative:"guide/tutorials/klondike/tbc.md"};export{e as data};
