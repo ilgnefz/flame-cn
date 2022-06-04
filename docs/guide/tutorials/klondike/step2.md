@@ -1,18 +1,24 @@
-# 2. Scaffolding
+---
+prev:
+  text: 1. 准备
+  link: /guide/tutorials/klondike/step1.md
+next:
+  text: 3. 卡片
+  link: /guide/tutorials/klondike/step3.md
+---
 
-In this section we will use broad strokes to outline the main elements of the
-game. This includes the main game class, and the general layout.
+
+
+# 2. 脚手架
+
+在这一部分，我们将用粗线条勾勒出游戏的主要元素。这包括游戏的主类和总体布局。
 
 
 ## KlondikeGame
 
-In Flame universe, the **FlameGame** class is the cornerstone of most games.
-This class runs the game loop, dispatches events, owns all the components that
-comprise the game (the component tree), and usually also serves as the central
-repository for the game's state.
+在 Flame 宇宙中，**FlameGame** 是大多数游戏的基石。这个类运行游戏循环，调度事件，拥有组成游戏的所有组件(组件树) ，通常还充当游戏状态的中心存储库。
 
-So, create a new file called `klondike_game.dart` inside the `lib/` folder, and
-declare the `KlondikeGame` class inside:
+因此，在 `lib/` 文件夹中创建一个名为 `KlondikeGame. dart` 的新文件，并在其中声明 `KlondikeGame` 类：
 
 ```dart
 import 'package:flame/game.dart';
@@ -25,23 +31,11 @@ class KlondikeGame extends FlameGame {
 }
 ```
 
-For now we only declared the `onLoad` method, which is a special handler that
-is called when the game instance is attached to the Flutter widget tree for the
-first time. You can think of it as a delayed asynchronous constructor.
-Currently, the only thing that `onLoad` does is that it loads the sprites image
-into the game; but we will be adding more soon. Any image or other resource that
-you want to use in the game needs to be loaded first, which is a relatively slow
-I/O operation, hence the need for `await` keyword.
+现在我们只声明了 `onLoad` 方法，这是一个特殊的处理程序，当游戏实例第一次附加到 Flutter 小部件树时调用它。您可以将其看作一个延迟的异步构造函数。目前，`onLoad` 唯一做的事情就是将精灵图像加载到游戏中; 但是我们很快就会添加更多的精灵图像。要在游戏中使用的任何图像或其他资源都需要首先加载，这是一个相对缓慢的 i/o 操作，因此需要使用 `await` 关键字。
 
-I am loading the image into the global `Flame.images` cache here. An alternative
-approach is to load it into the `Game.images` cache instead, but then it would
-have been more difficult to access that image from other classes.
+我正在将图像加载到全局 `Flame.images` 缓存中。另一种方法是将其加载到游戏中的` images` 缓存中，但是从其他类访问这个映像会更加困难。
 
-Also note that I am `await`ing the image to finish loading before initializing
-anything else in the game. This is for convenience: it means that by the time
-all other components are initialized, they can assume the spritesheet is already
-loaded. We can even add a helper function to extract a sprite from the common
-spritesheet:
+还要注意的是，在初始化游戏中的其他内容之前，我正在 `await` 图像完成加载。这是为了方便：这意味着在初始化所有其他组件时，它们可以假定已经加载了精灵表。我们甚至可以添加一个辅助函数来从普通的精灵表中提取精灵图：
 ```dart
 Sprite klondikeSprite(double x, double y, double width, double height) {
   return Sprite(
@@ -51,13 +45,9 @@ Sprite klondikeSprite(double x, double y, double width, double height) {
   );
 }
 ```
-This helper function won't be needed in this chapter, but will be used
-extensively in the next.
+这个辅助函数在本章中不需要，但在下一章中将被广泛使用。
 
-Let's incorporate this class into the project so that it isn't orphaned. Open
-the `main.dart` find the line which says `final game = FlameGame();` and replace
-the `FlameGame` with `KlondikeGame`. You will need to import the class too.
-After all is done, the file should look like this:
+让我们把这个类合并到项目中，这样它就不会被孤立。打开 `main.dart` 找到写着 `final game = FlameGame()` 的行; 并用 `KlondikeGame` 替换 `FlameGame`。您还需要导入类。完成所有操作之后，文件应该是这样的：
 
 ```dart
 import 'package:flame/game.dart';
@@ -71,21 +61,13 @@ void main() {
 ```
 
 
-## Other classes
+## 其他类
 
-So far we have the main `KlondikeGame` class, and now we need to create objects
-that we will add to the game. In Flame these objects are called _components_,
-and when added to the game they form a "game component tree". All entities that
-exist in the game must be components.
+到目前为止，我们已经有了主要的 `KlondikeGame` 类，现在我们需要创建要添加到游戏中的对象。 在 `Flame` 中，这些对象称为组件，当添加到游戏中时，它们会形成“游戏组件树”。 游戏中存在的所有实体都必须是组件。
 
-As we already mentioned in the previous chapter, our game mainly consists of
-`Card` components. However, since drawing the cards will take some effort, we
-will defer implementation of that class to the next chapter.
+正如我们在上一章中已经提到的，我们的游戏主要由卡片组件组成。 然而，由于绘制卡片需要一些努力，我们将把该类的实现推迟到下一章。
 
-For now, let's create the container classes, as shown on the sketch. These are:
-`Stock`, `Waste`, `Pile` and `Foundation`. In your project directory create a
-sub-directory `components`, and then the file `components/stock.dart`. In that
-file write
+现在，让我们创建容器类，如草图所示。这些是：`Stock`、`Waste`、`Pile` 和 `Foundation`。在项目目录中创建一个子目录组件，然后创建文件 `components/stock.dart`。在该文件中写入：
 
 ```dart
 import 'package:flame/components.dart';
@@ -96,17 +78,11 @@ class Stock extends PositionComponent {
 }
 ```
 
-Here we declare the `Stock` class as a `PositionComponent` (which is a component
-that has a position and size). We also turn on the debug mode for this class so
-that we can see it on the screen even though we don't have any rendering logic
-yet.
+在这里，我们将 `Stock` 类声明为 `PositionComponent`（这是一个具有位置和大小的组件）。我们还打开了这个类的调试模式，以便我们可以在屏幕上看到它，即使我们还没有任何呈现逻辑。
 
-Likewise, create three more classes `Foundation`, `Pile` and `Waste`, each in
-its corresponding file. For now all four classes will have exactly the same
-logic inside, we'll be adding more functionality into those classes in
-subsequent chapters.
+同样地，在相应的文件中创建另外三个类 `Foundation`、 `Pile` 和 `Waste`。现在所有四个类的内部逻辑完全相同，我们将在后面的章节中为这些类添加更多的功能。
 
-At this moment the directory structure of your game should look like this:
+现在您游戏的目录结构应该是这样的：
 ```text
 klondike/
  ├─assets/
@@ -124,34 +100,19 @@ klondike/
  └─pubspec.yaml
 ```
 
+## 游戏结构
 
-## Game structure
+一旦我们拥有了一些基本组件，我们便需要将它们添加到游戏中。是时候决定游戏的高级结构了。
 
-Once we have some basic components, they need to be added to the game. It is
-time to make a decision about the high-level structure of the game.
+这里存在多种方法，它们在复杂性、可扩展性和总体原理方面有所不同。我们将在本教程中采用的方法是基于使用 [World] 组件和 [Camera]。
 
-There exist multiple approaches here, which differ in their complexity,
-extendability, and overall philosophy. The approach that we will be taking in
-this tutorial is based on using the [World] component, together with a [Camera].
+这种方法背后的想法是这样的：想象您的游戏世界独立于设备存在，它已经存在于我们的头脑中，存在于草图中，即使我们还没有做任何编码。这个世界将有一定的大小，世界上的每个元素将有一定的坐标。这取决于我们来决定世界的大小，以及这个大小的度量单位是什么。重要的是，世界是独立于设备存在的，它的尺寸同样不依赖于屏幕的像素分辨率。
 
-The idea behind this approach is the following: imagine that your game **world**
-exists independently from the device, that it exists already in our heads, and
-on the sketch, even though we haven't done any coding yet. This world will have
-a certain size, and each element in the world will have certain coordinates. It
-is up to us to decide what will be the size of the world, and what is the unit
-of measurement for that size. The important part is that the world exists
-independently from the device, and its dimensions likewise do not depend on the
-pixel resolution of the screen.
+所有属于世界的元素都将被添加到 `World` 组件中，然后 `World` 组件也将被添加到游戏中。
 
-All elements that are part of the world will be added to the `World` component,
-and the `World` component will be then added to the game.
+整个结构的第二部分是一个相机（`CamerComponent`）。相机的目的是观察世界，确保在用户设备的屏幕上以正确的尺寸呈现。
 
-The second part of the overall structure is a **camera** (`CameraComponent`).
-The purpose of the camera is to be able to look at the world, to make sure that
-it renders at the right size on the screen of the user's device.
-
-Thus, the overall structure of the component tree will look approximately like
-this:
+因此，组件树的总体结构大致如下：
 ```text
 KlondikeGame
  ├─ World
@@ -162,27 +123,17 @@ KlondikeGame
  └─ CameraComponent
 ```
 
-```{note}
-The **Camera** system described in this tutorial is different from the
-"official" camera available as a property of the `FlameGame` class. The latter
-may become deprecated in the future.
-```
+::: warning 注意
 
-For this game I've been drawing my image assets having in mind the dimension of
-a single card at 1000×1400 pixels. So, this will serve as the reference size for
-determining the overall layout. Another important measurement that affects the
-layout is the inter-card distance. It seems like it should be somewhere between
-150 to 200 units (relative to the card width), so we will declare it as a
-variable `cardGap` that can be adjusted later if needed. For simplicity, both
-the vertical and horizontal inter-card distance will be the same, and the
-minimum padding between the cards and the edges of the screen will also be equal
-to `cardGap`.
+本教程中描述的 Camera 系统不同于作为 FlameGame 类属性可用的“official” Camera。后者在未来可能会被弃用。
 
-Alright, let's put all this together and implement our `KlondikeGame` class.
+:::
 
-First, we declare several global constants which describe the dimensions of a
-card and the distance between cards. We declare them as constants because we are
-not planning to change these values during the game:
+对于这个游戏，我一直在绘制我的图像资产，考虑到一张卡的尺寸为 1000 * 1400 像素。因此，这将作为确定整体布局的参考大小。另一个影响布局的重要度量是卡间距离。它似乎应该在 150 到 200 个单元之间(相对于卡宽度)，因此我们将它声明为一个变量 `cardGap`，如果需要的话，可以在以后进行调整。为简单起见，垂直和水平的卡片间距将相同，并且卡片与屏幕边缘之间的最小填充也将等于 `cardGap`。
+
+好了，让我们把这些放在一起，实现我们的 `KlondikeGame` 类。
+
+首先，我们声明几个全局常量描述尺寸和卡片之间的距离。我们将它们声明为常量，因为我们不打算在游戏中更改这些值：
 ```dart
   static const double cardWidth = 1000.0;
   static const double cardHeight = 1400.0;
@@ -191,10 +142,7 @@ not planning to change these values during the game:
   static final Vector2 cardSize = Vector2(cardWidth, cardHeight);
 ```
 
-Next, we will create a `Stock` component, the `Waste`, four `Foundation`s and
-seven `Pile`s, setting their sizes and positions in the world. The positions
-are calculated using simple arithmetics. This should all happen inside the
-`onLoad` method, after loading the spritesheet:
+接下来，我们将创建一个 `Stock` 组件、`Waste`、4个 `Foundations `和七个 `pile`，设置它们在世界中的大小和位置。 使用简单的算术计算位置。 这一切都应该发生在 `onLoad` 方法中，在加载 spritesheet 之后：
 ```dart
     final stock = Stock()
       ..size = cardSize
@@ -220,8 +168,7 @@ are calculated using simple arithmetics. This should all happen inside the
     );
 ```
 
-Then we create the main `World` component, add to it all the components that
-we just created, and finally add the `world` to the game.
+然后我们创建主要的 `World` 组件，添加我们刚刚创建的所有组件，最后将 `World` 添加到游戏中。
 ```dart
     final world = World()
       ..add(stock)
@@ -246,38 +193,23 @@ If you don't `await` the future from `.add()`, then the component will be added
 to the game anyways, and in the same amount of time.
 ```
 
-Lastly, we create a camera object to look at the `world`. Internally, the camera
-consists of two parts: a **viewport** and a **viewfinder**. The default viewport
-is `MaxViewport`, which takes up the entire available screen size -- this is
-exactly what we need for our game, so no need to change anything. The
-viewfinder, on the other hand, needs to be set up to properly take the
-dimensions of the underlying world into account.
+::: warning 注意
 
-We want the entire card layout to be visible on the screen without the need to
-scroll. In order to accomplish this, we specify that we want the entire world
-size (which is `7*cardWidth + 8*cardGap` by `4*cardHeight + 3*cardGap`) to be
-able to fit into the screen. The `.visibleGameSize` setting ensures that no
-matter the size of the device, the zoom level will be adjusted such that the
-specified chunk of the game world will be visible.
+您可能想知道什么时候需要等待 `add()` 的结果，什么时候不需要。 简短的回答是：通常您不需要等待，但如果您愿意，那么也不会有什么问题。
 
-The game size calculation is obtained like this: there are 7 cards in the
-tableau and 6 gaps between them, add 2 more "gaps" to account for padding, and
-you get the width of `7*cardWidth + 8*cardGap`. Vertically, there are two rows
-of cards, but in the bottom row we need some extra space to be able to display
-a tall pile -- by my rough estimate, thrice the height of a card is sufficient
-for this -- which gives the total height of the game world as
-`4*cardHeight + 3*cardGap`.
+如果您查看 `.add()` 方法的文档，您会看到返回的 future 只等到组件完成加载，而不是直到它实际安装到游戏中。 因此，如果您的逻辑要求组件在继续之前完全加载，您只需等待 `.add()` 的 Future。 这种情况并不常见。
 
-Next, we specify which part of the world will be in the "center" of the
-viewport. In this case I specify that the "center" of the viewport should
-be at the top center of the screen, and the corresponding point within
-the game world is at coordinates `[(7*cardWidth + 8*cardGap)/2, 0]`.
+:::
 
-The reason for such choice for the viewfinder's position and anchor is
-because of how we want it to respond if the game size becomes too wide or
-too tall: in case of too wide we want it to be centered on the screen,
-but if the screen is too tall, we want the content to be aligned at the
-top.
+最后，我们创建一个摄像机对象来观察这个世界。在内部，相机由两部分组成：视口和取景器。默认的视口是 `MaxViewport`，它占用了整个可用的屏幕大小——这正是我们的游戏所需要的，所以不需要改变任何东西。另一方面，取景器的设置需要考虑到底层世界的尺寸。
+
+我们希望整个卡片布局在屏幕上可见，而无需滚动。 为了实现这一点，我们指定我们希望整个世界大小（即 `7*cardWidth + 8*cardGap x 4*cardHeight + 3*cardGap`）能够适应屏幕。 `.visibleGameSize` 设置确保无论设备大小如何，缩放级别都将被调整，以便游戏世界的指定块可见。
+
+游戏大小的计算方法是这样的: 画面中有 7 张卡片，它们之间有 6 个间隙，再加上 2 个“间隙”来填充，您就得到了 `7 * cardWidth + 8 * cardGap` 的宽度。垂直方向上有两排牌，但是在底下一排我们需要一些额外的空间来显示一堆高的牌——据我粗略估计，一张牌的高度三倍就足够了——这就给出了游戏世界的总高度为 `4 * cardHeight + 3 * cardGap`。
+
+接下来，我们指定世界的哪一部分将位于视区的“中心”。在这种情况下，我指定视图端口的“中心”应该位于屏幕的顶部中心，游戏世界中的对应点位于坐标 `[(7*cardWidth + 8*cardGap)/2, 0]`.
+
+这样选择取景器的位置和锚点的原因是，如果游戏尺寸变得太宽或太高，我们希望它的反应：如果太宽，我们希望它居中在屏幕上，但如果屏幕太高，我们希望内容在顶部对齐。
 ```dart
     final camera = CameraComponent(world: world)
       ..viewfinder.visibleGameSize =
@@ -287,19 +219,142 @@ top.
     add(camera);
 ```
 
-If you run the game now, you should see the placeholders for where the various
-components will be. If you are running the game in the browser, try resizing the
-window and see how the game responds to this.
+如果您现在运行游戏，您应该会看到不同组件的占位符。如果您是在浏览器中运行游戏，试着调整窗口大小，看看游戏对此有何反应。
 
-```{flutter-app}
-:sources: ../tutorials/klondike/app
-:page: step2
-:show: popup code
+## 代码
+
+*components/foundation.dart*
+
+```dart
+import 'package:flame/components.dart';
+
+class Foundation extends PositionComponent {
+  @override
+  bool get debugMode => true;
+}
 ```
 
-And this is it with this step -- we've created the basic game structure upon
-which everything else will be built. In the next step, we'll learn how to render
-the card objects, which are the most important visual objects in this game.
+*components/pile.dart*
 
-[World]: ../../flame/camera_component.md#world
-[Camera]: ../../flame/camera_component.md#cameracomponent
+```dart
+import 'package:flame/components.dart';
+
+class Pile extends PositionComponent {
+  @override
+  bool get debugMode => true;
+}
+```
+
+*components/stock.dart*
+
+```dart
+import 'package:flame/components.dart';
+
+class Stock extends PositionComponent {
+  @override
+  bool get debugMode => true;
+}
+```
+
+*components/waste.dart*
+
+```dart
+import 'package:flame/components.dart';
+
+class Waste extends PositionComponent {
+  @override
+  bool get debugMode => true;
+}
+```
+
+*klondike_game.dart*
+
+```dart
+import 'package:flame/components.dart';
+import 'package:flame/experimental.dart';
+import 'package:flame/flame.dart';
+import 'package:flame/game.dart';
+
+import 'components/foundation.dart';
+import 'components/pile.dart';
+import 'components/stock.dart';
+import 'components/waste.dart';
+
+class KlondikeGame extends FlameGame {
+  static const double cardGap = 175.0;
+  static const double cardWidth = 1000.0;
+  static const double cardHeight = 1400.0;
+  static const double cardRadius = 100.0;
+  static final Vector2 cardSize = Vector2(cardWidth, cardHeight);
+
+  @override
+  Future<void> onLoad() async {
+    await Flame.images.load('klondike-sprites.png');
+
+    final stock = Stock()
+      ..size = cardSize
+      ..position = Vector2(cardGap, cardGap);
+    final waste = Waste()
+      ..size = cardSize
+      ..position = Vector2(cardWidth + 2 * cardGap, cardGap);
+    final foundations = List.generate(
+      4,
+      (i) => Foundation()
+        ..size = cardSize
+        ..position =
+            Vector2((i + 3) * (cardWidth + cardGap) + cardGap, cardGap),
+    );
+    final piles = List.generate(
+      7,
+      (i) => Pile()
+        ..size = cardSize
+        ..position = Vector2(
+          cardGap + i * (cardWidth + cardGap),
+          cardHeight + 2 * cardGap,
+        ),
+    );
+
+    final world = World()
+      ..add(stock)
+      ..add(waste)
+      ..addAll(foundations)
+      ..addAll(piles);
+    add(world);
+
+    final camera = CameraComponent(world: world)
+      ..viewfinder.visibleGameSize =
+          Vector2(cardWidth * 7 + cardGap * 8, 4 * cardHeight + 3 * cardGap)
+      ..viewfinder.position = Vector2(cardWidth * 3.5 + cardGap * 4, 0)
+      ..viewfinder.anchor = Anchor.topCenter;
+    add(camera);
+  }
+}
+
+Sprite klondikeSprite(double x, double y, double width, double height) {
+  return Sprite(
+    Flame.images.fromCache('klondike-sprites.png'),
+    srcPosition: Vector2(x, y),
+    srcSize: Vector2(width, height),
+  );
+}
+```
+
+*main.dart*
+
+```dart
+import 'package:flame/game.dart';
+import 'package:flutter/widgets.dart';
+
+import 'klondike_game.dart';
+
+void main() {
+  final game = KlondikeGame();
+  runApp(GameWidget(game: game));
+}
+```
+
+
+通过这一步，我们已经创建了基本的游戏结构，其他所有内容都将基于此构建。在下一步中，我们将学习如何渲染卡片对象，这是游戏中最重要的视觉对象。
+
+[World]: ../../flame/camera-component.md#world
+[Camera]: ../../flame/camera-component.md#cameracomponent

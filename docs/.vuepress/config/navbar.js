@@ -1,5 +1,9 @@
 module.exports = [
   {
+    text: '版本 1.1.1',
+    link: 'https://docs.flame-engine.org/1.1.1/'
+  },
+  {
     text: '官网',
     link: 'https://flame-engine.org/'
   }, {

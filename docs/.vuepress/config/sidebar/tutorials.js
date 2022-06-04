@@ -41,13 +41,60 @@ const tutorials = {
             children: [
                 {
                     text: "1. 准备",
-                    link: "/guide/tutorials/klondike/step1.md"
+                    link: "/guide/tutorials/klondike/step1.md",
+                    collapsible: true,
+                    children: [{
+                        text: "规划",
+                        link: "#规划"
+                    }, {
+                        text: "资源",
+                        link: "#资源"
+                    }]
                 }, {
                     text: "2. 脚手架",
-                    link: "/guide/tutorials/klondike/step2.md"
+                    link: "/guide/tutorials/klondike/step2.md",
+                    collapsible: true,
+                    children: [{
+                        text: "KlondikeGame",
+                        link: "#klondikegame"
+                    }, {
+                        text: "其他类",
+                        link: "#其他类"
+                    }, {
+                        text: "游戏结构",
+                        link: "#游戏结构"
+                    }, {
+                        text: "代码",
+                        link: "#代码"
+                    }]
                 }, {
                     text: "3. 卡片",
-                    link: "/guide/tutorials/klondike/step3.md"
+                    link: "/guide/tutorials/klondike/step3.md",
+                    collapsible: true,
+                    children: [{
+                        text: "花色",
+                        link: "#花色"
+                    }, {
+                        text: "等级",
+                        link: "#等级"
+                    }, {
+                        text: "卡片组件",
+                        link: "#卡片组件",
+                        collapsible: true,
+                        children: [{
+                            text: "渲染",
+                            link: "#渲染"
+                        }, {
+                            text: "renderBack()",
+                            link: "#renderback"
+                        }, {
+                            text: "renderFront()",
+                            link: "#renderfront"
+                        }]
+                    }, {
+                        text: "代码",
+                        link: "#代码"
+                    }]
                 }, {
                     text: "待续...",
                     link: "/guide/tutorials/klondike/tbc.md"

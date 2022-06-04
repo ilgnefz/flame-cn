@@ -35,13 +35,13 @@ Flame 是基于 Flutter 的 2D 游戏引擎，该库为 Flame 引擎的中文译
 - [x] Flame 音频
   - [x] 一般音频
   - [x] 背景音乐
-- [ ] 教程
+- [x] 教程
   - [x] Bare Flame game
-  - [ ] Klondike
-    - [ ] 1.准备
-    - [ ] 2.脚手架
-    - [ ] 3.卡片
-    - [ ] 待续...
+  - [x] Klondike
+    - [x] 1.准备
+    - [x] 2.脚手架
+    - [x] 3.卡片
+    - [x] 待续...
 - [x] 其它模块
   - [x] Forge2D
   - [x] Oxygen
