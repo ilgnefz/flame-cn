@@ -1,6 +1,6 @@
 # Flame 引擎中文文档
 
-> 官方版本已经更新到了1.6.0版本，该库目前只翻译到1.1.1版本
+> 官方版本已经更新到了1.6.0版本，该库目前只翻译到1.1.1版本。如果你只是开发RPG，推荐使用[bonfire](https://github.com/RafaelBarbosatec/bonfire)
 
 官方地址：https://flame-engine.org/
 
